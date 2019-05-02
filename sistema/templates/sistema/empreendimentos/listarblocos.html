@@ -1,0 +1,52 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Blocos | {{ block.super }}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
+        </li>
+        <li class="breadcrumb-item active">Blocos</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="centerbuttons">
+        <a class="btn btn-primary" href="{% url 'sistema:cadastrarbloco' %}" >Cadastrar novo bloco</a>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Lista dos blocos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Bloco</th>
+                  <th>Empreendimento</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Bloco</th>
+                  <th>Empreendimento</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for bloco in blocos %}
+                    <tr>
+                        <td>{{ bloco.dataCadastro }}</td>
+                        <td><a href="{{ bloco.get_absolute_url }}">Bloco {{ bloco.bloco }}</a></td>
+                        <td>{{ bloco.empreendimento }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+{% endblock %}

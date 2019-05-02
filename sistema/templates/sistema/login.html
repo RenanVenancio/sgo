@@ -1,0 +1,57 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Sistema de Gerenciamento de Ocorrências</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" type="image/ico" href="{% static 'img/favicon.ico' %}"/>
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+  <!-- Bootstrap core CSS-->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+</head>
+
+  <body class="text-center">
+    <form method="POST" class="form-signin">
+      <i class="fa fa-building-o fa-5x mb-4"></i>
+      <h1 class="mb-4 h6 font-weight-normal">Sistema de Gerenciamento de Ocorrências</h1>
+      <!-- <h1 class="h3 mb-3 font-weight-normal">Entrar</h1> -->
+        {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                  <strong>Por favor, entre com um usuário e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.</strong>
+                </div>
+            {% endif %}
+            <label for="{{ form.username.auto_id }}" class="sr-only">Usuario</label>
+            {{ form.username|attr:'class: form-control'|attr:'placeholder: Usuario' }}
+            <label for="{{ form.password.auto_id }}" class="sr-only">Senha</label>
+            {{ form.password|attr:'class: form-control'|attr:'placeholder: Senha' }}
+          <!--<div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox"> Remember Password</label>
+            </div>
+          </div>-->
+          <button class="btn btn-primary btn-block" type="submit">Login</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+    </form>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+  </body>
+
+</html>

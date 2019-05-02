@@ -1,0 +1,7 @@
+Django==2.0.4
+django-widget-tweaks==1.4.2
+djangorestframework==3.8.2
+model-mommy==1.5.1
+Pillow==5.1.0
+pytz==2018.5
+six==1.11.0

@@ -1,0 +1,48 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Categorias de problemas | {{ block.super }}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item active">Categorias dos problemas</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="centerbuttons">
+        <a class="btn btn-primary" href="{% url 'sistema:cadastrarcategoriadeproblema' %}" >Cadastrar nova categoria</a>
+        <a class="btn btn-primary" href="{% url 'sistema:subcategoriasdeproblemas' %}" >Gerenciar subcategorias</a>
+        <a class="btn btn-primary" href="{% url 'sistema:listarproblemas' %}" >Gerenciar problemas</a>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Lista das categorias</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Categoria</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Categoria</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for categoria in categorias %}
+                    <tr>
+                        <td>{{ categoria.dataCadastro }}</td>
+                        <td><a href="{{ categoria.get_absolute_url }}">{{ categoria.nomeCategoria }}</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+{% endblock %}

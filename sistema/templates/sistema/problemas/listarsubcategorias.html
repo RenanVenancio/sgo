@@ -1,0 +1,52 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Subcategorias dos problemas | {{ block.super }}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:categoriasdeproblemas' %}">Categorias dos problemas</a>
+        </li>
+        <li class="breadcrumb-item active">Subcategorias dos problemas</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="centerbuttons">
+        <a class="btn btn-primary" href="{% url 'sistema:cadastrarsubcategoriadeproblema' %}" >Cadastrar nova subcategoria</a>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Lista das subcategorias</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Subcategoria</th>
+                  <th>Categoria</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Subcategoria</th>
+                  <th>Categoria</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for subcategoria in subcategorias %}
+                    <tr>
+                        <td>{{ subcategoria.dataCadastro }}</td>
+                        <td><a href="{{ subcategoria.get_absolute_url }}">{{ subcategoria.nomeSubcategoria }}</a></td>
+                        <td>{{ subcategoria.categoria }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+{% endblock %}

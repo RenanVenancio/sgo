@@ -1,0 +1,35 @@
+{% extends 'sistema/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:listarblocos' %}">Blocos</a>
+        </li>
+        <li class="breadcrumb-item active">Editar bloco</li>
+      </ol>
+      <div class="row">
+        <div class="col-12">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
+                        <div class="col-md-9">
+                            {{ field.errors }}
+                            {{ field|add_class:'form-control' }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">Cadastrar</button>
+                <a class="btn btn-primary" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarbloco' bloco.pk %}" onclick="return confirm('Você tem certeza?');">Deletar</a>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

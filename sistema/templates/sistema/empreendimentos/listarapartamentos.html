@@ -1,0 +1,51 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Apartamentos | {{ block.super }}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
+        </li>
+        <li class="breadcrumb-item active">Apartamentos</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="centerbuttons">
+        <a class="btn btn-primary" href="{% url 'sistema:cadastrarapartamento' %}" >Cadastrar novo apartamento</a>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Lista dos apartamentos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Data de cadastro</th>
+                  <th>Apartamento</th>
+                  <th>Bloco</th>
+                </tr>
+              </thead>
+              <tfoot>
+                  <th>Data de cadastro</th>
+                  <th>Apartamento</th>
+                  <th>Bloco</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for apartamento in apartamentos %}
+                    <tr>
+                        <td>{{ apartamento.dataCadastro }}</td>
+                        <td><a href="{{ apartamento.get_absolute_url }}">Apartamento {{ apartamento.apartamento }}</a></td>
+                        <td>{{ apartamento.bloco }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+{% endblock %}

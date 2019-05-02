@@ -1,0 +1,76 @@
+{% extends 'sistema/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}Cadastrar chamado | {{ block.super }}{% endblock %}
+
+{% block content %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'sistema:listarchamados' %}">Chamados</a>
+        </li>
+        <li class="breadcrumb-item active">Cadastrar chamado</li>
+      </ol>
+      <div class="row">
+        <div class="col-12">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                  {% if field.auto_id != 'id_apartamento' and field.auto_id != 'id_aptEnvolvidos' %}
+                    <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
+                        <div class="col-md-9">
+                            {{ field.errors }}
+                            {{ field|add_class:'form-control' }}
+                        </div>
+                    </div>
+                  {% elif field.auto_id == 'id_apartamento' %}
+                    <div class="col-md-3 control-label">
+                      <div class="form-group">
+                        <label for="sel1">Empreendimento:</label>
+                        <select class="form-control" id="id_empreendimento" required>
+                          <option disabled selected value> --------- </option>
+                          {% for empreendimento in empreendimentos %}
+                          <option value="{{ empreendimento.pk }}">{{ empreendimento.nomeEmpreendimento }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="sel1">Bloco:</label>
+                        <select class="form-control" id="id_bloco" required>
+                          <option disabled selected value> --------- </option>
+                          {% for bloco in blocos %}
+                          <option value="{{ bloco.pk }}" id="{{ bloco.empreendimento.pk }}">Bloco {{ bloco.bloco }} | {{ bloco.empreendimento.nomeEmpreendimento }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="sel1">Apartamento:</label>
+                        <select class="form-control" id="id_apartamento" name="apartamento" required>
+                          <option disabled selected value> --------- </option>
+                          {% for apartamento in apartamentos %}
+                          <option value="{{ apartamento.pk }}" id="{{ apartamento.bloco.pk }}">Apt {{ apartamento.apartamento }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  {% else %}
+                  <div class="form-group">
+                    <div class="col-md-9">
+                      <span>Envolve outro apartamento?</span>
+                      <input type="checkbox" name="aptEnvolvidos" id="id_aptEnvolvidos">
+                    </div>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">Cadastrar</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+      var cadastrar = true;
+    </script>
+{% endblock %}
