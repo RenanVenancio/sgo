@@ -1,7 +1,20 @@
 # coding=utf-8
-
+from django.contrib.auth.models import User, UserManager
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from .models import *
+
+class UsuarioForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'is_staff',]
+
+
+class UsuarioEditForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'is_staff']
 
 
 class EmpreendimentoForm(forms.ModelForm):

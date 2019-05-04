@@ -1,0 +1,14 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Mudar senha | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+<form method = "POST">
+{% csrf_token %}
+   {{ form.username.label_tag }}
+{{ form.username }}
+{{form}}
+</form>
+
+{% endblock %}

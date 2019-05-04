@@ -6,8 +6,10 @@ from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required  #Staff
 from django.urls import reverse_lazy
 from rest_framework.authtoken.views import obtain_auth_token 
+
 
 app_name = 'sistema'
 
@@ -19,87 +21,105 @@ urlpatterns = [
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
     path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:index')}, name='logout'),
 
+    path('mudarsenha/<int:pk>',  auth_views.PasswordChangeView.as_view(template_name='sistema/usuarios/mudarsenha.html'), {'next_page': reverse_lazy('sistema:listarusuarios')}, name='password_change'),
 
-    path('empreendimentos/listarempreendimentos/', login_required(
+    path('usuarios/cadastrarusuario/', staff_member_required(
+        views.UsuariosCreateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='cadastrarusuario'),
+
+    path('usuarios/listarusuarios/', staff_member_required(
+        views.UsuariosListView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='listarusuarios'),
+
+    path('usuarios/listarusuarios/<int:pk>/', staff_member_required(
+        views.UsuariosUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='editarusuario'),
+
+    path('usuarios/deletarusuario/<int:pk>/', staff_member_required(
+        views.UsuariosDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='deletarusuario'),
+
+    
+    path('empreendimentos/listarempreendimentos/', staff_member_required(
         views.EmpreendimentoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarempreendimentos'),
-    path('empreendimentos/cadastrarempreendimento/', login_required(
+    path('empreendimentos/cadastrarempreendimento/', staff_member_required(
         views.EmpreendimentoCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarempreendimento'),
-    path('empreendimentos/editarempreendimento/<int:pk>/', login_required(
+    path('empreendimentos/editarempreendimento/<int:pk>/', staff_member_required(
         views.EmpreendimentoUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarempreendimento'),
-    path('empreendimentos/deletarempreendimento/<int:pk>/', login_required(
+    path('empreendimentos/deletarempreendimento/<int:pk>/', staff_member_required(
         views.EmpreendimentoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarempreendimento'),
 
 
-    path('empreendimentos/blocos/listarblocos/', login_required(
+    path('empreendimentos/blocos/listarblocos/', staff_member_required(
         views.BlocoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarblocos'),
-    path('empreendimentos/blocos/cadastrarbloco/', login_required(
+    path('empreendimentos/blocos/cadastrarbloco/', staff_member_required(
         views.BlocoCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarbloco'),
-    path('empreendimentos/blocos/editarbloco/<int:pk>/', login_required(
+    path('empreendimentos/blocos/editarbloco/<int:pk>/', staff_member_required(
         views.BlocoUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarbloco'),
-    path('empreendimentos/blocos/deletarbloco/<int:pk>/', login_required(
+    path('empreendimentos/blocos/deletarbloco/<int:pk>/', staff_member_required(
         views.BlocoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarbloco'),
 
 
-    path('empreendimentos/blocos/listarapartamentos/', login_required(
+    path('empreendimentos/blocos/listarapartamentos/', staff_member_required(
         views.ApartamentoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarapartamentos'),
-    path('empreendimentos/blocos/cadastrarapartamento/', login_required(
+    path('empreendimentos/blocos/cadastrarapartamento/', staff_member_required(
         views.ApartamentoCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarapartamento'),
-    path('empreendimentos/blocos/editarapartamento/<int:pk>/', login_required(
+    path('empreendimentos/blocos/editarapartamento/<int:pk>/', staff_member_required(
         views.ApartamentoUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarapartamento'),
-    path('empreendimentos/blocos/deletarapartamento/<int:pk>/', login_required(
+    path('empreendimentos/blocos/deletarapartamento/<int:pk>/', staff_member_required(
         views.ApartamentoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarapartamento'),
 
 
-    path('problemas/listarcategorias/', login_required(
+    path('problemas/listarcategorias/', staff_member_required(
         views.CategoriaDeProblemaListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='categoriasdeproblemas'),
-    path('problemas/cadastrarcategoria/', login_required(
+    path('problemas/cadastrarcategoria/', staff_member_required(
         views.CategoriaDeProblemaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarcategoriadeproblema'),
-    path('problemas/editarcategoria/<int:pk>/', login_required(
+    path('problemas/editarcategoria/<int:pk>/', staff_member_required(
         views.CategoriaDeProblemaUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarcategoriadeproblema'),
-    path('problemas/deletarcategoria/<int:pk>/', login_required(
+    path('problemas/deletarcategoria/<int:pk>/', staff_member_required(
         views.CategoriaDeProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarcategoriadeproblema'),
 
 
-    path('problemas/listarsubcategorias/', login_required(
+    path('problemas/listarsubcategorias/', staff_member_required(
         views.SubcategoriaDeProblemaListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='subcategoriasdeproblemas'),
-    path('problemas/cadastrarsubcategoria/', login_required(
+    path('problemas/cadastrarsubcategoria/', staff_member_required(
         views.SubcategoriaDeProblemaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarsubcategoriadeproblema'),
-    path('problemas/editarsubcategoria/<int:pk>/', login_required(
+    path('problemas/editarsubcategoria/<int:pk>/', staff_member_required(
         views.SubcategoriaDeProblemaUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarsubcategoriadeproblema'),
-    path('problemas/removersubcategoria/<int:pk>/', login_required(
+    path('problemas/removersubcategoria/<int:pk>/', staff_member_required(
         views.SubcategoriaDeProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarsubcategoriadeproblema'),
 
 
-    path('problemas/listarproblemas/', login_required(
+    path('problemas/listarproblemas/', staff_member_required(
         views.ProblemaListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarproblemas'),
-    path('problemas/cadastrarproblema/', login_required(
+    path('problemas/cadastrarproblema/', staff_member_required(
         views.ProblemaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarproblema'),
-    path('problemas/editarproblema/<int:pk>/', login_required(
+    path('problemas/editarproblema/<int:pk>/', staff_member_required(
         views.ProblemaUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarproblema'),
-    path('problemas/deletarproblema/<int:pk>/', login_required(
+    path('problemas/deletarproblema/<int:pk>/', staff_member_required(
         views.ProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarproblema'),
 

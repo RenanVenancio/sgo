@@ -1,5 +1,6 @@
 # coding=utf-8
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -14,9 +15,52 @@ class IndexListView(generic.TemplateView):
     # template_name = 'sistema/home.html'
     template_name = 'sistema/chamados/listarchamados.html'
 
+
+"""Gerenciamento de usuários"""
+class UsuariosCreateView(generic.CreateView):
+    
+    model = User
+    form_class = UsuarioForm
+    template_name = 'sistema/usuarios/cadastrodeusuarios.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+
+
+class UsuariosListView(generic.ListView):
+
+    queryset = User.objects.all()
+    context_object_name = 'usuarios'
+    template_name = 'sistema/usuarios/listarusuarios.html'
+
+
+class UsuariosUpdateView(generic.UpdateView):
+
+    model = User
+    form_class = UsuarioEditForm
+    template_name = 'sistema/usuarios/editarusuario.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+    def get_context_data(self, **kwargs):
+        context = {}
+        if self.object:
+            context['usuarios'] = self.object
+            context_object_name = self.get_context_object_name(self.object)
+            if context_object_name:
+                context[context_object_name] = self.object
+        context.update(**kwargs)
+        return super(generic.UpdateView, self).get_context_data(**context)
+
+
+class UsuariosDeleteView(generic.DeleteView):
+
+    model = User
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+"""Fim de empgerenciamento de usuários"""
+
 """Gerenciamento de empreendimentos"""
-
-
 class EmpreendimentoListView(generic.ListView):
 
     queryset = Empreendimento.objects.all().order_by('-pk')
