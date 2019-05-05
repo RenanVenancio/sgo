@@ -21,7 +21,10 @@ urlpatterns = [
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
     path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:index')}, name='logout'),
 
-    path('mudarsenha/<int:pk>',  auth_views.PasswordChangeView.as_view(template_name='sistema/usuarios/mudarsenha.html'), {'next_page': reverse_lazy('sistema:listarusuarios')}, name='password_change'),
+
+    path('usuarios/editarusuario/<int:pk>/mudarsenha', staff_member_required(
+        views.UsuariosPasswordUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='mudarsenhausuario'),
 
     path('usuarios/cadastrarusuario/', staff_member_required(
         views.UsuariosCreateView.as_view(), login_url=reverse_lazy('sistema:login')
@@ -31,7 +34,7 @@ urlpatterns = [
         views.UsuariosListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarusuarios'),
 
-    path('usuarios/listarusuarios/<int:pk>/', staff_member_required(
+    path('usuarios/editarusuario/<int:pk>/', staff_member_required(
         views.UsuariosUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarusuario'),
 
