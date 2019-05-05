@@ -50,6 +50,13 @@ class UsuariosUpdateView(generic.UpdateView):
         return super(generic.UpdateView, self).get_context_data(**context)
 
 
+class UsuariosPasswordUpdateView(generic.UpdateView):
+    model = User
+    form_class = UsuarioPasswordChangeForm
+    template_name = 'sistema/usuarios/mudarsenha.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+
 class UsuariosDeleteView(generic.DeleteView):
 
     model = User
