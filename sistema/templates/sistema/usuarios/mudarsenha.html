@@ -4,11 +4,19 @@
 
 {% block content %}
 
+<li class="breadcrumb-item">
+   <a href="{% url 'sistema:listarusuarios' %}">Usuários</a>
+</li>
+<a href="{% url 'sistema:editarusuario' user.pk %}" class="breadcrumb-item">Editar usuário</a>
+<li class="breadcrumb-item active">Mudar Senha</li>
+   </ol>
+<div class="row">
+
 <form method = "POST">
-{% csrf_token %}
-   {{ form.username.label_tag }}
-{{ form.username }}
-{{form}}
+   {% csrf_token %}
+   {{form}}
+
+   <button class="btn btn-primary" type="submit">Salvar</button>
 </form>
 
 {% endblock %}
