@@ -37,8 +37,8 @@
                 {% for usuario in usuarios %}
                     <tr>
                         <td>{{ usuario.first_name }}</td>
-                        <td><a href="{{ usuario.get_absolute_url}}{{ usuario.id }}">{{ usuario.email }}</a></td>
-                        <td>{{ usuario.username }}</td>
+                        <td><a href="/usuarios/editarusuario/{{ usuario.id }}">{{ usuario.email }}</a></td>
+                        <td><a href="/usuarios/editarusuario/{{ usuario.id }}">{{ usuario.username }}</a></td>
                         <td>                         
                           
                           {% if usuario.is_staff %}
