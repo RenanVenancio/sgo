@@ -1,6 +1,5 @@
 # coding=utf-8
-from django.contrib.auth.models import User, UserManager
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django import forms
 from .models import *
 
@@ -11,10 +10,14 @@ class UsuarioForm(UserCreationForm):
 
 
 class UsuarioEditForm(forms.ModelForm):
-    
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'is_staff']
+
+class UsuarioPasswordChangeForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['password1', 'password2']
 
 
 class EmpreendimentoForm(forms.ModelForm):
