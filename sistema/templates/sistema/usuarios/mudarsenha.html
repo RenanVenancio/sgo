@@ -1,8 +1,12 @@
 {% extends 'sistema/base.html' %}
 
+
+
 {% block title %}Mudar senha | {{ block.super }}{% endblock %}
 
 {% block content %}
+{% load widget_tweaks %}
+
 
 <li class="breadcrumb-item">
    <a href="{% url 'sistema:listarusuarios' %}">Usuários</a>
@@ -11,12 +15,35 @@
 <li class="breadcrumb-item active">Mudar Senha</li>
    </ol>
 <div class="row">
+   <div class="col-12">
+      <p>Informe uma nova senha para <b>{{ user.first_name }}</b>.</p>
+      <form method = "POST">
 
-<form method = "POST">
-   {% csrf_token %}
-   {{form}}
+         {% csrf_token %}
+         <div class="form-group">
+            {{ form.password1.label }}
+            {{form.password1|add_class:"form-control" }}
+            {{ form.password1.errors }}
 
-   <button class="btn btn-primary" type="submit">Salvar</button>
-</form>
+         </div>
+
+         <div>
+            <ul class="list-group-item" style="list-style-type:none">
+               <li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li>
+               <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+               <li>Sua senha não pode ser uma senha habitualmente utilizada.</li>
+               <li>Sua senha não pode ser inteiramente numérica.</li>
+            </ul>
+         </div>
+
+         <div class="form-group"></div>
+            {{ form.password2.label }}
+            {{form.password2|add_class:"form-control"}}
+            {{ form.password2.errors }}
+<br>
+         <button class="btn btn-primary" type="submit">Alterar</button>
+      </form>
+   </div>
+</div>
 
 {% endblock %}
