@@ -47,20 +47,23 @@
 
                 <div class="form-control">
                     <div class="form-check">
+                        <h6 class="text-danger">Se a caixa abaixo estiver marcada, o usuário terá acesso ao adminstrativo.</h6>
+                        <hr>
                         {{ form.is_staff|add_class:"form-check-label"}}
                         {{ form.is_staff.label }}
                     </div>
                 </div>
 
+
                 <div class="form-row">
-                    <div class="text-reset text-secondary">
+                    <div class="form-group col-md-12"><br>
                         Para mudar a senha <a href="/usuarios/editarusuario/{{ user.pk }}/mudarsenha">clique aqui</a>
                     </div>
                 </div>
 
 
                 <div class="form-row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-12"><br>
                         <button class="btn btn-primary" type="submit">Salvar</button>
                         <a class="btn btn-primary" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarusuario' user.pk %}" onclick="return confirm('Você tem certeza?');">Deletar</a>
 
