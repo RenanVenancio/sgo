@@ -11,19 +11,76 @@
         <li class="breadcrumb-item active">Cadastrar usuário</li>
       </ol>
       <div class="row">
-        <div class="col-12">
+          <div class="col-12">
             <form action="" method="POST">
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
-                        <div class="col-md-9">
-                            {{ field.errors }}
-                            {{ field|add_class:'form-control' }}
-                        </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.first_name.label }}
+                        {{ form.first_name|add_class:"form-control"}}
+                        {{ form.first_name.errors }}
                     </div>
-                {% endfor %}
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
+
+                    <div class="form-group col-md-6">
+                        {{ form.last_name.label }}
+                        {{ form.last_name|add_class:"form-control"}}
+                        {{ form.last_name.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.username.label }}
+                        {{ form.username|add_class:"form-control"}}
+                        {{ form.username.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.email.label }}
+                        {{ form.email|add_class:"form-control"}}
+                        {{ form.email.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.password1.label }}
+                        {{ form.password1|add_class:"form-control"}}
+                        {{ form.password1.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.password2.label }}
+                        {{ form.password2|add_class:"form-control"}}
+                        {{ form.password2.errors }}
+                    </div>
+                </div>
+
+
+                <div class="form-control">
+                    <div class="form-check">
+                        <h6 class="text-danger">Se a caixa abaixo estiver marcada, o usuário terá acesso ao adminstrativo.</h6>
+                        <hr>
+                        {{ form.is_staff|add_class:"form-check-label"}}
+                        {{ form.is_staff.label }}
+                    </div>
+                </div>
+
+
+
+                <div class="form-row">
+                    <div class="form-group col-12"><br>
+                        <button class="btn btn-primary" type="submit">Salvar</button>
+                        <a class="btn btn-primary" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarusuario' user.pk %}" onclick="return confirm('Você tem certeza?');">Deletar</a>
+
+                    </div>
+                </div>
+
             </form>
         </div>
       </div>
