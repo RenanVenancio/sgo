@@ -12,7 +12,7 @@ class UsuarioForm(UserCreationForm):
 class UsuarioEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'is_staff']
+        fields = ['first_name', 'last_name', 'username', 'email' , 'is_staff']
 
 class UsuarioPasswordChangeForm(UserCreationForm):
     class Meta:

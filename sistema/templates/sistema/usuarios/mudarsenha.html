@@ -24,7 +24,6 @@
             {{ form.password1.label }}
             {{form.password1|add_class:"form-control" }}
             {{ form.password1.errors }}
-
          </div>
 
          <div>
@@ -36,10 +35,11 @@
             </ul>
          </div>
 
-         <div class="form-group"></div>
+         <div class="form-group">
             {{ form.password2.label }}
             {{form.password2|add_class:"form-control"}}
             {{ form.password2.errors }}
+         </div>
 <br>
          <button class="btn btn-primary" type="submit">Alterar</button>
       </form>
