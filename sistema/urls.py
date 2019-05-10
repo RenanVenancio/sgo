@@ -188,7 +188,7 @@ urlpatterns = [
     path('api/problemas/<int:pk>/',
         views.ProblemaDetailsViewAPI.as_view(),
         name='apidetailproblemas'),
-
+    #FIXME: A view precisa gerar o protocolo automaticamente
     path('api/chamadosany/',
         views.ChamadoCreateViewAPIAny.as_view(),
         name='apichamadosany'),
@@ -198,6 +198,10 @@ urlpatterns = [
     path('api/chamados/<int:pk>/',
         views.ChamadoDetailsViewAPI.as_view(),
         name='apidetailchamados'),
+
+    path('api/chamados/', #Renan Testes
+         views.ChamadoDetailsViewAPI.as_view(),
+         name='apilistarchamados'),
 
 
     # Autenticação via Token
