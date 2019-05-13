@@ -8,42 +8,87 @@
 {% load widget_tweaks %}
 
 
-<li class="breadcrumb-item">
-   <a href="{% url 'sistema:listarusuarios' %}">Usuários</a>
-</li>
-<a href="{% url 'sistema:editarusuario' user.pk %}" class="breadcrumb-item">Editar usuário</a>
-<li class="breadcrumb-item active">Mudar Senha</li>
-   </ol>
-<div class="row">
-   <div class="col-12">
-      <p>Informe uma nova senha para <b>{{ user.first_name }}</b>.</p>
-      <form method = "POST">
+<div class="container-fluid">
 
-         {% csrf_token %}
-         <div class="form-group">
-            {{ form.password1.label }}
-            {{form.password1|add_class:"form-control" }}
-            {{ form.password1.errors }}
-         </div>
+        <div class="block-header">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{% url 'sistema:listarusuarios' %}">
+                        <i class="material-icons">people</i> Usuários
+                    </a>
+                </li>
+                <li>
+                    <a href="/usuarios/editarusuario/{{ user.pk }}">
+                        <i class="material-icons">edit</i> Editar Usuário
+                    </a>
+                </li>
+                <li class="active">
+                    <i class="material-icons">lock</i> Mudar senha
+                </li>
+            </ol>
+        </div>
 
-         <div>
-            <ul class="list-group-item" style="list-style-type:none">
-               <li>Sua senha não pode ser tão parecida com suas outras informações pessoais.</li>
-               <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
-               <li>Sua senha não pode ser uma senha habitualmente utilizada.</li>
-               <li>Sua senha não pode ser inteiramente numérica.</li>
-            </ul>
-         </div>
+        <!-- Vertical Layout -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="text-uppercase">
+                            MUDAR SENHA DE {{ user.first_name}}
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
 
-         <div class="form-group">
-            {{ form.password2.label }}
-            {{form.password2|add_class:"form-control"}}
-            {{ form.password2.errors }}
-         </div>
-<br>
-         <button class="btn btn-primary" type="submit">Alterar</button>
-      </form>
-   </div>
+                        <form method="POST">
+                        {% csrf_token %}
+
+                            <label for="{{ form.password1.auto_id }}">{{ form.password1.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.password1|add_class:"form-control"}}
+                                </div>
+                               {{ form.password1.errors }}
+                            </div>
+
+                           <blockquote class="m-b-25">
+                              <h6 class="font-italic col-pink">
+                                 Sua senha não pode ser tão parecida com suas outras informações pessoais.<br>
+                                 Sua senha precisa conter pelo menos 8 caracteres.<br>
+                                 Sua senha não pode ser uma senha habitualmente utilizada.<br>
+                                 Sua senha não pode ser inteiramente numérica.<br>
+                              </h6>
+
+                            </blockquote>
+
+
+                            <label for="{{ form.password2.auto_id }}">{{ form.password2.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.password2|add_class:"form-control"}}
+                                </div>
+                               {{ form.password2.errors }}
+                            </div>
+
+
+                            <br>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 {% endblock %}

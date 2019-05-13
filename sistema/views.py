@@ -39,6 +39,8 @@ class UsuariosUpdateView(generic.UpdateView):
     form_class = UsuarioEditForm
     template_name = 'sistema/usuarios/editarusuario.html'
     success_url = reverse_lazy('sistema:listarusuarios')
+
+    '''
     def get_context_data(self, **kwargs):
         context = {}
         if self.object:
@@ -48,7 +50,7 @@ class UsuariosUpdateView(generic.UpdateView):
                 context[context_object_name] = self.object
         context.update(**kwargs)
         return super(generic.UpdateView, self).get_context_data(**context)
-
+    '''
 
 class UsuariosPasswordUpdateView(generic.UpdateView):
     model = User

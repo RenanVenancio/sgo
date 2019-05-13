@@ -5,69 +5,177 @@
 {% block title %}Cadastrar chamado | {{ block.super }}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarchamados' %}">Chamados</a>
-        </li>
-        <li class="breadcrumb-item active">Cadastrar chamado</li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-            <form action="" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form %}
-                  {% if field.auto_id != 'id_apartamento' and field.auto_id != 'id_aptEnvolvidos' %}
-                    <div class="form-group">
-                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
-                        <div class="col-md-9">
-                            {{ field.errors }}
-                            {{ field|add_class:'form-control' }}
-                        </div>
-                    </div>
-                  {% elif field.auto_id == 'id_apartamento' %}
-                    <div class="col-md-3 control-label">
-                      <div class="form-group">
-                        <label for="sel1">Empreendimento:</label>
-                        <select class="form-control" id="id_empreendimento" required>
-                          <option disabled selected value> --------- </option>
-                          {% for empreendimento in empreendimentos %}
-                          <option value="{{ empreendimento.pk }}">{{ empreendimento.nomeEmpreendimento }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="sel1">Bloco:</label>
-                        <select class="form-control" id="id_bloco" required>
-                          <option disabled selected value> --------- </option>
-                          {% for bloco in blocos %}
-                          <option value="{{ bloco.pk }}" id="{{ bloco.empreendimento.pk }}">Bloco {{ bloco.bloco }} | {{ bloco.empreendimento.nomeEmpreendimento }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="sel1">Apartamento:</label>
-                        <select class="form-control" id="id_apartamento" name="apartamento" required>
-                          <option disabled selected value> --------- </option>
-                          {% for apartamento in apartamentos %}
-                          <option value="{{ apartamento.pk }}" id="{{ apartamento.bloco.pk }}">Apt {{ apartamento.apartamento }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                    </div>
-                  {% else %}
-                  <div class="form-group">
-                    <div class="col-md-9">
-                      <span>Envolve outro apartamento?</span>
-                      <input type="checkbox" name="aptEnvolvidos" id="id_aptEnvolvidos">
-                    </div>
-                  </div>
-                  {% endif %}
-                {% endfor %}
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
-            </form>
+
+<div class="container-fluid">
+
+        <div class="block-header">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{% url 'sistema:listarusuarios' %}">
+                        <i class="material-icons">people</i> Usuários
+                    </a>
+                </li>
+                <li class="active">
+                    <i class="material-icons">edit</i> Editar Usuário
+                </li>
+            </ol>
         </div>
-      </div>
-    </div>
+
+        <!-- Vertical Layout -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            ABRIR CHAMADO
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <label for="{{ form.statusChamado.auto_id }}">{{ form.statusChamado.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.statusChamado|add_class:"form-control"}}
+
+                                </div>
+                            </div>
+
+
+                            <label for="{{ form.nome.auto_id }}">{{ form.nome.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.nome|add_class:"form-control"}}
+                                </div>
+                                {{ form.nome.errors }}
+                            </div>
+
+
+                            <label for="{{ form.nome.auto_id }}">{{ form.cpf.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.cpf|add_class:"form-control"}}
+                                </div>
+                                {{ form.cpf.errors }}
+                            </div>
+
+
+                            <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.email|add_class:"form-control"}}
+                                </div>
+                                {{ form.email.errors }}
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.telefoneFixo.auto_id }}">{{ form.telefoneFixo.label }}</label>
+                                        <div class="form-line">
+                                            {{ form.telefoneFixo|add_class:"form-control"}}
+                                        </div>
+                                        {{ form.telefoneFixo.errors }}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.telefoneCelular.auto_id }}">{{ form.telefoneCelular.label }}</label>
+                                        <div class="form-line">
+                                            {{ form.telefoneCelular|add_class:"form-control"}}
+                                        </div>
+                                        {{ form.telefoneCelular.errors }}
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row clearfix">
+
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <select class="selectpicker" id="id_empreendimento" required data-header="Selecione um Empreendimento" data-size="8" data-live-search="true">
+                                            <option disabled selected value> --------- </option>
+                                            {% for empreendimento in empreendimentos %}
+                                                <option value="{{ empreendimento.pk }}">{{ empreendimento.nomeEmpreendimento }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <select class="selectpicker" id="id_bloco" required data-header="Selecione um Bloco" data-size="8" data-live-search="true">
+                                            <option disabled selected value> --------- </option>
+                                            {% for bloco in blocos %}
+                                          <option value="{{ bloco.pk }}" id="{{ bloco.empreendimento.pk }}">Bloco {{ bloco.bloco }} | {{ bloco.empreendimento.nomeEmpreendimento }}</option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <select class="selectpicker" id="id_apartamento" required data-header="Selecione um Apartamento" data-size="8" data-live-search="true">
+                                            <option disabled selected value> --------- </option>
+                                              {% for apartamento in apartamentos %}
+                                              <option value="{{ apartamento.pk }}" id="{{ apartamento.bloco.pk }}">Apt {{ apartamento.apartamento }}</option>
+                                              {% endfor %}
+                                        </select>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                            </div>
+
+
+                            {{ form.aptEnvolvidos }}
+                             {{ form.aptEnvolvidos|add_class:"form-control"}}
+
+
+ {{ form.problema }}
+
+ {{ form.img1 }}
+ {{ form.img2 }}
+ {{ form.img3 }}
+
+  {{ form.descricao }}
+ <button class="btn btn-primary" type="submit">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
 {% endblock %}
+
 
 {% block scripts %}
     <script type="text/javascript">

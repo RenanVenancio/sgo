@@ -1,34 +1,9 @@
-// Color Variables
-// Bootstrap Color Defaults
-$white: #fff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #868e96 !default;
-$gray-700: #495057 !default;
-$gray-800: #343a40 !default;
-$gray-900: #212529 !default;
-$black: #000 !default;
+//Colors
+$colors: ( red: #F44336, pink: #E91E63, purple: #9C27B0, deep-purple: #673AB7, indigo: #3F51B5, blue: #2196F3, light-blue: #03A9F4, cyan: #00BCD4, teal: #009688, green: #4CAF50, light-green: #8BC34A, lime: #CDDC39, yellow: #ffe821, amber: #FFC107, orange: #FF9800, deep-orange: #FF5722, brown: #795548, grey: #9E9E9E, blue-grey: #607D8B, black: #000000, white: #ffffff ) !default;
 
-$blue: #007bff !default;
-$indigo: #6610f2 !default;
-$purple: #6f42c1 !default;
-$pink: #e83e8c !default;
-$red: #dc3545 !default;
-$orange: #fd7e14 !default;
-$yellow: #ffc107 !default;
-$green: #28a745 !default;
-$teal: #20c997 !default;
-$cyan: #17a2b8 !default;
+//Fonts Family
+$navbar-font-family: 'Roboto', sans-serif;
+$sidebar-font-family: 'Roboto', sans-serif;
 
-// Spacing Variables
-// Change below variable if the height of the navbar changes
-$navbar-base-height: 56px;
-// Change below variable to change the width of the sidenav
-$sidenav-base-width: 250px;
-// Change below variable to change the width of the sidenav when collapsed
-$sidenav-collapsed-width: 55px;
-// Change below variable to change the height of the sticky footer
-$sticky-footer-height: 56px;
+//Bootstrap Datepicker
+$datepicker-active-color: #009688;

@@ -15,7 +15,8 @@ app_name = 'sistema'
 
 urlpatterns = [
     # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
-    # path('', login_required(views.IndexListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
+    #TODO: Fazer a tela de dashboard com as estatiticas
+    path('', login_required(views.IndexListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
     path('', login_required(views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
 
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),

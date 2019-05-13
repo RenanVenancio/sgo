@@ -3,55 +3,87 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Sistema de Gerenciamento de Ocorrências</title>
-  <!-- favicon -->
-  <link rel="shortcut icon" type="image/ico" href="{% static 'img/favicon.ico' %}"/>
-  <!-- Custom styles for this template -->
-  <link href="{% static 'css/signin.css' %}" rel="stylesheet">
-  <!-- Bootstrap core CSS-->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <!-- Custom fonts for this template-->
-  <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-  <!-- Custom styles for this template-->
-  <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+<html class="chrome"><head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Sign In | Bootstrap Based Admin Template - Material Design</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="{% static 'plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="{% static 'plugins/node-waves/waves.css' %}" rel="stylesheet">
+
+    <!-- Animation Css -->
+    <link href="{% static 'plugins/animate-css/animate.css' %}" rel="stylesheet">
+
+    <!-- Custom Css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
 
-  <body class="text-center">
-    <form method="POST" class="form-signin">
-      <i class="fa fa-building-o fa-5x mb-4"></i>
-      <h1 class="mb-4 h6 font-weight-normal">Sistema de Gerenciamento de Ocorrências</h1>
-      <!-- <h1 class="h3 mb-3 font-weight-normal">Entrar</h1> -->
-        {% csrf_token %}
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger">
-                  <strong>Por favor, entre com um usuário e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.</strong>
-                </div>
-            {% endif %}
-            <label for="{{ form.username.auto_id }}" class="sr-only">Usuario</label>
-            {{ form.username|attr:'class: form-control'|attr:'placeholder: Usuario' }}
-            <label for="{{ form.password.auto_id }}" class="sr-only">Senha</label>
-            {{ form.password|attr:'class: form-control'|attr:'placeholder: Senha' }}
-          <!--<div class="form-group">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox"> Remember Password</label>
+    <body class="login-page ls-closed">
+        <div class="login-box">
+            <div class="logo">
+                <a><b>SGO</b></a>
+                <small>Sistema de Gerenciamento de Ocorrências</small>
             </div>
-          </div>-->
-          <button class="btn btn-primary btn-block" type="submit">Login</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
-    </form>
+            <div class="card">
+                <div class="body">
+                    <form id="sign_in" method="POST" novalidate="novalidate">
+                        {% csrf_token %}
+                        <div class="msg">Digite suas credenciais para entrar</div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">person</i>
+                            </span>
+                            <div class="form-line">
+                                {{ form.username|attr:'class: form-control'|attr:'placeholder: Usuario' }}
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">lock</i>
+                            </span>
+                            <div class="form-line">
+                                {{ form.password|attr:'class: form-control'|attr:'placeholder: Senha' }}
+                            </div>
+                        </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-  </body>
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                              <strong>Por favor, entre com um usuário e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.</strong>
+                            </div>
+                        {% endif %}
 
+                        <button class="btn btn-block bg-red waves-effect" type="submit">Entrar</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jquery Core Js -->
+        <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
+        <!-- Bootstrap Core Js -->
+        <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+
+        <!-- Waves Effect Plugin Js -->
+        <script src="{% static 'plugins/node-waves/waves.js' %}"></script>
+
+        <!-- Validation Plugin Js -->
+        <script src="{% static 'plugins/jquery-validation/jquery.validate.js' %}"></script>
+
+        <!-- Custom Js -->
+        <script src="{% static 'js/admin.js' %}"></script>
+        <script src="{% static 'js/pages/examples/sign-in.js' %}"></script>
+
+
+    </body>
 </html>

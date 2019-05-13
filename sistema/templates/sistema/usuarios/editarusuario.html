@@ -5,75 +5,105 @@
 {% block title %}Editar usuário | {{ block.super }}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarusuarios' %}">Usuários</a>
-        </li>
-        <li class="breadcrumb-item active">Editar usuário</li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-            <form action="" method="POST">
-                {% csrf_token %}
 
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        {{ form.first_name.label }}
-                        {{ form.first_name|add_class:"form-control"}}
-                        {{ form.first_name.errors }}
-                    </div>
+<div class="container-fluid">
 
-                    <div class="form-group col-md-6">
-                        {{ form.last_name.label }}
-                        {{ form.last_name|add_class:"form-control"}}
-                        {{ form.last_name.errors }}
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.username.label }}
-                        {{ form.username|add_class:"form-control"}}
-                        {{ form.username.errors }}
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        {{ form.email.label }}
-                        {{ form.email|add_class:"form-control"}}
-                        {{ form.email.errors }}
-                    </div>
-                </div>
-
-                <div class="form-control">
-                    <div class="form-check">
-                        <h6 class="text-danger">Se a caixa abaixo estiver marcada, o usuário terá acesso ao adminstrativo.</h6>
-                        <hr>
-                        {{ form.is_staff|add_class:"form-check-label"}}
-                        {{ form.is_staff.label }}
-                    </div>
-                </div>
-
-
-                <div class="form-row">
-                    <div class="form-group col-md-12"><br>
-                        Para mudar a senha <a href="/usuarios/editarusuario/{{ user.pk }}/mudarsenha">clique aqui</a>
-                    </div>
-                </div>
-
-
-                <div class="form-row">
-                    <div class="form-group col-12"><br>
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                        <a class="btn btn-primary" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarusuario' user.pk %}" onclick="return confirm('Você tem certeza?');">Deletar</a>
-
-                    </div>
-                </div>
-
-
-
-            </form>
+        <div class="block-header">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{% url 'sistema:listarusuarios' %}">
+                        <i class="material-icons">people</i> Usuários
+                    </a>
+                </li>
+                <li class="active">
+                    <i class="material-icons">edit</i> Editar Usuário
+                </li>
+            </ol>
         </div>
-      </div>
+
+        <!-- Vertical Layout -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            EDITAR USUÁRIO
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+
+                        <form method="POST">
+                        {% csrf_token %}
+
+                            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.first_name|add_class:"form-control"}}
+                                </div>
+                                {{ form.first_name.errors }}
+                            </div>
+
+                            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.last_name|add_class:"form-control"}}
+                                </div>
+                                {{ form.last_name.errors }}
+                            </div>
+
+                            <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.email|add_class:"form-control"}}
+                                </div>
+                                {{ form.email.errors }}
+                            </div>
+
+                            <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.username|add_class:"form-control"}}
+                                </div>
+                                {{ form.username.errors }}
+                            </div>
+
+
+
+                            <hr>
+                            <h6 class="font-bold col-pink">Se a caixa abaixo estiver ligada, o usuário terá acesso ao adminstrativo.</h6>
+                            <div class="demo-switch-title">Usuário membro da equipe</div>
+                            <div class="switch">
+                                <label>{{ form.is_staff|add_class:"form-check-label"}}<span class="lever switch-col-red"></span></label>
+                            </div>
+                            <hr>
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12"><br>
+                                    Para mudar a senha <a href="/usuarios/editarusuario/{{ user.pk }}/mudarsenha">clique aqui</a>
+                                </div>
+                            </div>
+
+                            <br>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
 
 {% endblock %}
