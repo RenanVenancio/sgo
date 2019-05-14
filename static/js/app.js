@@ -8,8 +8,9 @@ function selectFilter($s1, $s2, $s3) {
       $s2.val(null);
       $s3.children('option').hide();
       $s3.val(null);
-      $s2.children("option[id=" + $(this).val() + "]").show()
+      $s2.children("option[id=" + $(this).val() + "]").show();
 
+      $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
   }
 )}
 

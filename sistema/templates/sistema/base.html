@@ -328,6 +328,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'sistema:listarproblemas' %}">
+                            <i class="material-icons">report_problem</i>
+                            <span>Problemas</span>
+                        </a>
+                    </li>                    <li>
                         <a href="{% url 'sistema:listarusuarios' %}">
                             <i class="material-icons">people</i>
                             <span>Usuários</span>
@@ -555,17 +560,15 @@
     <script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
    <!-- <script src="{% static 'js/pages/index.js' %}"></script> -->
 
-
+   <!-- Combos com buscas -->
     <script type="text/javascript">
         $(document).ready(function(){
             $('select').selectpicker();
         });
     </script>
 
+
     <!-- Responsável por popular os selects dos chamados -->
-
-
-
     {% block scripts %}
       <script type="text/javascript">
         var cadastrar = false;
