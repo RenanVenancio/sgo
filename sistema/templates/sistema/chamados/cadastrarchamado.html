@@ -111,7 +111,7 @@
                                 <div class="row">
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                        <select class="selectpicker" id="id_empreendimento" required data-header="Selecione um Empreendimento" data-size="8" data-live-search="true">
+                                        <select class="selectpicker" data-tag="empreendimento" id="id_empreendimento" required data-header="Selecione um Empreendimento" data-size="8" data-live-search="true">
                                             <option disabled selected value> --------- </option>
                                             {% for empreendimento in empreendimentos %}
                                                 <option value="{{ empreendimento.pk }}">{{ empreendimento.nomeEmpreendimento }}</option>
@@ -125,7 +125,7 @@
                                 <div class="row">
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                        <select class="selectpicker" id="id_bloco" required data-header="Selecione um Bloco" data-size="8" data-live-search="true">
+                                        <select class="selectpicker" data-tag="bloco" id="id_bloco" required data-header="Selecione um Bloco" data-size="8" data-live-search="true">
                                             <option disabled selected value> --------- </option>
                                             {% for bloco in blocos %}
                                           <option value="{{ bloco.pk }}" id="{{ bloco.empreendimento.pk }}">Bloco {{ bloco.bloco }} | {{ bloco.empreendimento.nomeEmpreendimento }}</option>
@@ -139,7 +139,7 @@
                                                                 <div class="row">
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                        <select class="selectpicker" id="id_apartamento" required data-header="Selecione um Apartamento" data-size="8" data-live-search="true">
+                                        <select class="selectpicker" data-tag="apartamento" id="id_apartamento" required data-header="Selecione um Apartamento" data-size="8" data-live-search="true">
                                             <option disabled selected value> --------- </option>
                                               {% for apartamento in apartamentos %}
                                               <option value="{{ apartamento.pk }}" id="{{ apartamento.bloco.pk }}">Apt {{ apartamento.apartamento }}</option>
