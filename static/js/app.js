@@ -21,4 +21,33 @@ $(document).ready(function() {
     selectFilter($("#id_empreendimento"), $("#id_bloco"), $("#id_apartamento"));
     selectFilter($("#id_bloco"), $("#id_apartamento"), $(null));
   }
-})
+
+
+
+table = $('.dataTable').DataTable( {
+    destroy: true,
+
+
+    language: {
+        last:       "Dernier",
+        search:         "Buscar:",
+        zeroRecords:    "Não foi encontrado nenhum registro",
+        emptyTable:     "Não há nehum dado para exibir",
+
+        paginate: {
+            first:      "Primeiro",
+            previous:   "Anterior",
+            next:       "Próximo",
+            last:       "Último"
+        },
+    }
+} );
+
+
+
+
+
+
+
+
+});
