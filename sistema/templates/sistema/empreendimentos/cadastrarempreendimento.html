@@ -5,27 +5,60 @@
 {% block title %}Cadastrar empreendimento | {{ block.super }}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
-        </li>
-        <li class="breadcrumb-item active">Cadastrar empreendimento</li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-            <form action="" method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
-                        <div class="col-md-9">
-                            {{ field.errors }}
-                            {{ field|add_class:'form-control' }}
-                        </div>
-                    </div>
-                {% endfor %}
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
-            </form>
+<div class="container-fluid">
+
+        <div class="block-header">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{% url 'sistema:listarusuarios' %}">
+                        <i class="material-icons">people</i> Usuários
+                    </a>
+                </li>
+                <li class="active">
+                    <i class="material-icons">person_add</i> Cadastrar Usuário
+                </li>
+            </ol>
         </div>
-      </div>
-    </div>
+
+        <!-- Vertical Layout -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            CADASTRAR EMPREENDIMENTO
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+
+                        <form method="POST">
+                        {% csrf_token %}
+
+                            <label for="{{ form.nomeEmpreendimento.auto_id }}">{{ form.nomeEmpreendimento.label }}</label>
+                            <div class="form-group">
+                                <div class="form-line">
+                                {{ form.nomeEmpreendimento|add_class:"form-control"}}
+                                </div>
+                                {{ form.nomeEmpreendimento.errors }}
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 {% endblock %}

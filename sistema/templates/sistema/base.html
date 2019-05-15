@@ -332,13 +332,31 @@
                             <i class="material-icons">report_problem</i>
                             <span>Problemas</span>
                         </a>
-                    </li>                    <li>
+                    </li>
+                    <li>
                         <a href="{% url 'sistema:listarusuarios' %}">
                             <i class="material-icons">people</i>
                             <span>Usuários</span>
                         </a>
                     </li>
 
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">archive</i>
+                            <span>Gerenciar Empreendimentos</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{% url 'sistema:listarempreendimentos' %}">
+                                    <i class="material-icons">business</i>
+                                    <span>Emprendimentos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);">
+                                    <span>Menu Item - 2</span>
+                                </a>
+                            </li>
+                            <li>
                 </ul>
             </div>
             <!-- #Menu -->
