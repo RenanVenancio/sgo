@@ -23,10 +23,9 @@ $(document).ready(function() {
   }
 
 
-
-table = $('.dataTable').DataTable( {
+table = $('table').DataTable({
     destroy: true,
-
+    select: true,
 
     language: {
         last:       "Dernier",
@@ -41,13 +40,12 @@ table = $('.dataTable').DataTable( {
             last:       "Último"
         },
     }
-} );
-
-
-
-
-
 
 
 
 });
+
+
+
+
+
