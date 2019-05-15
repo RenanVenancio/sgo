@@ -22,27 +22,6 @@ $(document).ready(function() {
     selectFilter($("#id_bloco"), $("#id_apartamento"), $(null));
   }
 
-
-table = $('table').DataTable({
-    destroy: true,
-    select: true,
-
-    language: {
-        last:       "Dernier",
-        search:         "Buscar:",
-        zeroRecords:    "Não foi encontrado nenhum registro",
-        emptyTable:     "Não há nehum dado para exibir",
-
-        paginate: {
-            first:      "Primeiro",
-            previous:   "Anterior",
-            next:       "Próximo",
-            last:       "Último"
-        },
-    }
-
-
-
 });
 
 
