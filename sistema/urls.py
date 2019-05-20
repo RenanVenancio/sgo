@@ -43,7 +43,10 @@ urlpatterns = [
         views.UsuariosDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarusuario'),
 
-    
+
+
+
+
     path('empreendimentos/listarempreendimentos/', staff_member_required(
         views.EmpreendimentoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarempreendimentos'),
@@ -100,32 +103,6 @@ urlpatterns = [
     ), name='deletarcategoriadeproblema'),
 
 
-    path('problemas/listarsubcategorias/', staff_member_required(
-        views.SubcategoriaDeProblemaListView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='subcategoriasdeproblemas'),
-    path('problemas/cadastrarsubcategoria/', staff_member_required(
-        views.SubcategoriaDeProblemaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='cadastrarsubcategoriadeproblema'),
-    path('problemas/editarsubcategoria/<int:pk>/', staff_member_required(
-        views.SubcategoriaDeProblemaUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='editarsubcategoriadeproblema'),
-    path('problemas/removersubcategoria/<int:pk>/', staff_member_required(
-        views.SubcategoriaDeProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='deletarsubcategoriadeproblema'),
-
-
-    path('problemas/listarproblemas/', staff_member_required(
-        views.ProblemaListView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='listarproblemas'),
-    path('problemas/cadastrarproblema/', staff_member_required(
-        views.ProblemaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='cadastrarproblema'),
-    path('problemas/editarproblema/<int:pk>/', staff_member_required(
-        views.ProblemaUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='editarproblema'),
-    path('problemas/deletarproblema/<int:pk>/', staff_member_required(
-        views.ProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='deletarproblema'),
 
 
     path('chamados/listarchamados/', login_required(
@@ -140,6 +117,8 @@ urlpatterns = [
     path('chamados/deletarchamado/<int:pk>/', login_required(
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
+
+
 
 
     # APIs de gerenecimento
@@ -173,22 +152,6 @@ urlpatterns = [
     path('api/categoriasdeproblemas/<int:pk>/',
         views.CategoriaDeProblemaDetailsViewAPI.as_view(),
         name='apidetailcategoriasdeproblemas'),
-
-
-    path('api/subcategoriadeproblemas/',
-        views.SubcategoriaDeProblemaCreateViewAPI.as_view(),
-        name='apisubcategoriadeproblemas'),
-    path('api/subcategoriadeproblemas/<int:pk>/',
-        views.SubcategoriaDeProblemaDetailsViewAPI.as_view(),
-        name='apidetailsubcategoriadeproblemas'),
-
-
-    path('api/problemas/',
-        views.ProblemaCreateViewAPI.as_view(),
-        name='apiproblemas'),
-    path('api/problemas/<int:pk>/',
-        views.ProblemaDetailsViewAPI.as_view(),
-        name='apidetailproblemas'),
     #FIXME: A view precisa gerar o protocolo automaticamente
     path('api/chamadosany/',
         views.ChamadoCreateViewAPIAny.as_view(),

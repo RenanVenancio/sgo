@@ -47,30 +47,56 @@
                         <form method="POST">
                         {% csrf_token %}
 
-                            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                {{ form.first_name|add_class:"form-control"}}
-                                {{ form.first_name.errors }}
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                        <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.first_name|add_class:"form-control"}}
+                                            {{ form.first_name.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                        <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.last_name|add_class:"form-control"}}
+                                            {{ form.last_name.errors }}
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
 
-                            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                {{ form.last_name|add_class:"form-control"}}
-                                {{ form.last_name.errors }}
+
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <label for="{{ form.cpf.auto_id }}">{{ form.cpf.label }}</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                    {{ form.cpf|add_class:"form-control"}}
+                                    </div>
+                                    {{ form.cpf.errors }}
                                 </div>
                             </div>
+                        </div>
 
-                            <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                {{ form.email|add_class:"form-control"}}
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                    {{ form.email|add_class:"form-control"}}
+                                    </div>
+                                    {{ form.email.errors }}
                                 </div>
-                                {{ form.email.errors }}
                             </div>
+                        </div>
 
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
                             <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -78,7 +104,12 @@
                                 </div>
                                 {{ form.username.errors }}
                             </div>
+                        </div>
+                    </div>
 
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
                             <label for="{{ form.password1.auto_id }}">{{ form.password1.label }}</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -86,7 +117,13 @@
                                 </div>
                                 {{ form.password1.errors }}
                             </div>
+                        </div>
+                    </div>
 
+
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
                             <label for="{{ form.password2.auto_id }}">{{ form.password2.label }}</label>
                             <div class="form-group">
                                 <div class="form-line">
@@ -94,6 +131,8 @@
                                 </div>
                                 {{ form.password2.errors }}
                             </div>
+                        </div>
+                    </div>
 
 
 
@@ -104,9 +143,7 @@
                                         <label>{{ form.is_staff|add_class:"form-check-label"}}<span class="lever switch-col-red"></span></label>
                                     </div>
                                     <hr>
-
-
-
+{{ form }}
 
                             <br>
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>

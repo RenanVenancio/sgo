@@ -74,7 +74,7 @@
                                     <td>{{ chamado.dataInteracao }}</td>
                                     <td>{{ chamado.statusChamado }}</td>
                                     <td>{{ chamado.apartamento.bloco.empreendimento }}</td>
-                                    <td>{{ chamado.nome }}</td>
+                                    <td>{{ chamado.usuario.first_name }} {{ chamado.usuario.last_name }}</td>
                                 </tr>
                             {% endfor %}
                           </tbody>

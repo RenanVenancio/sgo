@@ -1,10 +1,13 @@
 # coding=utf-8
+from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics
+
+from sistema.admin import UsuarioInline
 from .models import *
 from .forms import *
 from .serializers import *
@@ -16,10 +19,22 @@ class IndexListView(generic.TemplateView):
     template_name = 'sistema/chamados/listarchamados.html'
 
 
+
+from django.contrib import admin
+
+class PerfilUsuario(admin.TabularInline):
+      model = Usuarios
+
+
+
+
 """Gerenciamento de usuários"""
 class UsuariosCreateView(generic.CreateView):
     
-    model = User
+    model = Usuarios
+    inlines = [
+        PerfilUsuario,
+    ]
     form_class = UsuarioForm
     template_name = 'sistema/usuarios/cadastrodeusuarios.html'
     success_url = reverse_lazy('sistema:listarusuarios')
@@ -40,17 +55,17 @@ class UsuariosUpdateView(generic.UpdateView):
     template_name = 'sistema/usuarios/editarusuario.html'
     success_url = reverse_lazy('sistema:listarusuarios')
 
-    '''
-    def get_context_data(self, **kwargs):
-        context = {}
-        if self.object:
-            context['usuarios'] = self.object
-            context_object_name = self.get_context_object_name(self.object)
-            if context_object_name:
-                context[context_object_name] = self.object
-        context.update(**kwargs)
-        return super(generic.UpdateView, self).get_context_data(**context)
-    '''
+'''
+    #def get_context_data(self, **kwargs):
+    #    context = {}
+    #    if self.object:
+    #        context['usuarios'] = self.object
+    #        context_object_name = self.get_context_object_name(self.object)
+    #        if context_object_name:
+    #            context[context_object_name] = self.object
+    #    context.update(**kwargs)
+    #    return super(generic.UpdateView, self).get_context_data(**context)
+'''
 
 class UsuariosPasswordUpdateView(generic.UpdateView):
     model = User
@@ -68,6 +83,11 @@ class UsuariosDeleteView(generic.DeleteView):
         return self.post(request, *args, **kwargs)
 
 """Fim de empgerenciamento de usuários"""
+
+
+
+
+
 
 """Gerenciamento de empreendimentos"""
 class EmpreendimentoListView(generic.ListView):
@@ -241,7 +261,7 @@ class CategoriaDeProblemaDeleteView(generic.DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
-
+'''FOI REMOVIDO DO SISTEMA
 class SubcategoriaDeProblemaListView(generic.ListView):
 
     queryset = SubcategoriaDeProblema.objects.all().order_by('-pk')
@@ -328,6 +348,10 @@ class ProblemaDeleteView(generic.DeleteView):
 
 """Fim gerenciamento de tipos de problema"""
 
+
+'''
+
+
 """Inicio gerenciamento de chamados"""
 
 
@@ -336,6 +360,8 @@ class ChamadoListView(generic.ListView):
     queryset = Chamado.objects.all().order_by('-protocolo')
     context_object_name = 'chamados'
     template_name = 'sistema/chamados/listarchamados.html'
+
+
 
 
 class ChamadoCreateView(generic.CreateView):
@@ -347,9 +373,12 @@ class ChamadoCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(generic.CreateView, self).get_context_data(**kwargs)
-        context['empreendimentos'] = Empreendimento.objects.all().order_by('nomeEmpreendimento')
-        context['blocos'] = Bloco.objects.all().order_by('empreendimento__nomeEmpreendimento')
-        context['apartamentos'] = Apartamento.objects.all().order_by('apartamento')
+        context['areaComum'] = AreaComum.objects.all().order_by('nomeArea')
+        context['usuarios'] = Usuarios.objects.all().select_related('user')
+        context['categorias'] = CategoriaDeProblema.objects.all().order_by('nomeCategoria')
+        context['apartamentos'] = Apartamento.objects.all()
+
+
         return context
 
 
@@ -381,6 +410,10 @@ class ChamadoDeleteView(generic.DeleteView):
 
 
 """Fim gerenciamento de chamados"""
+
+
+
+
 
 """APIs de Gerenciamento"""
 
@@ -436,30 +469,6 @@ class CategoriaDeProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategoriaDeProblemaSerializer
 
 
-class SubcategoriaDeProblemaCreateViewAPI(generics.ListCreateAPIView):
-    queryset = SubcategoriaDeProblema.objects.all()
-    serializer_class = SubcategoriaDeProblemaSerializer
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-
-class SubcategoriaDeProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SubcategoriaDeProblema.objects.all()
-    serializer_class = SubcategoriaDeProblemaSerializer
-
-
-class ProblemaCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Problema.objects.all()
-    serializer_class = ProblemaSerializer
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-
-class ProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Problema.objects.all()
-    serializer_class = ProblemaSerializer
 
 class ChamadoCreateViewAPIAny(generics.ListCreateAPIView):
     queryset = Chamado.objects.none()
@@ -482,3 +491,4 @@ class ChamadoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ChamadoSerializer
     
 """Fim APIs de gerenciamento"""
+

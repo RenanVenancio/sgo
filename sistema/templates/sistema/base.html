@@ -328,7 +328,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'sistema:listarproblemas' %}">
+                        <a href="{% url 'sistema:listarusuarios' %}">
                             <i class="material-icons">report_problem</i>
                             <span>Problemas</span>
                         </a>
@@ -576,7 +576,16 @@
     <script src="{% static 'js/demo.js' %}"></script>
 
     <script src="{% static 'js/pages/tables/jquery-datatable.js' %}"></script>
+
+
+    <script src="{% static 'js/sb-admin-datatables.js' %}"></script>
    <!-- <script src="{% static 'js/pages/index.js' %}"></script> -->
+
+    <link href="{% static 'plugins/ion-rangeslider/css/ion.rangeSlider.css' %}" rel="stylesheet" />
+    <link href="{% static 'plugins/ion-rangeslider/css/ion.rangeSlider.skinFlat.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/pages/ui/range-sliders.js' %}"></script>
+    <script src="{% static 'plugins/ion-rangeslider/js/ion.rangeSlider.min.js' %}"></script>
 
    <!-- Combos com buscas -->
     <script type="text/javascript">

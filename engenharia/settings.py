@@ -90,6 +90,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#AUTH_PROFILE_MODULE = 'sistema.Usuarios' #Define a classe extendida dos usuarios
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

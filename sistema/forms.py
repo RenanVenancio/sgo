@@ -6,7 +6,7 @@ from .models import *
 class UsuarioForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'is_staff',]
+        fields = '__all__'
 
 
 class UsuarioEditForm(forms.ModelForm):
@@ -43,7 +43,7 @@ class CategoriaDeProblemaForm(forms.ModelForm):
         model = CategoriaDeProblema
         fields = ['nomeCategoria']
 
-
+'''
 class SubcategoriaDeProblemaForm(forms.ModelForm):
     class Meta:
         model = SubcategoriaDeProblema
@@ -55,14 +55,13 @@ class ProblemaForm(forms.ModelForm):
         model = Problema
         fields = ['subcategoria', 'nomeProblema', 'prioridade']
 
+'''
+
 
 class ChamadoForm(forms.ModelForm):
     class Meta:
         model = Chamado
-        fields = [
-            'statusChamado', 'nome', 'cpf', 'email',  'telefoneFixo', 'telefoneCelular', 'apartamento',
-            'aptEnvolvidos', 'problema', 'img1', 'img2', 'img3', 'descricao'
-        ]
+        fields = '__all__'
 
 
 

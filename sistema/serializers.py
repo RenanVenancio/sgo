@@ -41,25 +41,6 @@ class CategoriaDeProblemaSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-class SubcategoriaDeProblemaSerializer(serializers.ModelSerializer):
-    """Serializer to map the Model instance into JSON format."""
-
-    class Meta:
-        """Meta class to map serializer's fields with the model fields."""
-        model = SubcategoriaDeProblema
-        fields = ('id', 'dataCadastro', 'nomeSubcategoria', 'categoria')
-        read_only_fields = ('id',)
-
-
-class ProblemaSerializer(serializers.ModelSerializer):
-    """Serializer to map the Model instance into JSON format."""
-
-    class Meta:
-        """Meta class to map serializer's fields with the model fields."""
-        model = Problema
-        fields = ('id', 'dataCadastro', 'subcategoria', 'nomeProblema', 'prioridade')
-        read_only_fields = ('id',)
-
 
 class ChamadoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
@@ -67,7 +48,7 @@ class ChamadoSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ('id', 'dataCadastro', 'dataInteracao', 'protocolo', 'statusChamado', 'nome',
-         'cpf','telefoneFixo', 'telefoneCelular', 'email', 'apartamento', 'aptEnvolvidos',
-         'problema', 'descricao', 'img1', 'img2', 'img3')
+        fields = '__all__'
         read_only_fields = ('id',)
+
+
