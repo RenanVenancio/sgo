@@ -310,7 +310,7 @@
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="active">
-                        <a href="index.html">
+                        <a href="{% url 'sistema:dashboard' %}">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
@@ -328,9 +328,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'sistema:listarusuarios' %}">
+                        <a href="{% url 'sistema:categoriasdeproblemas' %}">
                             <i class="material-icons">report_problem</i>
-                            <span>Problemas</span>
+                            <span>Categorias de Problemas</span>
                         </a>
                     </li>
                     <li>
@@ -342,13 +342,13 @@
 
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">archive</i>
-                            <span>Gerenciar Empreendimentos</span>
+                            <span>Relatórios</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
                                 <a href="{% url 'sistema:listarempreendimentos' %}">
                                     <i class="material-icons">business</i>
-                                    <span>Emprendimentos</span>
+                                    <span>Em construção</span>
                                 </a>
                             </li>
                             <li>
@@ -370,7 +370,7 @@
             <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
+        <!-- Right Sidebar
         <aside id="rightsidebar" class="right-sidebar">
             <ul class="nav nav-tabs tab-nav-right" role="tablist">
                 <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
@@ -512,6 +512,7 @@
                 </div>
             </div>
         </aside>
+        -->
         <!-- #END# Right Sidebar -->
     </section>
     <section class="content">
@@ -603,6 +604,14 @@
     {% endblock %}
     <script src="{% static 'js/app.js' %}"></script>
 
+
+
+    <style>
+        .errorlist
+        {
+            color: red;
+        }
+    </style>
 
 
 

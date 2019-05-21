@@ -94,6 +94,28 @@
                             </div>
                         </div>
 
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                    <label for="{{ form.telefone1.auto_id }}">{{ form.telefone1.label }}</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        {{ form.telefone1|add_class:"form-control"}}
+                                        {{ form.telefone1.errors }}
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                    <label for="{{ form.telefone2.auto_id }}">{{ form.telefone2.label }}</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        {{ form.telefone2|add_class:"form-control"}}
+                                        {{ form.telefone2.errors }}
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
 
                     <div class="row clearfix">
                         <div class="col-sm-12">
@@ -143,10 +165,10 @@
                                         <label>{{ form.is_staff|add_class:"form-check-label"}}<span class="lever switch-col-red"></span></label>
                                     </div>
                                     <hr>
-{{ form }}
+
 
                             <br>
-                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>CADASTRAR</span></button>
                         </form>
                     </div>
                 </div>

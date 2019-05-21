@@ -5,28 +5,68 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
-        </li>
-        <li class="breadcrumb-item active">Editar empreendimento</li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-            <form action="" method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
-                        <div class="col-md-9">
-                            {{ field.errors }}
-                            {{ field|add_class:'form-control' }}
-                        </div>
-                    </div>
-                {% endfor %}
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
-                <a class="btn btn-primary" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarempreendimento' empreendimento.pk %}" onclick="return confirm('Você tem certeza?');">Deletar</a>
-            </form>
-        </div>
-      </div>
+<div class="container-fluid">
+
+    <div class="block-header">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'sistema:listarempreendimentos' %}">
+                    <i class="material-icons">business</i> Empreendimentos
+                </a>
+            </li>
+            <li class="active">
+                <i class="material-icons">edit</i> Editar Empreendimento
+            </li>
+        </ol>
     </div>
+
+    <!-- Vertical Layout -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        EDITAR EMPREENDIMENTO
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <label for="{{ form.nomeEmpreendimento.auto_id }}">{{ form.nomeEmpreendimento.label }}</label>
+                        <div class="form-group">
+                            <div class="form-line">
+                                {{ form.nomeEmpreendimento|add_class:"form-control"}}
+                            </div>
+                            {{ form.nomeEmpreendimento.errors }}
+                        </div>
+                        <br>
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>SALVAR</span></button>
+                        <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarempreendimento' empreendimento.pk %}" onclick="return confirm('Você tem certeza?');">
+                            <i class="material-icons">delete</i>
+                            <span>DELETAR</span>
+                        </a>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -16,11 +16,11 @@ app_name = 'sistema'
 urlpatterns = [
     # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
     #TODO: Fazer a tela de dashboard com as estatiticas
-    path('', login_required(views.IndexListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
-    path('', login_required(views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
+    path('', staff_member_required(views.DashboardView.as_view(), login_url=reverse_lazy('sistema:login')), name='dashboard'),
+    #path('', login_required(views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
 
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
-    path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:index')}, name='logout'),
+    path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:dashboard')}, name='logout'),
 
 
     path('usuarios/editarusuario/<int:pk>/mudarsenha', staff_member_required(
@@ -59,6 +59,11 @@ urlpatterns = [
     path('empreendimentos/deletarempreendimento/<int:pk>/', staff_member_required(
         views.EmpreendimentoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarempreendimento'),
+
+
+    path('empreendimentos/areascomuns/', staff_member_required(
+        views.AreasComunsListView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='listarareascomuns'),
 
 
     path('empreendimentos/blocos/listarblocos/', staff_member_required(
@@ -105,16 +110,16 @@ urlpatterns = [
 
 
 
-    path('chamados/listarchamados/', login_required(
+    path('chamados/listarchamados/', staff_member_required(
         views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarchamados'),
-    path('chamados/cadastrarchamado/', login_required(
+    path('chamados/cadastrarchamado/', staff_member_required(
         views.ChamadoCreateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='cadastrarchamado'),
-    path('chamados/editarchamado/<int:pk>/', login_required(
+    path('chamados/editarchamado/<int:pk>/', staff_member_required(
         views.ChamadoUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='editarchamado'),
-    path('chamados/deletarchamado/<int:pk>/', login_required(
+    path('chamados/deletarchamado/<int:pk>/', staff_member_required(
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
 

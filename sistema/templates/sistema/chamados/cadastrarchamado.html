@@ -4,6 +4,7 @@
 
 {% block title %}Cadastrar chamado | {{ block.super }}{% endblock %}
 
+
 {% block content %}
 
 <div class="container-fluid">
@@ -66,27 +67,14 @@
                                         <div class="form-line">
                                         </div>
                                         <label for="prioridade_id"> Prioridade </label>
-                                        <input type="text" class="js-range-slider" id="prioridade_id" name="prioridade"
-                                               value="1" required/>
+                                        <input type="text" class="js-range-slider" id="prioridade_id" name="prioridade" value="1"/>
                                     </div>
+                                    {{ form.prioridade.errors }}
+
                                 </div>
                             </div>
 
-<!-- O PROTOCOLO È GERADO PELO BACK AUTOMATICAMENTE
-                            <div class="row clearfix">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="{{ form.protocolo.auto_id }}">{{ form.protocolo.label }}</label>
-                                        <div class="form-line">
-                                            {{ form.protocolo|add_class:"form-control"}}
-                                        </div>
-                                        {{ form.protocolo.errors }}
-
-                                    </div>
-                                </div>
-                            </div>
--->
-
+                            <hr>
 
 
                             <div class="row clearfix">
@@ -94,7 +82,7 @@
                                     <div class="form-group">
                                         <label for="categoria_id">{{ form.categoriaProblema.label }}</label>
                                         <div class="">
-                                        <select class="selectpicker" name="categoriaProblema" id="categoria_id" required data-header="Selecione a categoria do problema" data-size="8" data-live-search="true" data-width="100%">
+                                        <select class="selectpicker" name="categoriaProblema" id="categoria_id" data-header="Selecione a categoria do problema" data-size="8" data-live-search="true" data-width="100%">
                                             <option disabled selected value> --------- </option>
                                             {% for categoria in categorias %}
                                                 <option value="{{ categoria.pk }}">{{ categoria.nomeCategoria }}</option>
@@ -148,13 +136,12 @@
                                     <div class="form-group">
                                         <label for="usuario_id">Selecione o morador</label>
                                         <div class="">
-                                            <select name="usuario" class="selectpicker" id="usuario_id" required
+                                            <select name="usuario" class="selectpicker" id="usuario_id"
                                                     data-header="Selecione um usuário" data-size="8"
                                                     data-live-search="true" data-width="100%">
                                                 <option disabled selected value> ---------</option>
                                                 {% for usr in usuarios %}
-                                                <option value="{{ usr.user.pk }}">{{ usr.user.first_name }} {{ usr.user.last_name }} - CPF:{{ usr.cpf }}
-                                                </option>
+                                                <option value="{{ usr.pk }}">{{ usr }}</option>
                                                 {% endfor %}
                                             </select>
                                             {{ form.usuario.errors }}
@@ -166,7 +153,7 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do morador</label>
                                         <div class="">
-                                            <select name="apartamento" class="selectpicker" id="apartamento_id" required
+                                            <select name="apartamento" class="selectpicker" id="apartamento_id"
                                                     data-header="Selecione um apartamento" data-size="8"
                                                     data-live-search="true" data-width="100%">
                                                 <option disabled selected value> ---------</option>
@@ -210,6 +197,7 @@
                             </div>
 
 
+
                             <button class="btn btn-primary" type="submit">Cadastrar</button>
 
 
@@ -245,11 +233,11 @@
 
             $("#prioridade_id").ionRangeSlider({
                 skin: "round",
-                grid: true,
+                grid: false,
                 grid_num: 5,
-                min: 0,
+                min: 1,
                 max: 5,
-                from: 0,
+                from: 1,
                 max_postfix: " Máxima",
                 prefix: "Prioridade: ",
 

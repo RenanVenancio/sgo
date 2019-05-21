@@ -90,6 +90,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 #AUTH_PROFILE_MODULE = 'sistema.Usuarios' #Define a classe extendida dos usuarios
 
 

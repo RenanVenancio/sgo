@@ -20,6 +20,8 @@ $(document).ready(function() {
 
     selectFilter($("#id_empreendimento"), $("#id_bloco"), $("#id_apartamento"));
     selectFilter($("#id_bloco"), $("#id_apartamento"), $(null));
+
+
   }
 
 });

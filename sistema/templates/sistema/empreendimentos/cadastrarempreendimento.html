@@ -7,58 +7,60 @@
 {% block content %}
 <div class="container-fluid">
 
-        <div class="block-header">
-            <ol class="breadcrumb">
-                <li>
-                    <a href="{% url 'sistema:listarempreendimentos' %}">
-                        <i class="material-icons">business</i> Empreendimentos
-                    </a>
-                </li>
-                <li class="active">
-                    <i class="material-icons">add</i> Cadastrar Empreendimento
-                </li>
-            </ol>
-        </div>
+    <div class="block-header">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'sistema:listarempreendimentos' %}">
+                    <i class="material-icons">business</i> Empreendimentos
+                </a>
+            </li>
+            <li class="active">
+                <i class="material-icons">add</i> Cadastrar Empreendimento
+            </li>
+        </ol>
+    </div>
 
-        <!-- Vertical Layout -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            CADASTRAR EMPREENDIMENTO
-                        </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
+    <!-- Vertical Layout -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        CADASTRAR EMPREENDIMENTO
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
 
-                        <form method="POST">
+                    <form method="POST">
                         {% csrf_token %}
 
-                            <label for="{{ form.nomeEmpreendimento.auto_id }}">{{ form.nomeEmpreendimento.label }}</label>
-                            <div class="form-group">
-                                <div class="form-line">
+                        <label for="{{ form.nomeEmpreendimento.auto_id }}">{{ form.nomeEmpreendimento.label }}</label>
+                        <div class="form-group">
+                            <div class="form-line">
                                 {{ form.nomeEmpreendimento|add_class:"form-control"}}
-                                </div>
-                                {{ form.nomeEmpreendimento.errors }}
                             </div>
-                            <br>
-                            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SALVAR</button>
-                        </form>
-                    </div>
+                            {{ form.nomeEmpreendimento.errors }}
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>CADASTRAR</span></button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 {% endblock %}
+

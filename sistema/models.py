@@ -73,7 +73,7 @@ class Apartamento(models.Model):
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
     bloco = models.ForeignKey('sistema.Bloco', on_delete=models.PROTECT, verbose_name='Bloco')
     apartamento = models.CharField('Apartamento', max_length=6)
-    dono = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True) #Define o dono do apto
+    dono = models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, blank=True, null=True) #Define o dono do apto
 
 
     def get_absolute_url(self):
@@ -114,7 +114,7 @@ class Chamado(models.Model):
     envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum')
     areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
     prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)])
-    usuario=models.ForeignKey(User, on_delete=models.PROTECT, null=False)
+    usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=True, null=True)
     descricao = models.TextField('Descreva o problema')
     img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
@@ -159,10 +159,10 @@ class EventosChamado(models.Model):
 
 
 
-class Usuarios(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Usuarios(User):           #Sempre usar essa classe dentro do sistema
     cpf = models.CharField(max_length=20, blank=False, unique=True, null=False)
-    #apartamentos = models.ManyToManyField(Apartamento)
+    telefone1 = models.CharField(max_length=15, blank=True, null=True)
+    telefone2 = models.CharField(max_length=15, blank=True, null=True)
 
     def __str__(self):
-        return str(self.user)
+        return 'CPF: ' + self.cpf + ' - NOME: ' + self.get_full_name()

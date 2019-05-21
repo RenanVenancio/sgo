@@ -5,30 +5,99 @@
 {% block title %}Cadastrar apartamento | {{ title.super }}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarempreendimentos' %}">Empreendimentos</a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="{% url 'sistema:listarapartamentos' %}">Apartamentos</a>
-        </li>
-        <li class="breadcrumb-item active">Cadastrar apartamento</li>
-      </ol>
-      <div class="row">
-        <div class="col-12">
-            <form action="" method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
-                        <div class="col-md-9">
-                            {{ field.errors }}
-                            {{ field|add_class:'form-control' }}
-                        </div>
-                    </div>
-                {% endfor %}
-                <button class="btn btn-primary" type="submit">Cadastrar</button>
-            </form>
-        </div>
-      </div>
+<div class="container-fluid">
+
+    <div class="block-header">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'sistema:listarempreendimentos' %}">
+                    <i class="material-icons">business</i> Empreendimentos
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'sistema:listarapartamentos' %}">
+                    <i class="material-icons">person_pin</i> Apartamentos
+                </a>
+            </li>
+
+            <li class="active">
+                <i class="material-icons">add</i> Cadastrar Apartamento
+            </li>
+        </ol>
     </div>
+
+    <!-- Vertical Layout -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        CADASTRAR APARTAMENTO
+                    </h2>
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="{{ form.bloco.auto_id }}">{{ form.bloco.label }}</label>
+                                    <div class="form-line">
+                                        {{ form.bloco|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
+                                    </div>
+                                    {{ form.bloco.errors }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="{{ form.apartamento.auto_id }}">{{ form.apartamento.label }}</label>
+                                    <div class="form-line">
+                                        {{ form.apartamento|add_class:"form-control"}}
+                                    </div>
+                                    {{ form.apartamento.errors }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="{{ form.dono.auto_id }}">{{ form.dono.label }}</label>
+                                    <div class="form-line">
+                                        {{ form.dono|add_class:"form-control"}}
+                                    </div>
+                                    {{ form.dono.errors }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>CADASTRAR</span></button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
