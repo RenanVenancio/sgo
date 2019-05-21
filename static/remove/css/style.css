@@ -1,0 +1,54 @@
+/* Mensagem quando se clica em copiar na datatable */
+div.dt-button-info {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    margin-top: -100px;
+    margin-left: -200px;
+    text-align: center;
+    z-index: 21;
+    color:#fff;
+    background-color:rgba(0, 0, 0, 0.6);
+}
+
+/* botões de cadastro e gerenciamento em tamanho normal de tela */
+div[class="centerbuttons"] .btn{
+    margin-bottom: 15px;
+}
+
+form button:first-of-type{
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+form a:first-of-type{
+    margin-bottom: 15px;
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .centerbuttons{
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    div[class="centerbuttons"] .btn{
+        margin-bottom: 10px;
+        display: block;
+    }
+    div[class="dataTables_wrapper container-fluid dt-bootstrap4"] div div[class="col-sm-5"]{
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    div[class="dataTables_wrapper container-fluid dt-bootstrap4"] div div[class="col-sm-7"]{
+        text-align: center;
+        margin-bottom: 15px;
+        margin:0px!important;
+        padding:0px!important;
+    }
+    div[class="col-sm-12 col-md-5"]{
+        text-align: center!important;
+        margin:0px!important;
+        padding:0px!important;
+    }
+}

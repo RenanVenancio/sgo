@@ -3,46 +3,91 @@
 {% block title %}Empreendimentos | {{ block.super }}{% endblock %}
 
 {% block content %}
-      <li class="breadcrumb-item active">Empreendimentos</li>
-      </ol>
-      <!-- Example DataTables Card-->
-      <div class="centerbuttons">
-        <a class="btn btn-primary" href="{% url 'sistema:cadastrarempreendimento' %}" >Cadastrar novo empreendimento</a>
-        <a class="btn btn-primary" href="{% url 'sistema:listarblocos' %}" >Gerenciar blocos</a>
-        <a class="btn btn-primary" href="{% url 'sistema:listarapartamentos' %}" >Gerenciar apartamentos</a>
-      </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Lista dos empreendimentos</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Data de cadastro</th>
-                  <th>Empreendimento</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Data de cadastro</th>
-                  <th>Empreendimento</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                {% for empreendimento in empreendimentos %}
-                    <tr>
-                        <td>{{ empreendimento.dataCadastro }}</td>
-                        <td><a href="{{ empreendimento.get_absolute_url }}">{{ empreendimento.nomeEmpreendimento }}</a></td>
-                    </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-      </div>
+<div class="container-fluid">
+
+    <div class="block-header">
+            <ol class="breadcrumb">
+
+                <li class="active">
+                    <i class="material-icons">business</i> Empreendimentos
+                </li>
+            </ol>
     </div>
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
+
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+
+                        <a class="btn bg-blue" href="{% url 'sistema:cadastrarempreendimento' %}" >
+                            <i class="material-icons">add</i>
+                            <span>Novo Empreendimento</span>
+                        </a>
+
+                        <a class="btn bg-green" href="{% url 'sistema:listarareascomuns' %}" >
+                            <i class="material-icons">nature</i>
+                            <span>Áreas Comuns</span>
+                        </a>
+
+
+                        <a class="btn bg-red" href="{% url 'sistema:listarblocos' %}" >
+                            <i class="material-icons">dashboard</i>
+                            <span>Gerenciar Blocos</span>
+                        </a>
+
+                        <a class="btn bg-red" href="{% url 'sistema:listarapartamentos' %}" >
+                            <i class="material-icons">person_pin</i>
+                            <span>Gerenciar Apartamentos</span>
+                        </a>
+
+                    </h2>
+
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                          <thead>
+                            <tr>
+                              <th>Data de cadastro</th>
+                              <th>Empreendimento</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr>
+                              <th>Data de cadastro</th>
+                              <th>Empreendimento</th>
+                            </tr>
+                          </tfoot>
+                          <tbody>
+                            {% for empreendimento in empreendimentos %}
+                                <tr>
+                                    <td>{{ empreendimento.dataCadastro }}</td>
+                                    <td><a href="{{ empreendimento.get_absolute_url }}">{{ empreendimento.nomeEmpreendimento }}</a></td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- #END# Exportable Table -->
 {% endblock %}
+

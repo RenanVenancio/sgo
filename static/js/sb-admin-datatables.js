@@ -1,7 +1,8 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dataTable').DataTable({
+  $('.dataTable').DataTable({
     responsive: true,
+    destroy:true,
     // Tradução para pt-br dos controles do DataTable
     "language":{
       "sEmptyTable": "Nenhum registro encontrado",
@@ -41,16 +42,18 @@ $(document).ready(function() {
       {
         text: 'Imprimir',
         extend: 'print',
-        className: '',
+        className: 'btn btn-primary waves-effect',
         title: '',
       },
       {
         text: 'Copiar',
         extend: 'copyHtml5',
+        className: 'btn btn-primary waves-effect',
       },
       {
         text: 'Excel',
         extend: 'excelHtml5',
+        className: 'btn btn-primary waves-effect',
       },
     ]
     

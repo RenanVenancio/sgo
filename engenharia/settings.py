@@ -91,6 +91,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+#AUTH_PROFILE_MODULE = 'sistema.Usuarios' #Define a classe extendida dos usuarios
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -113,14 +116,8 @@ USE_TZ = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'engenhar_sistemadegestao',
-        'USER': 'engenhar_root',
-        'PASSWORD': '2&}cYEFX_m+9xMH]9E',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'default-character-set': 'utf8',
-        #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -133,19 +130,21 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '/home/engenharia/public_html/mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'home/engenharia/public_html/mediafiles')
 
 
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, '/home/engenharia/public_html/staticfiles')
-
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 LOGIN_REDIRECT_URL = '/index/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.engenharia.clube.tur.br']
+ALLOWED_HOSTS = ['.engenharia.clube.tur.br', '127.0.0.1']
 
 
 try:

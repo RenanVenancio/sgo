@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from datetime import datetime
+from datetime import datetime, timezone
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from random import randint
@@ -10,16 +10,16 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 ENUM_STATUS = (
-    ('Aberto', 'Aberto'),
-    ('Em atendimento', 'Em atendimento'),
-    ('Encerrado', 'Encerrado'),
+    ('Em analise', 'Em analise'),
+    ('Em andamento', 'Em andamento'),
+    ('Finalizado', 'Finalizado'),
 )
 
 
 class Empreendimento(models.Model):
-
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
     nomeEmpreendimento = models.CharField('Nome', max_length=150, unique=True)
 
@@ -35,10 +35,26 @@ class Empreendimento(models.Model):
         verbose_name_plural = 'Empreendimentos'
 
 
-class Bloco(models.Model):
-
+class AreaComum(models.Model):
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
-    empreendimento = models.ForeignKey('sistema.Empreendimento', on_delete=models.CASCADE, verbose_name='Empreendimento')
+    nomeArea = models.CharField('Nome', max_length=150, unique=True)
+
+    def get_absolute_url(self):
+        return reverse('sistema:editarareacomum', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return self.nomeArea
+
+    class Meta:
+        ordering = ['-pk']
+        verbose_name = 'Area Comum'
+        verbose_name_plural = 'Áreas Comuns'
+
+
+class Bloco(models.Model):
+    dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
+    empreendimento = models.ForeignKey('sistema.Empreendimento', on_delete=models.PROTECT,
+                                       verbose_name='Empreendimento')
     bloco = models.CharField('Bloco', max_length=15)
 
     def get_absolute_url(self):
@@ -54,10 +70,11 @@ class Bloco(models.Model):
 
 
 class Apartamento(models.Model):
-
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
-    bloco = models.ForeignKey('sistema.Bloco', on_delete=models.CASCADE, verbose_name='Bloco')
+    bloco = models.ForeignKey('sistema.Bloco', on_delete=models.PROTECT, verbose_name='Bloco')
     apartamento = models.CharField('Apartamento', max_length=6)
+    dono = models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, blank=True, null=True) #Define o dono do apto
+
 
     def get_absolute_url(self):
         return reverse('sistema:editarapartamento', kwargs={'pk': self.pk})
@@ -68,11 +85,10 @@ class Apartamento(models.Model):
         verbose_name_plural = 'Apartamentos'
 
     def __str__(self):
-        return "Ap: " + self.apartamento + " - " + self.bloco.bloco + " - " + self.bloco.empreendimento.nomeEmpreendimento
+        return "Apto: " + self.apartamento + " - Bloco - " + self.bloco.bloco + " - " + self.bloco.empreendimento.nomeEmpreendimento
 
 
 class CategoriaDeProblema(models.Model):
-
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
     nomeCategoria = models.CharField('Categoria', max_length=100, unique=True)
 
@@ -88,67 +104,26 @@ class CategoriaDeProblema(models.Model):
         verbose_name_plural = 'Categorias'
 
 
-class SubcategoriaDeProblema(models.Model):
-
-    dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
-    nomeSubcategoria = models.CharField('Subcategoria', max_length=100, unique=True)
-    categoria = models.ForeignKey('sistema.CategoriaDeProblema', on_delete=models.CASCADE, verbose_name='Categoria')
-
-    def get_absolute_url(self):
-        return reverse('sistema:editarsubcategoriadeproblema', kwargs={'pk': self.pk})
-
-    def __str__(self):
-        return self.nomeSubcategoria
-
-    class Meta:
-        ordering = ['-pk']
-        verbose_name = 'Subcategoria'
-        verbose_name_plural = 'Subcategorias'
-
-
-class Problema(models.Model):
-
-    dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
-    subcategoria = models.ForeignKey('sistema.SubcategoriaDeProblema', on_delete=models.CASCADE, verbose_name='Subcategoria')
-    nomeProblema = models.CharField('Problema', max_length=80, unique=True)
-    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)])
-
-    def get_absolute_url(self):
-        return reverse('sistema:editarproblema', kwargs={'pk': self.pk})
-
-    def __str__(self):
-        return self.nomeProblema
-
-    class Meta:
-        ordering = ['-pk']
-        verbose_name = 'Problema'
-        verbose_name_plural = 'Problemas'
-
-
 class Chamado(models.Model):
-
     dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
     dataInteracao = models.DateTimeField('Data de interação', auto_now=True)
-    protocolo = models.CharField('Protocolo', max_length=30, unique=True)
-    statusChamado = models.CharField('Status do chamado', choices=ENUM_STATUS, max_length=20, default='Aberto')
-    nome = models.CharField('Nome', max_length=150)
-    cpf = models.CharField('Cpf', max_length=11)
-    telefoneFixo = models.CharField('Telefone fixo', max_length=10, blank=True, null=True)
-    telefoneCelular = models.CharField('Telefone celular', max_length=11)
-    email = models.EmailField('E-mail', max_length=150)
-    apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.CASCADE, verbose_name='Apartamento')
-    aptEnvolvidos = models.BooleanField('Envolve outro apartamento?')
-    problema = models.ForeignKey('sistema.Problema', on_delete=models.CASCADE, verbose_name='Problema')
+    protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
+    statusChamado = models.CharField('Status do chamado', choices=ENUM_STATUS, max_length=20, default='Em analise')
+    categoriaProblema = models.ForeignKey('sistema.CategoriaDeProblema', on_delete=models.PROTECT,
+                                          verbose_name='Categoria do problema')
+    envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum')
+    areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
+    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)])
+    usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
+    apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=True, null=True)
     descricao = models.TextField('Descreva o problema')
-    img1 = models.ImageField('Imagem 1', upload_to='sistema/chamados')
-    img2 = models.ImageField('Imagem 2', upload_to='sistema/chamados')
-    img3 = models.ImageField('Imagem 3', upload_to='sistema/chamados')
+    img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
 
     def get_absolute_url(self):
         return reverse('sistema:editarchamado', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return self.nome
+        return self.protocolo
 
     def save(self, *args, **kwargs):
         self.protocolo = datetime.today().strftime('%d%m%Y%H%M%S') + str(randint(1000, 2000))
@@ -161,9 +136,33 @@ class Chamado(models.Model):
 
 
 
+class EventosChamado(models.Model):
+    dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
+    descicaoEvento = models.CharField('Protocolo', max_length=30, unique=True)
+    chamado=models.ForeignKey('sistema.Chamado', on_delete=models.PROTECT, null=False)
 
-# This receiver handles token creation immediately a new user is created.
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+    def __str__(self):
+        return self.nome
+
+    def save(self, *args, **kwargs):
+        #Poderia ser incluso pra mandar um email assim que iserir algo aqui
+        pass
+
+    class Meta:
+        ordering = ['-pk']
+        verbose_name = 'Evento de Chamado'
+        verbose_name_plural = 'Eventos de Chamados'
+
+
+#Extendendo user padão do django
+
+
+
+
+class Usuarios(User):           #Sempre usar essa classe dentro do sistema
+    cpf = models.CharField(max_length=20, blank=False, unique=True, null=False)
+    telefone1 = models.CharField(max_length=15, blank=True, null=True)
+    telefone2 = models.CharField(max_length=15, blank=True, null=True)
+
+    def __str__(self):
+        return 'CPF: ' + self.cpf + ' - NOME: ' + self.get_full_name()

@@ -3,56 +3,92 @@
 {% block title %}Chamados | {{ block.super }}{% endblock %}
 
 {% block content %}
-        <li class="breadcrumb-item active">Chamados</li>
-      </ol>
-      <!-- Example DataTables Card-->
-      <div class="centerbuttons">
-        <a class="btn btn-primary" href="{% url 'sistema:cadastrarchamado' %}" >Cadastrar novo chamado</a>
-      </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Chamados</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Protocolo</th>
-                  <th>Data de cadastro</th>
-                  <th>Interação</th>
-                  <th>Status</th>
-                  <th>Empreendimento</th>
-                  <th>Solicitante</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>Protocolo</th>
-                  <th>Data de cadastro</th>
-                  <th>Interação</th>
-                  <th>Status</th>
-                  <th>Empreendimento</th>
-                  <th>Solicitante</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                {% for chamado in chamados %}
-                    <tr>
-                        <td><a href="{{ chamado.get_absolute_url }}">{{ chamado.protocolo }}</a></td>
-                        <td>{{ chamado.dataCadastro }}</td>
-                        <td>{{ chamado.dataInteracao }}</td>
-                        <td>{{ chamado.statusChamado }}</td>
-                        <td>{{ chamado.apartamento.bloco.empreendimento }}</td>
-                        <td>{{ chamado.nome }}</td>
-                    </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-      </div>
+
+<div class="container-fluid">
+
+    <div class="block-header">
+            <ol class="breadcrumb">
+
+                <li class="active">
+                    <i class="material-icons">record_voice_over</i> Chamados
+                </li>
+            </ol>
     </div>
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
+
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+
+                        <a class="btn bg-blue" href="{% url 'sistema:cadastrarchamado' %}" >
+                            <i class="material-icons">add</i>
+                            <span>Novo</span>
+                        </a>
+
+
+                    </h2>
+
+                    <ul class="header-dropdown m-r--5">
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">more_vert</i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:void(0);">Action</a></li>
+                                <li><a href="javascript:void(0);">Another action</a></li>
+                                <li><a href="javascript:void(0);">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                          <thead>
+                            <tr>
+                              <th>Protocolo</th>
+                              <th>Data de cadastro</th>
+                              <th>Interação</th>
+                              <th>Status</th>
+                              <th>Empreendimento</th>
+                              <th>Solicitante</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr>
+                              <th>Protocolo</th>
+                              <th>Data de cadastro</th>
+                              <th>Interação</th>
+                              <th>Status</th>
+                              <th>Empreendimento</th>
+                              <th>Solicitante</th>
+                            </tr>
+                          </tfoot>
+                          <tbody>
+                            {% for chamado in chamados %}
+                                <tr>
+                                    <td><a href="{{ chamado.get_absolute_url }}">{{ chamado.protocolo }}</a></td>
+                                    <td>{{ chamado.dataCadastro }}</td>
+                                    <td>{{ chamado.dataInteracao }}</td>
+                                    <td>{{ chamado.statusChamado }}</td>
+                                    <td>{{ chamado.apartamento.bloco.empreendimento }}</td>
+                                    <td>{{ chamado.usuario.first_name }} {{ chamado.usuario.last_name }}</td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- #END# Exportable Table -->
+
+
+
+
 {% endblock %}

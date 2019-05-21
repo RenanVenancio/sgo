@@ -1,22 +1,104 @@
 # coding=utf-8
-
+from django.contrib.admin import StackedInline
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics
+
 from .models import *
 from .forms import *
 from .serializers import *
 from rest_framework import permissions
 
-class IndexListView(generic.TemplateView):
+class DashboardView(generic.ListView):
+
+    context = {}
+    def get(self, request):
+
+        chamado = Chamado.objects.count()
+        self.context['chamados'] = chamado
+
+        chamadosAnalise = Chamado.objects.filter(statusChamado='Em analise').count()
+        self.context['chamadosAnalise'] = chamadosAnalise
+
+        chamadosFinalizados = Chamado.objects.filter(statusChamado='Finalizado').count()
+        self.context['chamadosFinalizados'] = chamadosFinalizados
+
+
+        usuarios =  Usuarios.objects.all().count()
+        self.context['usuarios'] = usuarios
+
+        template_name = 'sistema/dashboard/dashboard.html'
+        return render(request, template_name, self.context)
+
     # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
     # template_name = 'sistema/home.html'
-    template_name = 'sistema/chamados/listarchamados.html'
+
+
+
+
+
+"""Gerenciamento de usuários"""
+class UsuariosCreateView(generic.CreateView):
+    
+    model = Usuarios
+    form_class = UsuarioForm
+    template_name = 'sistema/usuarios/cadastrodeusuarios.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+
+
+class UsuariosListView(generic.ListView):
+
+    queryset = Usuarios.objects.all()
+    context_object_name = 'usuarios'
+    template_name = 'sistema/usuarios/listarusuarios.html'
+
+#TODO:Configurar essa classe para editar usuários criados pelo manage.py - createsuperuser
+class UsuariosUpdateView(generic.UpdateView):
+
+    model = Usuarios
+    form_class = UsuarioEditForm
+    template_name = 'sistema/usuarios/editarusuario.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+'''
+    #def get_context_data(self, **kwargs):
+    #    context = {}
+    #    if self.object:
+    #        context['usuarios'] = self.object
+    #        context_object_name = self.get_context_object_name(self.object)
+    #        if context_object_name:
+    #            context[context_object_name] = self.object
+    #    context.update(**kwargs)
+    #    return super(generic.UpdateView, self).get_context_data(**context)
+'''
+
+class UsuariosPasswordUpdateView(generic.UpdateView):
+    model = Usuarios
+    form_class = UsuarioPasswordChangeForm
+    template_name = 'sistema/usuarios/mudarsenha.html'
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+
+class UsuariosDeleteView(generic.DeleteView):
+
+    model = User
+    success_url = reverse_lazy('sistema:listarusuarios')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+"""Fim de empgerenciamento de usuários"""
+
+
+
+
+
 
 """Gerenciamento de empreendimentos"""
-
-
 class EmpreendimentoListView(generic.ListView):
 
     queryset = Empreendimento.objects.all().order_by('-pk')
@@ -189,91 +271,20 @@ class CategoriaDeProblemaDeleteView(generic.DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-class SubcategoriaDeProblemaListView(generic.ListView):
 
-    queryset = SubcategoriaDeProblema.objects.all().order_by('-pk')
-    context_object_name = 'subcategorias'
-    template_name = 'sistema/problemas/listarsubcategorias.html'
+class AreasComunsListView(generic.ListView):
 
-
-class SubcategoriaDeProblemaCreateView(generic.CreateView):
-
-    model = SubcategoriaDeProblema
-    form_class = SubcategoriaDeProblemaForm
-    template_name = 'sistema/problemas/cadastrodesubcategoria.html'
-    success_url = reverse_lazy('sistema:subcategoriasdeproblemas')
+    queryset = AreaComum.objects.all().order_by('-pk')
+    context_object_name = 'areasComuns'
+    template_name = 'sistema/empreendimentos/listarareascomuns.html'
 
 
-class SubcategoriaDeProblemaUpdateView(generic.UpdateView):
+class AreaComumCreateView(generic.CreateView):
 
-    model = SubcategoriaDeProblema
-    form_class = SubcategoriaDeProblemaForm
-    template_name = 'sistema/problemas/editarsubcategoria.html'
-    success_url = reverse_lazy('sistema:subcategoriasdeproblemas')
-
-    def get_context_data(self, **kwargs):
-        context = {}
-        if self.object:
-            context['subcategoria'] = self.object
-            context_object_name = self.get_context_object_name(self.object)
-            if context_object_name:
-                context[context_object_name] = self.object
-        context.update(**kwargs)
-        return super(generic.UpdateView, self).get_context_data(**context)
-
-
-class SubcategoriaDeProblemaDeleteView(generic.DeleteView):
-
-    model = SubcategoriaDeProblema
-    success_url = reverse_lazy('sistema:subcategoriasdeproblemas')
-
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-
-
-class ProblemaListView(generic.ListView):
-
-    queryset = Problema.objects.all().order_by('-dataCadastro').order_by('prioridade')
-    context_object_name = 'problemas'
-    template_name = 'sistema/problemas/listarproblemas.html'
-
-
-class ProblemaCreateView(generic.CreateView):
-
-    model = Problema
-    form_class = ProblemaForm
-    template_name = 'sistema/problemas/cadastrodeproblema.html'
-    success_url = reverse_lazy('sistema:listarproblemas')
-
-
-class ProblemaUpdateView(generic.UpdateView):
-
-    model = Problema
-    form_class = ProblemaForm
-    template_name = 'sistema/problemas/editarproblema.html'
-    success_url = reverse_lazy('sistema:listarproblemas')
-
-    def get_context_data(self, **kwargs):
-        context = {}
-        if self.object:
-            context['problema'] = self.object
-            context_object_name = self.get_context_object_name(self.object)
-            if context_object_name:
-                context[context_object_name] = self.object
-        context.update(**kwargs)
-        return super(generic.UpdateView, self).get_context_data(**context)
-
-
-class ProblemaDeleteView(generic.DeleteView):
-
-    model = Problema
-    success_url = reverse_lazy('sistema:listarproblemas')
-
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-
-
-"""Fim gerenciamento de tipos de problema"""
+    model = AreaComum
+    form_class = AreaComumForm
+    template_name = 'sistema/problemas/cadastrodecategoria.html'
+    success_url = reverse_lazy('sistema:listarareascomuns')
 
 """Inicio gerenciamento de chamados"""
 
@@ -285,6 +296,8 @@ class ChamadoListView(generic.ListView):
     template_name = 'sistema/chamados/listarchamados.html'
 
 
+
+
 class ChamadoCreateView(generic.CreateView):
 
     model = Chamado
@@ -294,9 +307,11 @@ class ChamadoCreateView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(generic.CreateView, self).get_context_data(**kwargs)
-        context['empreendimentos'] = Empreendimento.objects.all().order_by('nomeEmpreendimento')
-        context['blocos'] = Bloco.objects.all().order_by('empreendimento__nomeEmpreendimento')
-        context['apartamentos'] = Apartamento.objects.all().order_by('apartamento')
+        context['areaComum'] = AreaComum.objects.all().order_by('nomeArea')
+        context['usuarios'] = Usuarios.objects.all().order_by('first_name')
+        context['categorias'] = CategoriaDeProblema.objects.all().order_by('nomeCategoria')
+        context['apartamentos'] = Apartamento.objects.all()
+
         return context
 
 
@@ -328,6 +343,10 @@ class ChamadoDeleteView(generic.DeleteView):
 
 
 """Fim gerenciamento de chamados"""
+
+
+
+
 
 """APIs de Gerenciamento"""
 
@@ -383,35 +402,11 @@ class CategoriaDeProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategoriaDeProblemaSerializer
 
 
-class SubcategoriaDeProblemaCreateViewAPI(generics.ListCreateAPIView):
-    queryset = SubcategoriaDeProblema.objects.all()
-    serializer_class = SubcategoriaDeProblemaSerializer
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-
-class SubcategoriaDeProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SubcategoriaDeProblema.objects.all()
-    serializer_class = SubcategoriaDeProblemaSerializer
-
-
-class ProblemaCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Problema.objects.all()
-    serializer_class = ProblemaSerializer
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-
-class ProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Problema.objects.all()
-    serializer_class = ProblemaSerializer
 
 class ChamadoCreateViewAPIAny(generics.ListCreateAPIView):
     queryset = Chamado.objects.none()
     serializer_class = ChamadoSerializer
-    permission_classes = (permissions.AllowAny,)
+    #permission_classes = (permissions.AllowAny,)
 
     def perform_create(self, serializer):
         serializer.save()
@@ -429,3 +424,4 @@ class ChamadoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ChamadoSerializer
     
 """Fim APIs de gerenciamento"""
+
