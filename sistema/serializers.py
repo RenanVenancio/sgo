@@ -31,6 +31,15 @@ class ApartamentoSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
+class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa os apartamentos pelo id do proprietario
+    """Serializer to map the Model instance into JSON format."""
+    bloco = serializers.StringRelatedField(many=False)
+    class Meta:
+        """Meta class to map serializer's fields with the model fields."""
+        model = Apartamento
+        fields = '__all__'
+
+
 class CategoriaDeProblemaSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
 

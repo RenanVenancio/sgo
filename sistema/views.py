@@ -399,13 +399,12 @@ class ApartamentoSerializerDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView)
     serializer_class = ApartamentoSerializer
 
 
-#TODO: Configurar classe para gerar os dados para alimentar as comboboxes dos chamadosS
 class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
-    serializer_class = EmpreendimentoSerializer
+    serializer_class = ApartamentoProprietarioSerializer
     def get_queryset(self):
-        proprietarioApto = self.kwargs['id']
-        return Empreendimento.objects.filter(bloco__apartamento__proprietario='2')
-
+        proprietarioApto = self.kwargs['id'] #Pegando o id do proprietario passado na Url
+        results = Apartamento.objects.filter(proprietario=proprietarioApto)
+        return results
 
 
 class CategoriaDeProblemaCreateViewAPI(generics.ListCreateAPIView):

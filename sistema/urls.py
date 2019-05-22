@@ -156,8 +156,8 @@ urlpatterns = [
     path('api/apartamentos/<int:pk>/',
         views.ApartamentoSerializerDetailsViewAPI.as_view(),
         name='apidetailapartamentos'),
-    #TODO:Essa url ainda esta como teste, ela vai alimentar as comboboxes dos chamados via ajax
-    path('api/apartamentos/proprietario/<int:id>/',
+
+    path('api/apartamentos/proprietario/<int:id>/', #essa url retorna os apartamentos vinclados ao proprietario passado na url
         views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
         name='apidetailapartamentosproprietario'),
 
@@ -169,7 +169,6 @@ urlpatterns = [
     path('api/categoriasdeproblemas/<int:pk>/',
         views.CategoriaDeProblemaDetailsViewAPI.as_view(),
         name='apidetailcategoriasdeproblemas'),
-    #FIXME: A view precisa gerar o protocolo automaticamente
     path('api/chamadosany/',
         views.ChamadoCreateViewAPIAny.as_view(),
         name='apichamadosany'),
