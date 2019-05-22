@@ -1,5 +1,4 @@
 // Filtro para popular selects de cadastro de chamadas
-
 function selectFilter($s1, $s2, $s3) {
 
   $s2.children('option:gt(0)').hide();
