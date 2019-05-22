@@ -30,7 +30,7 @@ class EmpreendimentoForm(forms.ModelForm):
 class AreaComumForm(forms.ModelForm):
     class Meta:
         model = AreaComum
-        fields = ['nomeArea']
+        fields = ['nomeArea', ]
 
 
 class BlocoForm(forms.ModelForm):
@@ -50,25 +50,12 @@ class CategoriaDeProblemaForm(forms.ModelForm):
         model = CategoriaDeProblema
         fields = ['nomeCategoria']
 
-'''
-class SubcategoriaDeProblemaForm(forms.ModelForm):
-    class Meta:
-        model = SubcategoriaDeProblema
-        fields = ['nomeSubcategoria', 'categoria']
-
-
-class ProblemaForm(forms.ModelForm):
-    class Meta:
-        model = Problema
-        fields = ['subcategoria', 'nomeProblema', 'prioridade']
-
-'''
-
 
 class ChamadoForm(forms.ModelForm):
     class Meta:
         model = Chamado
-        exclude = ['protocolo',]
+        fields = '__all__'
+        #exclude = ['protocolo']
 
 
 

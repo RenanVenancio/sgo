@@ -6,12 +6,12 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics
-
 from .models import *
 from .forms import *
 from .serializers import *
 from rest_framework import permissions
 
+'''Tela do Dashboard'''
 class DashboardView(generic.ListView):
 
     context = {}
@@ -32,13 +32,7 @@ class DashboardView(generic.ListView):
 
         template_name = 'sistema/dashboard/dashboard.html'
         return render(request, template_name, self.context)
-
-    # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
-    # template_name = 'sistema/home.html'
-
-
-
-
+'''Fim da tela do Dashboard'''
 
 """Gerenciamento de usuários"""
 class UsuariosCreateView(generic.CreateView):
@@ -49,14 +43,13 @@ class UsuariosCreateView(generic.CreateView):
     success_url = reverse_lazy('sistema:listarusuarios')
 
 
-
 class UsuariosListView(generic.ListView):
 
     queryset = Usuarios.objects.all()
     context_object_name = 'usuarios'
     template_name = 'sistema/usuarios/listarusuarios.html'
 
-#TODO:Configurar essa classe para editar usuários criados pelo manage.py - createsuperuser
+
 class UsuariosUpdateView(generic.UpdateView):
 
     model = Usuarios
@@ -64,17 +57,6 @@ class UsuariosUpdateView(generic.UpdateView):
     template_name = 'sistema/usuarios/editarusuario.html'
     success_url = reverse_lazy('sistema:listarusuarios')
 
-'''
-    #def get_context_data(self, **kwargs):
-    #    context = {}
-    #    if self.object:
-    #        context['usuarios'] = self.object
-    #        context_object_name = self.get_context_object_name(self.object)
-    #        if context_object_name:
-    #            context[context_object_name] = self.object
-    #    context.update(**kwargs)
-    #    return super(generic.UpdateView, self).get_context_data(**context)
-'''
 
 class UsuariosPasswordUpdateView(generic.UpdateView):
     model = Usuarios
@@ -92,10 +74,6 @@ class UsuariosDeleteView(generic.DeleteView):
         return self.post(request, *args, **kwargs)
 
 """Fim de empgerenciamento de usuários"""
-
-
-
-
 
 
 """Gerenciamento de empreendimentos"""
@@ -269,9 +247,9 @@ class CategoriaDeProblemaDeleteView(generic.DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+'''Fim do gerenciamento de tipos de problema'''
 
-
-
+'''Inicio do gerenciamento de Áreas comuns'''
 class AreasComunsListView(generic.ListView):
 
     queryset = AreaComum.objects.all().order_by('-pk')
@@ -283,11 +261,39 @@ class AreaComumCreateView(generic.CreateView):
 
     model = AreaComum
     form_class = AreaComumForm
-    template_name = 'sistema/problemas/cadastrodecategoria.html'
+    template_name = 'sistema/empreendimentos/cadastrarareacomum.html'
     success_url = reverse_lazy('sistema:listarareascomuns')
 
-"""Inicio gerenciamento de chamados"""
 
+class AreaComumUpdateView(generic.UpdateView):
+
+    model = AreaComum
+    form_class = AreaComumForm
+    template_name = 'sistema/empreendimentos/editarareacomum.html'
+    success_url = reverse_lazy('sistema:listarareascomuns')
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        if self.object:
+            context['areaComum'] = self.object
+            context_object_name = self.get_context_object_name(self.object)
+            if context_object_name:
+                context[context_object_name] = self.object
+        return super(generic.UpdateView, self).get_context_data(**context)
+
+
+class AreaComumDeleteView(generic.DeleteView):
+
+    model = AreaComum
+    success_url = reverse_lazy('sistema:listarareascomuns')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+'''Fim do gerenciamento de areas comuns'''
+
+
+"""Inicio gerenciamento de chamados"""
 
 class ChamadoListView(generic.ListView):
 
@@ -296,15 +302,13 @@ class ChamadoListView(generic.ListView):
     template_name = 'sistema/chamados/listarchamados.html'
 
 
-
-
 class ChamadoCreateView(generic.CreateView):
 
     model = Chamado
     form_class = ChamadoForm
     template_name = 'sistema/chamados/cadastrarchamado.html'
     success_url = reverse_lazy('sistema:listarchamados')
-
+    '''
     def get_context_data(self, **kwargs):
         context = super(generic.CreateView, self).get_context_data(**kwargs)
         context['areaComum'] = AreaComum.objects.all().order_by('nomeArea')
@@ -313,7 +317,7 @@ class ChamadoCreateView(generic.CreateView):
         context['apartamentos'] = Apartamento.objects.all()
 
         return context
-
+    '''
 
 class ChamadoUpdateView(generic.UpdateView):
 
@@ -330,6 +334,7 @@ class ChamadoUpdateView(generic.UpdateView):
             if context_object_name:
                 context[context_object_name] = self.object
         context.update(**context)
+
         return super(generic.UpdateView, self).get_context_data(**kwargs)
 
 
