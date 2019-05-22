@@ -64,6 +64,15 @@ urlpatterns = [
     path('empreendimentos/areascomuns/', staff_member_required(
         views.AreasComunsListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarareascomuns'),
+    path('empreendimentos/areascomuns/cadastrarareacomum', staff_member_required(
+        views.AreaComumCreateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='cadastrarareacomum'),
+    path('empreendimentos/areascomuns/editarareacomum/<int:pk>/', staff_member_required(
+        views.AreaComumUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='editarareacomum'),
+    path('empreendimentos/areascomuns/deletarareacomum/<int:pk>/', staff_member_required(
+        views.AreaComumDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='deletarareacomum'),
 
 
     path('empreendimentos/blocos/listarblocos/', staff_member_required(
@@ -106,8 +115,6 @@ urlpatterns = [
     path('problemas/deletarcategoria/<int:pk>/', staff_member_required(
         views.CategoriaDeProblemaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarcategoriadeproblema'),
-
-
 
 
     path('chamados/listarchamados/', staff_member_required(
