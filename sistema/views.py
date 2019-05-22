@@ -308,6 +308,11 @@ class ChamadoCreateView(generic.CreateView):
     form_class = ChamadoForm
     template_name = 'sistema/chamados/cadastrarchamado.html'
     success_url = reverse_lazy('sistema:listarchamados')
+    def get_context_data(self, **kwargs):
+        context = super(generic.CreateView, self).get_context_data(**kwargs)
+        context['apartamentos'] = Apartamento.objects.all()
+        return context
+
     '''
     def get_context_data(self, **kwargs):
         context = super(generic.CreateView, self).get_context_data(**kwargs)

@@ -77,6 +77,18 @@
                             </div>
                         </div>
 
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="{{ form.dono.auto_id }}">{{ form.dono.label }}</label>
+                                    <div class="form-line">
+                                        {{ form.dono|add_class:"form-control"}}
+                                    </div>
+                                    {{ form.dono.errors }}
+                                </div>
+                            </div>
+                        </div>
+
 
                         <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>SALVAR</span></button>
                         <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarapartamento' apartamento.pk %}" onclick="return confirm('Você tem certeza?');">

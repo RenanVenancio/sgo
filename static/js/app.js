@@ -18,7 +18,7 @@ function selectFilter($s1, $s2, $s3) {
 $(document).ready(function() {
   if (cadastrar == true){
 
-    selectFilter($("#id_empreendimento"), $("#id_bloco"), $("#id_apartamento"));
+    selectFilter($("#id_usuario"), $("#id_bloco"), $("#id_apartamento"));
     selectFilter($("#id_bloco"), $("#id_apartamento"), $(null));
 
 

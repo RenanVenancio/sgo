@@ -79,6 +79,9 @@ class Apartamento(models.Model):
     def get_absolute_url(self):
         return reverse('sistema:editarapartamento', kwargs={'pk': self.pk})
 
+    def get_id_dono(self):
+        return self.dono
+
     class Meta:
         ordering = ['-pk']
         verbose_name = 'Apartamentos'
