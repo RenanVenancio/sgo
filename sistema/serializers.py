@@ -27,7 +27,7 @@ class ApartamentoSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ('id', 'dataCadastro', 'bloco', 'apartamento')
+        fields = ('id', 'dataCadastro', 'bloco', 'apartamento', 'proprietario')
         read_only_fields = ('id',)
 
 

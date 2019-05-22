@@ -156,6 +156,11 @@ urlpatterns = [
     path('api/apartamentos/<int:pk>/',
         views.ApartamentoSerializerDetailsViewAPI.as_view(),
         name='apidetailapartamentos'),
+    #TODO:Essa url ainda esta como teste, ela vai alimentar as comboboxes dos chamados via ajax
+    path('api/apartamentos/proprietario/<int:id>/',
+        views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
+        name='apidetailapartamentosproprietario'),
+
 
 
     path('api/categoriasdeproblemas/',

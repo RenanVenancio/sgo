@@ -42,7 +42,7 @@ class BlocoForm(forms.ModelForm):
 class ApartamentoForm(forms.ModelForm):
     class Meta:
         model = Apartamento
-        fields = ['bloco', 'apartamento', 'dono']
+        fields = ['bloco', 'apartamento', 'proprietario']
 
 
 class CategoriaDeProblemaForm(forms.ModelForm):

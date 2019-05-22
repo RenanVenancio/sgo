@@ -122,7 +122,7 @@
                             <div class="row-clearfix">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="usuario_id">Selecione o morador</label>
+                                        <label for="usuario_id">Selecione o proprietario</label>
                                         <div class="">
                                             {{form.usuario|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                             {{ form.usuario.errors }}
@@ -132,16 +132,14 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="apartamento_id">Selecione o apartamento do morador</label>
+                                        <label for="apartamento_id">Selecione o apartamento do proprietario</label>
                                         <div class="">
                                             {{form.apartamento|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                             {{ form.apartamento.errors }}
                                         </div>
                                     </div>
                                 </div>
-                                {% for apt in apartamentos %}
-                                    {{ apt.get_dono }}
-                                {% endfor %}
+
 
                             </div>
 
@@ -217,6 +215,50 @@
                 prefix: "Prioridade: ",
 
             });
+
+
+
+
+
+
+
+
+
+
+            $.ajax({
+            type: "get",
+            url: "/Empresas/SelecionarEmpresas",
+            data: { empresa: $("#empresa").val() },
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (obj) {
+                if (obj != null) {
+                    var data = obj.data;
+                    var selectbox = $('#empresa');
+                    selectbox.find('option').remove();
+                    $.each(data, function (i, d) {
+                        $('<option>').val(d.IdEmpresa).text(d.Nome).appendTo(selectbox);
+                    });
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         });
 
 </script>

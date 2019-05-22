@@ -73,14 +73,14 @@ class Apartamento(models.Model):
     dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
     bloco = models.ForeignKey('sistema.Bloco', on_delete=models.PROTECT, verbose_name='Bloco')
     apartamento = models.CharField('Apartamento', max_length=6)
-    dono = models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, blank=True, null=True) #Define o dono do apto
+    proprietario = models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, blank=True, null=True) #Define o proprietário do apto
 
 
     def get_absolute_url(self):
         return reverse('sistema:editarapartamento', kwargs={'pk': self.pk})
 
-    def get_id_dono(self):
-        return self.dono
+    def get_proprietario(self):
+        return self.proprietario
 
     class Meta:
         ordering = ['-pk']
