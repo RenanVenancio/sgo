@@ -27,7 +27,7 @@
                 <div class="header">
                     <h2>
 
-                        <a class="btn bg-blue" href="{% url 'sistema:cadastrarapartamento' %}">
+                        <a class="btn bg-blue" href="{% url 'sistema:cadastrarareacomum' %}">
                             <i class="material-icons">add</i>
                             <span>Nova Área Comum</span>
                         </a>
@@ -65,8 +65,8 @@
                             <tbody>
                             {% for area in areasComuns %}
                             <tr>
-                                <td>{{ apartamento.dataCadastro }}</td>
-                                <td><a href="{{ area.get_absolute_url }}">{{ apartamento.nomeArea }}</a></td>
+                                <td>{{ area.dataCadastro }}</td>
+                                <td><a href="{{ area.get_absolute_url }}">{{ area.nomeArea }}</a></td>
                             </tr>
                             {% endfor %}
                             </tbody>
