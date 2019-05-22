@@ -66,10 +66,11 @@
                                     <div class="form-group">
                                         <div class="form-line">
                                         </div>
-                                        <label for="prioridade_id"> Prioridade </label>
-                                        <input type="text" class="js-range-slider" id="prioridade_id" name="prioridade" value="1"/>
+                                        <label for="id_prioridade"> Prioridade </label>
+                                        {{ form.prioridade|add_class:"js-range-slider" }}
+                                        {{ form.prioridade.errors }}
                                     </div>
-                                    {{ form.prioridade.errors }}
+
 
                                 </div>
                             </div>
@@ -82,12 +83,8 @@
                                     <div class="form-group">
                                         <label for="categoria_id">{{ form.categoriaProblema.label }}</label>
                                         <div class="">
-                                        <select class="selectpicker" name="categoriaProblema" id="categoria_id" data-header="Selecione a categoria do problema" data-size="8" data-live-search="true" data-width="100%">
-                                            <option disabled selected value> --------- </option>
-                                            {% for categoria in categorias %}
-                                                <option value="{{ categoria.pk }}">{{ categoria.nomeCategoria }}</option>
-                                            {% endfor %}
-                                        </select>
+                                            {{form.categoriaProblema|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
+                                            {{ form.categoriaProblema.errors }}
                                         </div>
                                         {{ form.categoriaProblema.errors }}
                                     </div>
@@ -112,18 +109,9 @@
                                             <div class="form-group">
                                                 <label for="area_id"> Area </label>
                                                 <div class="">
-                                                    <select class="selectpicker" name="areaComum"
-                                                            id="area_id"
-                                                            data-header="Selecione a area"
-                                                            data-size="8" data-live-search="true" data-width="100%">
-                                                        <option disabled selected> ---------</option>
-                                                        {% for area in areaComum %}
-                                                        <option value="{{ area.pk }}">{{ area.nomeArea }}
-                                                        </option>
-                                                        {% endfor %}
-                                                    </select>
+                                                    {{form.areaComum|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
+                                                    {{ form.areaComum.errors }}
                                                 </div>
-                                                {{ form.areaComum.errors }}
                                             </div>
                                         </div>
                                     </div>
@@ -136,14 +124,7 @@
                                     <div class="form-group">
                                         <label for="usuario_id">Selecione o morador</label>
                                         <div class="">
-                                            <select name="usuario" class="selectpicker" id="usuario_id"
-                                                    data-header="Selecione um usuário" data-size="8"
-                                                    data-live-search="true" data-width="100%">
-                                                <option disabled selected value> ---------</option>
-                                                {% for usr in usuarios %}
-                                                <option value="{{ usr.pk }}">{{ usr }}</option>
-                                                {% endfor %}
-                                            </select>
+                                            {{form.usuario|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                             {{ form.usuario.errors }}
                                         </div>
                                     </div>
@@ -153,15 +134,7 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do morador</label>
                                         <div class="">
-                                            <select name="apartamento" class="selectpicker" id="apartamento_id"
-                                                    data-header="Selecione um apartamento" data-size="8"
-                                                    data-live-search="true" data-width="100%">
-                                                <option disabled selected value> ---------</option>
-                                                {% for apto in apartamentos %}
-                                                <option value="{{ apto.pk }}">{{ apto }} {{ apto.dono.id }}
-                                                </option>
-                                                {% endfor %}
-                                            </select>
+                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                             {{ form.apartamento.errors }}
                                         </div>
                                     </div>
@@ -231,13 +204,12 @@
 
         $( document ).ready(function() {
 
-            $("#prioridade_id").ionRangeSlider({
+            $("#id_prioridade").ionRangeSlider({
                 skin: "round",
                 grid: false,
                 grid_num: 5,
                 min: 1,
                 max: 5,
-                from: 1,
                 max_postfix: " Máxima",
                 prefix: "Prioridade: ",
 
