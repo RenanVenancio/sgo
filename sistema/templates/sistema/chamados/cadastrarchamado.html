@@ -134,8 +134,9 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do proprietario</label>
                                         <div class="">
-                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
-                                            {{ form.apartamento.errors }}
+                                            <select id="apartamento_id" class="form-control selectpicker" data-live-search="true" data-width="100%" name="apartamento">
+                                                <option selected value="">---------</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

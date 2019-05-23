@@ -129,7 +129,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'engenhar_sistemadegestao',
         'USER': 'root',
-        #'PASSWORD': 'rv101220',
+        'PASSWORD': 'rv101220',
         'HOST': 'localhost',
         'PORT': '3306',
         'default-character-set': 'utf8',

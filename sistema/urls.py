@@ -130,6 +130,9 @@ urlpatterns = [
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
 
+    path('api/apartamentos/proprietario/<int:id>/', staff_member_required(
+        views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='apidetailapartamentosproprietario'),
 
 
 
@@ -157,9 +160,7 @@ urlpatterns = [
         views.ApartamentoSerializerDetailsViewAPI.as_view(),
         name='apidetailapartamentos'),
 
-    path('api/apartamentos/proprietario/<int:id>/', #essa url retorna os apartamentos vinclados ao proprietario passado na url
-        views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
-        name='apidetailapartamentosproprietario'),
+
 
 
 
