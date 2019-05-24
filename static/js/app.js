@@ -10,7 +10,7 @@ $('#id_usuario').change(function (){
 
     $.ajax({
         type: "get",
-        url: "/api/apartamentos/proprietario/" + idUsuario,
+        url: "/json/apartamentos/proprietario/" + idUsuario,
         data: dados,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
