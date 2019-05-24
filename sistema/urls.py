@@ -45,8 +45,6 @@ urlpatterns = [
 
 
 
-
-
     path('empreendimentos/listarempreendimentos/', staff_member_required(
         views.EmpreendimentoListView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='listarempreendimentos'),
