@@ -4,7 +4,14 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
-# APIs de gerenecimento
+
+    #NOVAS URLS TODAS VÃO RETORNAR RESULTADOS BASEADAS NO USER LOGADO'''
+    path('api/apartamentos/proprietario/',  # RETORNA TODOS OS APTOS > BLOCOS > EMPREENDIMENTOS. DO USUARIO LOGADO
+         viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
+         name='apidetailapartamentosproprietario'),
+    #FIM NOVAS URLS'''
+
+    # APIs de gerenecimento
     path('api/empreendimentos/',
          viewset.EmpreendimentoCreateViewAPI.as_view(),
          name='apiempreendimento'),
@@ -25,10 +32,6 @@ urlpatterns = [
     path('api/apartamentos/<int:pk>/',
          viewset.ApartamentoSerializerDetailsViewAPI.as_view(),
          name='apidetailapartamentos'),
-
-    path('api/apartamentos/proprietario/', #RETORNA TODOS OS APTOS > BLOCOS > EMPREENDIMENTOS. DO USUARIO LOGADO
-        viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
-        name='apidetailapartamentosproprietario'),
 
     path('api/categoriasdeproblemas/',
          viewset.CategoriaDeProblemaCreateViewAPI.as_view(),
