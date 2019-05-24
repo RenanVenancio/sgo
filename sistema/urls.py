@@ -1,24 +1,24 @@
 # coding=utf-8
 
 
-from django.urls import path
+from django.urls import path, include
 from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required  #Staff
 from django.urls import reverse_lazy
-from rest_framework.authtoken.views import obtain_auth_token 
-
+from sistema.api import viewset
 
 app_name = 'sistema'
 
 urlpatterns = [
-    # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
+    path('', include('sistema.api.urls')),
+
     #TODO: Fazer a tela de dashboard com as estatiticas
     path('', staff_member_required(views.DashboardView.as_view(), login_url=reverse_lazy('sistema:login')), name='dashboard'),
-    #path('', login_required(views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
 
+    #Login e logout
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
     path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:dashboard')}, name='logout'),
 
@@ -129,60 +129,8 @@ urlpatterns = [
     ), name='deletarchamado'),
 
     path('api/apartamentos/proprietario/<int:id>/', staff_member_required(
-        views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(), login_url=reverse_lazy('sistema:login')
+        viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='apidetailapartamentosproprietario'),
 
 
-
-    # APIs de gerenecimento
-    path('api/empreendimentos/',
-        views.EmpreendimentoCreateViewAPI.as_view(),
-        name='apiempreendimento'),
-    path('api/empreendimentos/<int:pk>/',
-        views.EmpreendimentoDetailsViewAPI.as_view(),
-        name='apidetailempreendimento'),
-
-
-    path('api/blocos/',
-        views.BlocoSerializerCreateViewAPI.as_view(),
-        name='apiblocos'),
-    path('api/blocos/<int:pk>/',
-        views.BlocoSerializerDetailsViewAPI.as_view(),
-        name='apidetailbloco'),
-
-
-    path('api/apartamentos/',
-        views.ApartamentoSerializerCreateViewAPI.as_view(),
-        name='apiapartamentos'),
-    path('api/apartamentos/<int:pk>/',
-        views.ApartamentoSerializerDetailsViewAPI.as_view(),
-        name='apidetailapartamentos'),
-
-
-
-
-
-    path('api/categoriasdeproblemas/',
-        views.CategoriaDeProblemaCreateViewAPI.as_view(),
-        name='apicategoriasdeproblemas'),
-    path('api/categoriasdeproblemas/<int:pk>/',
-        views.CategoriaDeProblemaDetailsViewAPI.as_view(),
-        name='apidetailcategoriasdeproblemas'),
-    path('api/chamadosany/',
-        views.ChamadoCreateViewAPIAny.as_view(),
-        name='apichamadosany'),
-    path('api/chamados/',
-        views.ChamadoCreateViewAPI.as_view(),
-        name='apichamados'),
-    path('api/chamados/<int:pk>/',
-        views.ChamadoDetailsViewAPI.as_view(),
-        name='apidetailchamados'),
-
-    path('api/chamados/', #Renan Testes
-         views.ChamadoDetailsViewAPI.as_view(),
-         name='apilistarchamados'),
-
-
-    # Autenticação via Token
-    path('get-token/', obtain_auth_token),
 ]
