@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from rest_framework import generics, permissions
 from .forms import *
 
 
@@ -341,3 +341,14 @@ class ChamadoDeleteView(generic.DeleteView):
 
 
 """Fim gerenciamento de chamados"""
+
+
+from sistema.api.serializers import ApartamentoProprietarioSerializer
+'''Retorna Json para alimentar as combos dos chamados'''
+class ApartamentoProprietarioListJson(generics.ListAPIView):
+    serializer_class = ApartamentoProprietarioSerializer
+    permission_classes = (permissions.AllowAny,)
+    def get_queryset(self):
+        user = self.kwargs['pk']
+        results = Apartamento.objects.filter(proprietario=user)
+        return results
