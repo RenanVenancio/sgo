@@ -26,6 +26,10 @@ urlpatterns = [
          viewset.ApartamentoSerializerDetailsViewAPI.as_view(),
          name='apidetailapartamentos'),
 
+    path('api/apartamentos/proprietario/', #RETORNA TODOS OS APTOS > BLOCOS > EMPREENDIMENTOS. DO USUARIO LOGADO
+        viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
+        name='apidetailapartamentosproprietario'),
+
     path('api/categoriasdeproblemas/',
          viewset.CategoriaDeProblemaCreateViewAPI.as_view(),
          name='apicategoriasdeproblemas'),
