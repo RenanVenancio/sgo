@@ -99,6 +99,9 @@ urlpatterns = [
     path('empreendimentos/blocos/deletarapartamento/<int:pk>/', staff_member_required(
         views.ApartamentoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarapartamento'),
+    path('json/apartamentos/proprietario/<int:pk>', staff_member_required(
+         views.ApartamentoProprietarioListJson.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='apartamentoproprietario'),
 
 
     path('problemas/listarcategorias/', staff_member_required(
@@ -127,10 +130,6 @@ urlpatterns = [
     path('chamados/deletarchamado/<int:pk>/', staff_member_required(
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
-
-    path('api/apartamentos/proprietario/<int:id>/', staff_member_required(
-        viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(), login_url=reverse_lazy('sistema:login')
-    ), name='apidetailapartamentosproprietario'),
 
 
 ]
