@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework import generics
 from sistema.models import *
 """APIs de Gerenciamento"""
-
+from rest_framework import filters
 
 class EmpreendimentoCreateViewAPI(generics.ListCreateAPIView):
     queryset = Empreendimento.objects.all()
@@ -45,12 +45,12 @@ class ApartamentoSerializerDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView)
 
 
 class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ApartamentoProprietarioSerializer
-
     def get_queryset(self):
-        proprietarioApto = self.kwargs['id']  # Pegando o id do proprietario passado na Url
-        results = Apartamento.objects.filter(proprietario=proprietarioApto)
+        user = self.request.user
+        results = Apartamento.objects.filter(proprietario=user)
+        self.search_fields = ('nomeEmpreendimento', 'bloco', 'apartamento')
         return results
 
 
