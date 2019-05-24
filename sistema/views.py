@@ -313,16 +313,6 @@ class ChamadoCreateView(generic.CreateView):
         context['apartamentos'] = Apartamento.objects.all()
         return context
 
-    '''
-    def get_context_data(self, **kwargs):
-        context = super(generic.CreateView, self).get_context_data(**kwargs)
-        context['areaComum'] = AreaComum.objects.all().order_by('nomeArea')
-        context['usuarios'] = Usuarios.objects.all().order_by('first_name')
-        context['categorias'] = CategoriaDeProblema.objects.all().order_by('nomeCategoria')
-        context['apartamentos'] = Apartamento.objects.all()
-
-        return context
-    '''
 
 class ChamadoUpdateView(generic.UpdateView):
 
@@ -400,6 +390,8 @@ class ApartamentoSerializerDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView)
 
 
 class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+
     serializer_class = ApartamentoProprietarioSerializer
     def get_queryset(self):
         proprietarioApto = self.kwargs['id'] #Pegando o id do proprietario passado na Url
@@ -426,8 +418,11 @@ class ChamadoCreateViewAPIAny(generics.ListCreateAPIView):
     serializer_class = ChamadoSerializer
     #permission_classes = (permissions.AllowAny,)
 
+
     def perform_create(self, serializer):
         serializer.save()
+
+
 
 class ChamadoCreateViewAPI(generics.ListCreateAPIView):
     queryset = Chamado.objects.all()
@@ -435,6 +430,8 @@ class ChamadoCreateViewAPI(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+
 
 
 class ChamadoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
