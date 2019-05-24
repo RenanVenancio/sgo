@@ -108,16 +108,16 @@ class CategoriaDeProblema(models.Model):
 
 
 class Chamado(models.Model):
+    protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
+    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
+    statusChamado = models.CharField('Status do chamado', choices=ENUM_STATUS, max_length=20, default='Em analise')
     dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
     dataInteracao = models.DateTimeField('Data de interação', auto_now=True)
-    protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
-    statusChamado = models.CharField('Status do chamado', choices=ENUM_STATUS, max_length=20, default='Em analise')
     categoriaProblema = models.ForeignKey('sistema.CategoriaDeProblema', on_delete=models.PROTECT,
                                           verbose_name='Categoria do problema')
+    usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
     envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum')
     areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
-    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)])
-    usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=True, null=True)
     descricao = models.TextField('Descreva o problema')
     img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
