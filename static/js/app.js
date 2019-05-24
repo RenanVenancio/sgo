@@ -20,7 +20,7 @@ $('#id_usuario').change(function (){
             var selectbox = $('#apartamento_id');
             selectbox.find('option').remove();
             $.each(json, function (i, d) {
-                $('<option>').val(d.id).text(d.bloco + " - Apto: " + d.apartamento).appendTo(selectbox);
+                $('<option>').val(d.id).text(d.bloco.empreendimento.nomeEmpreendimento + " - BLOCO: " + d.bloco.bloco + " - APTO: " + d.apartamento).appendTo(selectbox);
             });
             $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
 
