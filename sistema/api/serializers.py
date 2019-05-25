@@ -75,3 +75,24 @@ class ChamadoSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
+'''NEW'''
+
+class AptoSerializer(serializers.ModelSerializer):
+    proprietario = serializers.StringRelatedField
+    class Meta:
+        model = Apartamento
+        fields = ['apartamento', 'proprietario']
+
+
+class BlocoSerializer(serializers.ModelSerializer):
+    apartamento_set = AptoSerializer(many=True)
+    class Meta:
+        model = Bloco
+        fields = ['bloco','apartamento_set']
+
+
+class EmpSerializer(serializers.ModelSerializer):
+    bloco_set = BlocoSerializer(many=True)
+    class Meta:
+        model = Empreendimento
+        fields = ['nomeEmpreendimento', 'bloco_set']

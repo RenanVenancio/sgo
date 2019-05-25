@@ -92,3 +92,11 @@ class ChamadoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
 
 """Fim APIs de gerenciamento"""
 
+class AptoCascata(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = EmpSerializer
+    def get_queryset(self):
+        user = self.request.user
+        print(Apartamento.bloco)
+        results = Empreendimento.objects.filter(bloco__apartamento__proprietario=user.pk)
+        return results
