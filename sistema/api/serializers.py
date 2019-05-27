@@ -1,34 +1,48 @@
 from rest_framework import serializers
 from sistema.models import *
 
-class EmpreendimentoSerializer(serializers.ModelSerializer):
-    """Serializer to map the Model instance into JSON format."""
 
+
+
+class ApartamentoSerializer(serializers.ModelSerializer):
+    """Serializer to map the Model instance into JSON format."""
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
-        model = Empreendimento
-        fields = ('id', 'dataCadastro', 'nomeEmpreendimento')
+        model = Apartamento
+        fields = ('id', 'apartamento', 'proprietario')
         read_only_fields = ('id',)
 
 
 class BlocoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
-
+    apartamento_set = ApartamentoSerializer(many=True, read_only=True)
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Bloco
-        fields = ('id', 'dataCadastro', 'bloco', 'empreendimento')
+        fields = ('id', 'bloco', 'apartamento_set')
         read_only_fields = ('id',)
 
-
-class ApartamentoSerializer(serializers.ModelSerializer):
+class EmpreendimentoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
-
+    bloco_set = BlocoSerializer(many=True, read_only=True)
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
-        model = Apartamento
-        fields = ('id', 'dataCadastro', 'bloco', 'apartamento', 'proprietario')
+        model = Empreendimento
+        fields = ('id', 'nomeEmpreendimento', 'bloco_set')
         read_only_fields = ('id',)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class NestedEmpreendimentoSerialize(serializers.ModelSerializer):

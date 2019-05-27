@@ -4,46 +4,50 @@ from rest_framework import generics
 from sistema.models import *
 """APIs de Gerenciamento"""
 from rest_framework import filters
-
-class EmpreendimentoCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Empreendimento.objects.all()
+from django.db.models import Prefetch
+from django.db.models import FilteredRelation, Q
+class EmpreendimentoListViewAPI(generics.ListAPIView):
+    '''Todos os Empreendimentos, blocos, apartamentos relacionados a esse usuário'''
     serializer_class = EmpreendimentoSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def get_queryset(self):
+        user = self.request.user
+        blo = Bloco.objects.all()
+        # FUNCIONOU results = Empreendimento.objects.prefetch_related(Prefetch('bloco_set__apartamento_set', queryset=Apartamento.objects.filter(proprietario=3)))
+        #results = Empreendimento.objects.annotate(bloco__apartamento__proprietario=FilteredRelation('nomeEmpreendimento', condition=Q(bloco__apartamento__proprietario=5)))
+        #results = Empreendimento.objects.filter(Q(bloco__apartamento__isnull=False) & Q(bloco__apartamento__proprietario=5) & Q(bloco__apartamento__proprietario__isnull=False)).distinct()
+        results = Empreendimento.objects.prefetch_related(Prefetch('bloco_set__apartamento_set', queryset=Apartamento.objects.filter(Q(proprietario=3) & Q(proprietario__isnull=False)))).filter(Q(bloco__apartamento__isnull=False))
+        return results
 
 
-class EmpreendimentoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Empreendimento.objects.all()
-    serializer_class = EmpreendimentoSerializer
 
 
-class BlocoSerializerCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Bloco.objects.all()
+
+class BlocoListViewAPI(generics.ListAPIView):
     serializer_class = BlocoSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def get_queryset(self):
+        user = self.request.user
+        results = Bloco.objects.filter(apartamento__proprietario=user.pk).distinct()
+
+        return results
 
 
-class BlocoSerializerDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Bloco.objects.all()
-    serializer_class = BlocoSerializer
-
-
-class ApartamentoSerializerCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Apartamento.objects.all()
+class ApartamentoListViewAPI(generics.ListAPIView):
     serializer_class = ApartamentoSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def get_queryset(self):
+        user = self.request.user
+        results = Apartamento.objects.filter(proprietario=user.pk).distinct()
+
+        return results
 
 
-class ApartamentoSerializerDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Apartamento.objects.all()
-    serializer_class = ApartamentoSerializer
 
-
+#REmover
 class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ApartamentoProprietarioSerializer
@@ -54,17 +58,14 @@ class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
         return results
 
 
-class CategoriaDeProblemaCreateViewAPI(generics.ListCreateAPIView):
+
+
+
+class CategoriaDeProblemaListViewAPI(generics.ListAPIView):
     queryset = CategoriaDeProblema.objects.all()
     serializer_class = CategoriaDeProblemaSerializer
 
-    def perform_create(self, serializer):
-        serializer.save()
 
-
-class CategoriaDeProblemaDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CategoriaDeProblema.objects.all()
-    serializer_class = CategoriaDeProblemaSerializer
 
 
 class ChamadoCreateViewAPIAny(generics.ListCreateAPIView):
