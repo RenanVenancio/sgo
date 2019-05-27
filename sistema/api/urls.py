@@ -13,32 +13,21 @@ urlpatterns = [
 
     # APIs de gerenecimento
     path('api/empreendimentos/',
-         viewset.EmpreendimentoCreateViewAPI.as_view(),
+         viewset.EmpreendimentoListViewAPI.as_view(),
          name='apiempreendimento'),
-    path('api/empreendimentos/<int:pk>/',
-         viewset.EmpreendimentoDetailsViewAPI.as_view(),
-         name='apidetailempreendimento'),
 
     path('api/blocos/',
-         viewset.BlocoSerializerCreateViewAPI.as_view(),
+         viewset.BlocoListViewAPI.as_view(),
          name='apiblocos'),
-    path('api/blocos/<int:pk>/',
-         viewset.BlocoSerializerDetailsViewAPI.as_view(),
-         name='apidetailbloco'),
 
     path('api/apartamentos/',
-         viewset.ApartamentoSerializerCreateViewAPI.as_view(),
+         viewset.ApartamentoListViewAPI.as_view(),
          name='apiapartamentos'),
-    path('api/apartamentos/<int:pk>/',
-         viewset.ApartamentoSerializerDetailsViewAPI.as_view(),
-         name='apidetailapartamentos'),
 
     path('api/categoriasdeproblemas/',
-         viewset.CategoriaDeProblemaCreateViewAPI.as_view(),
-         name='apicategoriasdeproblemas'),
-    path('api/categoriasdeproblemas/<int:pk>/',
-         viewset.CategoriaDeProblemaDetailsViewAPI.as_view(),
+         viewset.CategoriaDeProblemaListViewAPI.as_view(),
          name='apidetailcategoriasdeproblemas'),
+
     path('api/chamadosany/',
          viewset.ChamadoCreateViewAPIAny.as_view(),
          name='apichamadosany'),
