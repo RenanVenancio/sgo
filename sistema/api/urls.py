@@ -42,9 +42,6 @@ urlpatterns = [
          viewset.ChamadoDetailsViewAPI.as_view(),
          name='apilistarchamados'),
 
-    path('api/take/',  # Renan Testes
-         viewset.AptoCascata.as_view(),
-         name='apilistarapt'),
 
     # Autenticação via Token
     path('get-token/', obtain_auth_token),

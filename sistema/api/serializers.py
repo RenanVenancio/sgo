@@ -6,20 +6,23 @@ from sistema.models import *
 
 class ApartamentoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
+    bloco = serializers.StringRelatedField(many=False, read_only=True)
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ('id', 'apartamento', 'proprietario')
+        fields = ('id', 'apartamento', 'proprietario', 'bloco')
         read_only_fields = ('id',)
 
 
 class BlocoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
     apartamento_set = ApartamentoSerializer(many=True, read_only=True)
+    empreendimento = serializers.StringRelatedField(many=False, read_only=True)
+
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Bloco
-        fields = ('id', 'bloco', 'apartamento_set')
+        fields = ('empreendimento', 'id', 'bloco', 'apartamento_set')
         read_only_fields = ('id',)
 
 class EmpreendimentoSerializer(serializers.ModelSerializer):
@@ -89,24 +92,3 @@ class ChamadoSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-'''NEW'''
-
-class AptoSerializer(serializers.ModelSerializer):
-    proprietario = serializers.StringRelatedField
-    class Meta:
-        model = Apartamento
-        fields = ['apartamento', 'proprietario']
-
-
-class BlocoSerializer(serializers.ModelSerializer):
-    apartamento_set = AptoSerializer(many=True)
-    class Meta:
-        model = Bloco
-        fields = ['bloco','apartamento_set']
-
-
-class EmpSerializer(serializers.ModelSerializer):
-    bloco_set = BlocoSerializer(many=True)
-    class Meta:
-        model = Empreendimento
-        fields = ['nomeEmpreendimento', 'bloco_set']

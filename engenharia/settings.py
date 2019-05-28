@@ -129,7 +129,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'engenhar_sistemadegestao',
         'USER': 'root',
-        'PASSWORD': 'rv101220',
+        #'PASSWORD': 'rv101220',
         'HOST': 'localhost',
         'PORT': '3306',
         'default-character-set': 'utf8',
@@ -162,7 +162,7 @@ LOGIN_REDIRECT_URL = '/index/'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.engenharia.clube.tur.br', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 try:
