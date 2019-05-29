@@ -132,6 +132,12 @@ class Chamado(models.Model):
         self.protocolo = datetime.today().strftime('%d%m%Y%H%M%S') + str(randint(1000, 2000))
         super(Chamado, self).save(*args, **kwargs)
 
+        if(not EventosChamado.objects.filter(chamado=self.pk)):
+            evento = EventosChamado()
+            evento.descicaoEvento = 'Chamado iniciado'
+            evento.chamado = Chamado.objects.get(pk=self.pk)
+            evento.save()
+
     class Meta:
         ordering = ['-pk']
         verbose_name = 'Chamado'
@@ -141,15 +147,15 @@ class Chamado(models.Model):
 
 class EventosChamado(models.Model):
     dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
-    descicaoEvento = models.CharField('Protocolo', max_length=30, unique=True)
+    descicaoEvento = models.CharField('Evento', max_length=30)
     chamado=models.ForeignKey('sistema.Chamado', on_delete=models.PROTECT, null=False)
 
     def __str__(self):
-        return self.nome
+        return self.descicaoEvento
 
-    def save(self, *args, **kwargs):
+    #def save(self, *args, **kwargs):
         #Poderia ser incluso pra mandar um email assim que iserir algo aqui
-        pass
+    #    pass
 
     class Meta:
         ordering = ['-pk']

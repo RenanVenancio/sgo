@@ -323,6 +323,7 @@ class ChamadoUpdateView(generic.UpdateView):
         context = {}
         if self.object:
             context['chamado'] = self.object
+            context['eventos'] = EventosChamado.objects.filter(chamado=self.object.pk)
             context_object_name = self.get_context_object_name(self.object)
             if context_object_name:
                 context[context_object_name] = self.object
