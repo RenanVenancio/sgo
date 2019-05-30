@@ -114,16 +114,16 @@ USE_TZ = True
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'db.sqlite3',
     }
 }
+
+
 '''
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -137,7 +137,7 @@ DATABASES = {
     }
 }
 
-
+'''
 
 ADMINS = (
     ('Victor Fernandes', 'victorfernandes.matias@gmail.com'),
