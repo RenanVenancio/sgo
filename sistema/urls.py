@@ -131,5 +131,9 @@ urlpatterns = [
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
 
+    path('chamados/deletarevento/<int:pk>/', staff_member_required(
+        views.EventoChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='deletareventochamado'),
+
 
 ]

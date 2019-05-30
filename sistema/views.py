@@ -323,13 +323,18 @@ class ChamadoUpdateView(generic.UpdateView):
         context = {}
         if self.object:
             context['chamado'] = self.object
-            context['eventos'] = EventosChamado.objects.filter(chamado=self.object.pk)
             context_object_name = self.get_context_object_name(self.object)
             if context_object_name:
                 context[context_object_name] = self.object
         context.update(**context)
 
         return super(generic.UpdateView, self).get_context_data(**kwargs)
+
+    def eventos(self): #Retorna os eventos do chamado para a view
+        return EventosChamado.objects.filter(chamado=self.object.pk)
+
+    def ultimoEvento(self):     #Retorna o ultimo evento ocorrido
+        return EventosChamado.objects.filter(chamado=self.object.pk).latest('pk')
 
 
 class ChamadoDeleteView(generic.DeleteView):
@@ -338,6 +343,20 @@ class ChamadoDeleteView(generic.DeleteView):
     success_url = reverse_lazy('sistema:listarchamados')
 
     def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+
+
+class EventoChamadoDeleteView(generic.DeleteView):
+
+    model = EventosChamado
+
+    def get(self, request, *args, **kwargs):
+        pk =self.kwargs['pk']
+        evento = EventosChamado.objects.get(pk=pk)
+        pkChamado = evento.chamado.pk
+        self.success_url = reverse_lazy('sistema:editarchamado', kwargs={'pk': pkChamado})
+
         return self.post(request, *args, **kwargs)
 
 

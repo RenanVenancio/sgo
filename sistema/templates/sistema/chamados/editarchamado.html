@@ -28,8 +28,9 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            EDITAR CHAMADO <b>{{ form.protocolo.value }}</b>
+                            EDITAR CHAMADO <b>{{ form.protocolo.value }} </b>
                         </h2>
+
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
                                 <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -74,10 +75,21 @@
                             </div>
 
                             <hr>
-
-<!--Modal Button-->
-<button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#largeModal">Eventos do chamado</button>
-
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <!--Modal Button-->
+                                            <button type="button" class="btn btn-default waves-effect m-r-20 col-sm-12"
+                                                    data-toggle="modal" data-target="#largeModal">Eventos do chamado
+                                            </button>
+                                            <div class="alert bg-red">
+                                                <b>Ultimo Evento: </b>{{ view.ultimoEvento.dataCadastro }} - {{ view.ultimoEvento.descricaoEvento }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <br>
@@ -193,22 +205,50 @@
 
 
     <!--MODAL DOS EVENTOS-->
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="exampleModalLongTitle">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="largeModalLabel">Eventos do chamado</h4>
                 </div>
                 <div class="modal-body">
-                    Aqui irá mostrar os eventos do chamado
+                    <table class="table">
+                        <thead>
+                            <tr class="danger">
+                              <th> Data </th>
+                              <th> Evento </th>
+                              <th> Ações </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for evento in view.eventos %}
+                            <tr>
+                              <th> {{ evento.dataCadastro }} </th>
+                              <th> {{ evento.descricaoEvento }} </th>
+                              <th>
+
+                                  <a href="{% url 'sistema:deletareventochamado' evento.pk %}" type="button" class="btn bg-red waves-effect" onclick="return confirm('Você tem certeza?');">
+                                    <i class="material-icons">delete</i>
+
+                                </a>
+                              </th>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">FECHAR</button>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 
 </div>
 
@@ -234,8 +274,6 @@
        });
 
         $( document ).ready(function() {
-            $('.modal').modal();  //Inicializando modais
-$('.modal').hide();
 
             $("#id_prioridade").ionRangeSlider({
                 skin: "round",
