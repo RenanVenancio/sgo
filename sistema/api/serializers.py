@@ -37,17 +37,6 @@ class EmpreendimentoSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 class NestedEmpreendimentoSerialize(serializers.ModelSerializer):
     class Meta:
         model = Empreendimento

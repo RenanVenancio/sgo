@@ -239,6 +239,35 @@
                         </tbody>
 
                     </table>
+
+                    <br><hr>
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="row clearfix">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <label for="descricaoEvento_id">Adicionar evento</label>
+                                    <div class="form-line">
+                                        <input class="form-control" id="descricaoEvento_id "type="text" name="descricaoEvento" required placeholder="Descreva o evento">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <div class="form-control">
+                                        <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">add</i><span>ADICIONAR</span></button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">FECHAR</button>
