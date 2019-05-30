@@ -134,7 +134,7 @@ class Chamado(models.Model):
 
         if(not EventosChamado.objects.filter(chamado=self.pk)):
             evento = EventosChamado()
-            evento.descicaoEvento = 'Chamado iniciado'
+            evento.descricaoEvento = 'Chamado iniciado'
             evento.chamado = Chamado.objects.get(pk=self.pk)
             evento.save()
 
@@ -147,11 +147,11 @@ class Chamado(models.Model):
 
 class EventosChamado(models.Model):
     dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
-    descicaoEvento = models.CharField('Evento', max_length=30)
-    chamado=models.ForeignKey('sistema.Chamado', on_delete=models.PROTECT, null=False)
+    descricaoEvento = models.CharField('Evento', max_length=90)
+    chamado=models.ForeignKey('sistema.Chamado', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.descicaoEvento
+        return self.descricaoEvento
 
     #def save(self, *args, **kwargs):
         #Poderia ser incluso pra mandar um email assim que iserir algo aqui
