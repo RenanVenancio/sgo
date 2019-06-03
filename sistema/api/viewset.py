@@ -22,7 +22,12 @@ class EmpreendimentoListViewAPI(ReadOnlyModelViewSet):
 
 
 class BlocoListViewAPI(ReadOnlyModelViewSet):
-    '''Todos os Blocos onde o usuario possui aptos'''
+    '''Todos os Blocos onde o usuario logado possui aptos
+        Aceita filtro pelo id do empreendimento forneça o id do mesmo como parametro na Url
+            EX: localhost:8000/listarblocos/?empreendimento=2
+            caso não sejam passados parametros serão retornados todos os blocos onde o
+            usuário logado possuir apartamentos.
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
