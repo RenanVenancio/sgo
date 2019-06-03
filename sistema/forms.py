@@ -13,7 +13,8 @@ class UsuarioForm(UserCreationForm):
 class UsuarioEditForm(forms.ModelForm):
     class Meta:
         model = Usuarios
-        exclude = ['password', 'last_login', 'is_active', 'date_joined']
+        exclude = ['password', 'last_login', 'is_active', 'date_joined', 'apartamentos']
+
 
 class UsuarioPasswordChangeForm(UserCreationForm):
     class Meta:

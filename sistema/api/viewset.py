@@ -1,27 +1,32 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+
 from .serializers import *
 from rest_framework import permissions
 from rest_framework import generics
 from sistema.models import *
-"""APIs de Gerenciamento"""
 from rest_framework import filters
-from django.db.models import FilteredRelation, Q, Prefetch
 
-class EmpreendimentoListViewAPI(generics.ListAPIView):
-    '''Todos os Empreendimentos, blocos, apartamentos relacionados a esse usuário'''
-    serializer_class = EmpreendimentoSerializer
+
+class EmpreendimentoListViewAPI(ReadOnlyModelViewSet):
+    '''Todos os Empreendimentos onde o usuario possui aptos'''
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = EmpreendimentoSerializer
 
     def get_queryset(self):
         user = self.request.user
-        
-        # TRAZ TODOS OS EMP results = Empreendimento.objects.prefetch_related(Prefetch('bloco_set__apartamento_set', queryset=Apartamento.objects.filter(proprietario=3)))
         results = Empreendimento.objects.filter(bloco__apartamento__proprietario=user.pk).distinct()
         return results
 
 
-class BlocoListViewAPI(generics.ListAPIView):
-    serializer_class = BlocoSerializer
+class BlocoListViewAPI(ReadOnlyModelViewSet):
+    '''Todos os Blocos onde o usuario possui aptos'''
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    serializer_class = BlocoSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -31,12 +36,13 @@ class BlocoListViewAPI(generics.ListAPIView):
         else:
             return Bloco.objects.filter(apartamento__proprietario=user.pk).distinct()
 
- 
 
-
-class ApartamentoListViewAPI(generics.ListAPIView):
-    serializer_class = ApartamentoSerializer
+class ApartamentoListViewAPI(ReadOnlyModelViewSet):
+    '''Todos os Apartamentos do usuario'''
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    serializer_class = ApartamentoSerializer
 
     def get_queryset(self):
         bloco = self.request.GET.get('bloco')
@@ -47,45 +53,68 @@ class ApartamentoListViewAPI(generics.ListAPIView):
             return Apartamento.objects.filter(proprietario=user.pk).distinct()
 
 
-
-#REmover
-class ApartamentoProprietarioSerializerDetailsViewAPI(generics.ListAPIView):
+class ApartamentoListaGeral(ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
     serializer_class = ApartamentoProprietarioSerializer
+
     def get_queryset(self):
         user = self.request.user
-        results = Apartamento.objects.filter(proprietario=user)
-        self.search_fields = ('nomeEmpreendimento', 'bloco', 'apartamento')
+        results = Apartamento.objects.filter(proprietario=user.pk)
         return results
 
 
-class CategoriaDeProblemaListViewAPI(generics.ListAPIView):
+class CategoriaDeProblemaListViewAPI(ReadOnlyModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
     queryset = CategoriaDeProblema.objects.all()
     serializer_class = CategoriaDeProblemaSerializer
 
 
-class ChamadoCreateViewAPIAny(generics.ListCreateAPIView):
-    queryset = Chamado.objects.none()
-    serializer_class = ChamadoSerializer
+class AreaComumListViewAPI(ReadOnlyModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
-    # permission_classes = (permissions.AllowAny,)
+    queryset = AreaComum.objects.all()
+    serializer_class = AreaComumSerializer
+
+#Gerencia dos chamados
+class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = ChamadoCreateUpdateSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Chamado.objects.filter(usuario=user.pk)
+
 
     def perform_create(self, serializer):
-        serializer.save()
+        usuario = Usuarios.objects.get(pk=self.request.user.pk)
+        serializer.save(usuario=usuario)
 
 
-class ChamadoCreateViewAPI(generics.ListCreateAPIView):
-    queryset = Chamado.objects.all()
-    serializer_class = ChamadoSerializer
+class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
-    def perform_create(self, serializer):
-        serializer.save()
+    def get_queryset(self): #Definingo queryset para mostrar apenas chamados do usuario logado
+        user = self.request.user
+        return Chamado.objects.filter(usuario=user.pk)
+
+    serializer_class = ChamadoListSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('protocolo', 'descricao')
 
 
-class ChamadoDetailsViewAPI(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Chamado.objects.all()
-    serializer_class = ChamadoSerializer
+class ChamadoDetailsViewAPI(ModelViewSet): #atualia e deleta
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
+    serializer_class = ChamadoCreateUpdateSerializer
 
-"""Fim APIs de gerenciamento"""
-
+    def get_queryset(self):
+        user = self.request.user
+        return Chamado.objects.filter(usuario=user.pk)

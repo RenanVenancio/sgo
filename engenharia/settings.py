@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'sistema',
     #libs
     'widget_tweaks',
+    'django_filters',
     #DRF
     'rest_framework',
     'rest_framework.authtoken',
@@ -148,7 +149,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'home/engenharia/public_html/mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'chamados/imagens')
 
 
 STATIC_URL = '/staticfiles/'
@@ -178,5 +179,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
     )
+
 }
+
+
+

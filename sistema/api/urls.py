@@ -1,49 +1,25 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+
 from sistema.api import viewset
 from rest_framework.authtoken.views import obtain_auth_token
 
 
+router = routers.DefaultRouter()
+router.register(r'listarempreendimentos', viewset.EmpreendimentoListViewAPI, base_name='Empreendimento')
+router.register(r'listarblocos', viewset.BlocoListViewAPI, base_name='Bloco')
+router.register(r'listarapartamentos', viewset.ApartamentoListViewAPI, base_name='Apartamento')
+router.register(r'listageralapartamentos', viewset.ApartamentoListaGeral, base_name='Apartamento')
+router.register(r'listarcategoriasdeproblema', viewset.CategoriaDeProblemaListViewAPI, base_name='CategoriaDeProblema')
+router.register(r'listarareascomuns', viewset.AreaComumListViewAPI, base_name='AreaComum')
+router.register(r'novochamado', viewset.ChamadoCreateViewAPI, base_name='Chamado')
+router.register(r'listarchamados', viewset.ChamadoListViewAPI, base_name='Chamado')
+
 urlpatterns = [
 
-    #NOVAS URLS TODAS VÃO RETORNAR RESULTADOS BASEADAS NO USER LOGADO'''
-    path('api/apartamentos/proprietario/',  # RETORNA TODOS OS APTOS > BLOCOS > EMPREENDIMENTOS. DO USUARIO LOGADO
-         viewset.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
-         name='apidetailapartamentosproprietario'),
-    #FIM NOVAS URLS'''
-
-    # APIs de gerenecimento
-    path('api/empreendimentos/',
-         viewset.EmpreendimentoListViewAPI.as_view(),
-         name='apiempreendimento'),
-
-    path('api/blocos/',
-         viewset.BlocoListViewAPI.as_view(),
-         name='apiblocos'),
-
-    path('api/apartamentos/',
-         viewset.ApartamentoListViewAPI.as_view(),
-         name='apiapartamentos'),
-
-    path('api/categoriasdeproblemas/',
-         viewset.CategoriaDeProblemaListViewAPI.as_view(),
-         name='apidetailcategoriasdeproblemas'),
-
-    path('api/chamadosany/',
-         viewset.ChamadoCreateViewAPIAny.as_view(),
-         name='apichamadosany'),
-    path('api/chamados/',
-         viewset.ChamadoCreateViewAPI.as_view(),
-         name='apichamados'),
-    path('api/chamados/<int:pk>/',
-         viewset.ChamadoDetailsViewAPI.as_view(),
-         name='apidetailchamados'),
-
-    path('api/chamados/',  # Renan Testes
-         viewset.ChamadoDetailsViewAPI.as_view(),
-         name='apilistarchamados'),
+    path('api/', include(router.urls)),
+    path('obter-token/', obtain_auth_token, name='api_token_auth'),
 
 
-    # Autenticação via Token
-    path('get-token/', obtain_auth_token),
 
 ]

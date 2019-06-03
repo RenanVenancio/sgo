@@ -5,3 +5,4 @@ model-mommy==1.5.1
 Pillow==5.1.0
 pytz==2018.5
 six==1.11.0
+django-filter==2.1.0

@@ -151,7 +151,8 @@ class EventosChamado(models.Model):
     chamado=models.ForeignKey('sistema.Chamado', on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.descricaoEvento
+        dataFormatada = datetime.strptime(str(self.dataCadastro), "%Y-%m-%d")
+        return dataFormatada.strftime('%d/%m/%y') + ' - ' + self.descricaoEvento
 
     #def save(self, *args, **kwargs):
         #Poderia ser incluso pra mandar um email assim que iserir algo aqui
@@ -164,10 +165,6 @@ class EventosChamado(models.Model):
 
 
 #Extendendo user padão do django
-
-
-
-
 class Usuarios(User):           #Sempre usar essa classe dentro do sistema
     cpf = models.CharField(max_length=20, blank=False, unique=True, null=False)
     telefone1 = models.CharField(max_length=15, blank=True, null=True)

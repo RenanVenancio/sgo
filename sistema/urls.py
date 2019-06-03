@@ -12,6 +12,11 @@ from sistema.api import viewset
 
 app_name = 'sistema'
 
+
+
+
+
+
 urlpatterns = [
     path('', include('sistema.api.urls')),
 

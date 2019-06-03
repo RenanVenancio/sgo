@@ -56,6 +56,9 @@ class UsuariosUpdateView(generic.UpdateView):
     success_url = reverse_lazy('sistema:listarusuarios')
 
 
+    def apartamentos(self):
+        return Apartamento.objects.select_related('bloco__empreendimento').filter(proprietario=self.object.pk)
+
 class UsuariosPasswordUpdateView(generic.UpdateView):
     model = Usuarios
     form_class = UsuarioPasswordChangeForm
@@ -372,3 +375,4 @@ class ApartamentoProprietarioListJson(generics.ListAPIView):
         user = self.kwargs['pk']
         results = Apartamento.objects.filter(proprietario=user)
         return results
+
