@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     #libs
     'widget_tweaks',
     'django_filters',
+    'rest_framework_swagger', #Documentação da API
     #DRF
     'rest_framework',
     'rest_framework.authtoken',
