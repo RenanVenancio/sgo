@@ -50,3 +50,12 @@ python manage.py runserver
 Acesse o site pelo endereço
 	
 <a href="http://localhost:8000">http://localhost:8000</a>
+
+
+### API do sistema
+
+```
+Para acessar a documentação da API
+```
+<a href="http://127.0.0.1:8000/api/docs/">http://127.0.0.1:8000/api/docs/</a>
+
