@@ -2,12 +2,12 @@
 from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics, permissions
 from .forms import *
-
+from django.views.generic import View
 
 '''Tela do Dashboard'''
 class DashboardView(generic.ListView):
@@ -360,6 +360,22 @@ class EventoChamadoDeleteView(generic.DeleteView):
         self.success_url = reverse_lazy('sistema:editarchamado', kwargs={'pk': pkChamado})
 
         return self.post(request, *args, **kwargs)
+
+
+class EventoChamadoCreateView(View):
+
+    def post(self, request):
+
+        if request.method == "POST":
+            novoEvento = EventosChamado()
+            novoEvento.descricaoEvento = request.POST.get('descricaoEvento')
+            idChamado = request.POST.get('chamado')
+            novoEvento.chamado = Chamado.objects.get(id=request.POST.get('chamado'))
+
+            novoEvento.save()
+
+        return redirect('sistema:editarchamado', pk=idChamado)
+
 
 
 """Fim gerenciamento de chamados"""
