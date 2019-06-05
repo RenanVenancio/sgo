@@ -15,7 +15,6 @@ $('#id_usuario').change(function (){
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (json) {
-            console.log(json)
 
             var selectbox = $('#apartamento_id');
             selectbox.find('option').remove();

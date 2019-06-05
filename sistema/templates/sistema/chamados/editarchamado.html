@@ -151,9 +151,8 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do proprietario</label>
                                         <div class="">
-                                            <select id="apartamento_id" class="form-control selectpicker" data-live-search="true" data-width="100%" name="apartamento">
-                                                <option selected value="">---------</option>
-                                            </select>
+                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"id=apartamento_id data-live-search=true data-width=100%"}}
+                                            {{ form.apartamento.errors }}
                                         </div>
                                     </div>
                                 </div>
@@ -245,6 +244,7 @@
 
                     <form action="" method="POST">
                         {% csrf_token %}
+                        {{ form.initial.id }}
                         <div class="row clearfix">
                             <div class="col-sm-10">
                                 <div class="form-group">
@@ -304,6 +304,10 @@
        });
 
         $( document ).ready(function() {
+            var selectbox = $('#apartamento_id');
+            selectbox.find('option').css('display', 'none');
+            $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
+
 
             $("#id_prioridade").ionRangeSlider({
                 skin: "round",

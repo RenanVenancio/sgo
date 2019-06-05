@@ -366,17 +366,14 @@ class EventoChamadoDeleteView(generic.DeleteView):
 
 
 from sistema.api.serializers import ApartamentoProprietarioSerializer
-
-
 class ApartamentoProprietarioListJson(generics.ListAPIView):
     ''''
     get:
     Popula os selects dos chamados no site.
     '''
     serializer_class = ApartamentoProprietarioSerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.DjangoModelPermissions,)
     def get_queryset(self):
         user = self.kwargs['pk']
         results = Apartamento.objects.filter(proprietario=user)
         return results
-
