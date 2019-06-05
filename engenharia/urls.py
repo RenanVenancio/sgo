@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework.documentation import include_docs_urls
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('sistema.urls', namespace='sistema'))
+    path('docs/', include_docs_urls(title='SGO - Documentação da API', public=False)),
+    path('', include('sistema.urls', namespace='sistema')),
 ]
 
 if settings.DEBUG is True:

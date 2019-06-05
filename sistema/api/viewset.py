@@ -10,23 +10,35 @@ from rest_framework import filters
 
 
 class EmpreendimentoListViewAPI(ReadOnlyModelViewSet):
-    '''Todos os Empreendimentos onde o usuario possui aptos'''
+    '''
+    list:
+        Traz todos os empreendimentos onde o usuario logado possui apartamentos.
+
+    retrieve:
+        Forneça o id do empreendimento para filtrar
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     serializer_class = EmpreendimentoSerializer
 
     def get_queryset(self):
         user = self.request.user
+        
         results = Empreendimento.objects.filter(bloco__apartamento__proprietario=user.pk).distinct()
         return results
 
 
 class BlocoListViewAPI(ReadOnlyModelViewSet):
-    '''Todos os Blocos onde o usuario logado possui aptos
+    '''
+    list:
         Aceita filtro pelo id do empreendimento forneça o id do mesmo como parametro na Url
-            EX: localhost:8000/listarblocos/?empreendimento=2
-            caso não sejam passados parametros serão retornados todos os blocos onde o
-            usuário logado possuir apartamentos.
+        EX: localhost:8000/listarblocos/?empreendimento=2
+        caso não sejam passados parametros serão retornados todos os blocos onde o
+        usuário logado possuir apartamentos.
+
+
+    read:
+        Forneça o id de um bloco para recuperar o mesmo
     '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
@@ -43,7 +55,17 @@ class BlocoListViewAPI(ReadOnlyModelViewSet):
 
 
 class ApartamentoListViewAPI(ReadOnlyModelViewSet):
-    '''Todos os Apartamentos do usuario'''
+    '''
+    list:
+        Traz a listagem apenas dos apartamentos do usuário.
+        aceita filtrar pelo id do bloco
+        EX: listarapartamentos/?bloco=2    <-Traz todos apartamentos do usuário no bloco 2
+
+
+    read:
+        Forneça o id do apartamento na url para trazer o apartamento.
+
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -59,6 +81,16 @@ class ApartamentoListViewAPI(ReadOnlyModelViewSet):
 
 
 class ApartamentoListaGeral(ReadOnlyModelViewSet):
+    '''
+    list:
+        Traz todos apartamentos do usuário logado junto com seus respectivos blocos e empreendimentos relacionados
+
+
+    read:
+        Forneça um id de um apartamentos do usuário logado para trazer o apartamento com seus respectivos blocos e
+        empreendimentos relacionados.
+
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -71,6 +103,15 @@ class ApartamentoListaGeral(ReadOnlyModelViewSet):
 
 
 class CategoriaDeProblemaListViewAPI(ReadOnlyModelViewSet):
+    '''
+    list:
+        Traz todas as categorias de problema cadastradas
+
+
+    read:
+        Forneça um id na url para trazer apenas a categoria desejada.
+
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -79,7 +120,15 @@ class CategoriaDeProblemaListViewAPI(ReadOnlyModelViewSet):
 
 
 class AreaComumListViewAPI(ReadOnlyModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    '''
+    list:
+        Traz a listagem de todas as áreas comuns cadastradas no sistema.
+
+
+    read:
+        Forneça o id e uma área comum cadastrada para recuperar a mesma
+    '''
+    permission_classes = (permissions.AllowAny,)
     authentication_classes = (TokenAuthentication,)
 
     queryset = AreaComum.objects.all()
@@ -87,6 +136,33 @@ class AreaComumListViewAPI(ReadOnlyModelViewSet):
 
 #Gerencia dos chamados
 class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
+    '''
+    list:
+        Traz a listagem de chamados abertos pelo usuario logado, mas os campos Apartamento, area comum, categoria
+        de problemas vem apenas com os ids.
+
+
+    create:
+        Essa url abre um novo chamado.
+
+
+    retrieve:
+        Recupera um chamado já existente pelo id passado na Url.
+
+
+    update:
+        Use essa url para atualizar um chamado.
+
+
+    partial_update:
+        Essa url também faz uma atualização em um chamado, mas e atualização pode ser feita em apenas um ou mais
+        campos caso necessário, ao invés de atualizar o registro inteiro.
+
+
+    delete:
+        Utilize essa url para deletar um chamado passando o id do mesmo na Url
+    '''
+
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     serializer_class = ChamadoCreateUpdateSerializer
@@ -102,6 +178,17 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
 
 
 class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
+    '''
+    list:
+        Aceita filter Backends busca nos campos [Protocolo ou Descrição]
+        Traz os campos como apartamento, cat de problema, área comum como string
+
+
+    read:
+        Forneça um id de um chamado para visualizar
+        OBS: Traz os campos como apartamento, cat de problema, área comum como string.
+
+    '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -114,8 +201,9 @@ class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
     search_fields = ('protocolo', 'descricao')
 
 
-class ChamadoDetailsViewAPI(ModelViewSet): #atualia e deleta
-    permission_classes = (permissions.IsAuthenticated,)
+'''
+class ChamadoDetailsViewAPI(ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     authentication_classes = (TokenAuthentication,)
 
     serializer_class = ChamadoCreateUpdateSerializer
@@ -123,3 +211,4 @@ class ChamadoDetailsViewAPI(ModelViewSet): #atualia e deleta
     def get_queryset(self):
         user = self.request.user
         return Chamado.objects.filter(usuario=user.pk)
+'''

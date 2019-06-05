@@ -349,7 +349,6 @@ class ChamadoDeleteView(generic.DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-
 class EventoChamadoDeleteView(generic.DeleteView):
 
     model = EventosChamado
@@ -367,8 +366,13 @@ class EventoChamadoDeleteView(generic.DeleteView):
 
 
 from sistema.api.serializers import ApartamentoProprietarioSerializer
-'''Retorna Json para alimentar as combos dos chamados'''
+
+
 class ApartamentoProprietarioListJson(generics.ListAPIView):
+    ''''
+    get:
+    Popula os selects dos chamados no site.
+    '''
     serializer_class = ApartamentoProprietarioSerializer
     permission_classes = (permissions.AllowAny,)
     def get_queryset(self):

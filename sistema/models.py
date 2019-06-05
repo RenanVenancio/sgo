@@ -129,8 +129,11 @@ class Chamado(models.Model):
         return self.protocolo
 
     def save(self, *args, **kwargs):
-        self.protocolo = datetime.today().strftime('%d%m%Y%H%M%S') + str(randint(1000, 2000))
-        super(Chamado, self).save(*args, **kwargs)
+        if(not self.protocolo):
+            self.protocolo = datetime.today().strftime('%d%m%Y%H%M%S') + str(randint(1000, 2000))
+            super(Chamado, self).save(*args, **kwargs)
+        else:
+            super(Chamado, self).save(*args, **kwargs)
 
         if(not EventosChamado.objects.filter(chamado=self.pk)):
             evento = EventosChamado()
