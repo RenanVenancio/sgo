@@ -388,7 +388,7 @@ class ApartamentoProprietarioListJson(generics.ListAPIView):
     Popula os selects dos chamados no site.
     '''
     serializer_class = ApartamentoProprietarioSerializer
-    permission_classes = (permissions.DjangoModelPermissions,)
+    permission_classes = (permissions.AllowAny,)
     def get_queryset(self):
         user = self.kwargs['pk']
         results = Apartamento.objects.filter(proprietario=user)
