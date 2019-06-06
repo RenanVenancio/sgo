@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from decouple import config
+from dj_database_url import parse as dburl
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,9 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'yds$!!gs_5f(s+nl+#upyumn=v7^sg2u0a#$hp#mhz@#g(n5)q'
-
-
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,29 +118,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-    }
-}
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 
-
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'engenhar_sistemadegestao',
-        'USER': 'root',
-        #'PASSWORD': 'rv101220',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'default-character-set': 'utf8',
-        #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    }
-}
-
-'''
+DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 ADMINS = (
     ('Victor Fernandes', 'victorfernandes.matias@gmail.com'),
@@ -162,7 +143,7 @@ STATICFILES_DIRS = (
 LOGIN_REDIRECT_URL = '/index/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = ['sgoengenharia.herokuapp.com']
 
