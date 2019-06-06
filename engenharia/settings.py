@@ -164,7 +164,7 @@ LOGIN_REDIRECT_URL = '/index/'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sgoengenharia.herokuapp.com']
 
 
 try:
