@@ -154,7 +154,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'chamados/imagens')
 
 
 STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/home/engenharia/public_html/staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
