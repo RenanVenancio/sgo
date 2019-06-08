@@ -147,9 +147,9 @@ LOGIN_REDIRECT_URL = '/index/'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sgoengenharia.herokuapp.com']
 
-CORS_ORIGIN_WHITELIST = ['*']
+CORS_ORIGIN_WHITELIST = ['sgoengenharia.herokuapp.com']
 
 
 try:
