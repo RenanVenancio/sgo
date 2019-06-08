@@ -33,16 +33,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #DRF
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     #apps
     'sistema',
     #libs
     'widget_tweaks',
     'django_filters',
     'rest_framework_swagger', #Documentação da API
-    #DRF
-    'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
+    
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_WHITELIST = ['*']
+
 ROOT_URLCONF = 'engenharia.urls'
+
 
 TEMPLATES = [
     {
@@ -147,9 +154,6 @@ LOGIN_REDIRECT_URL = '/index/'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
-
-CORS_ORIGIN_WHITELIST = ['*']
 
 
 try:
