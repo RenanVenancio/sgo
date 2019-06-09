@@ -180,7 +180,7 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
 class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
     '''
     list:
-        Aceita filter Backends busca nos campos [Protocolo ou Descrição]
+        Aceita filter Backends busca nos campos [Protocolo, Descrição, statusChamado]
         Traz os campos como apartamento, cat de problema, área comum como string
 
 
@@ -198,7 +198,7 @@ class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
 
     serializer_class = ChamadoListSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('protocolo', 'descricao')
+    search_fields = ('protocolo', 'descricao', 'statusChamado')
 
 
 '''
