@@ -96,8 +96,8 @@ class ChamadoCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ['id', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
-        read_only_fields = ('id', 'protocolo', 'usuario', 'ultimo_evento', 'statusChamado')
+        fields = ['id', 'dataCadastro', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
+        read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'ultimo_evento', 'statusChamado')
 
     def get_ultimo_evento(self, obj): #Filtra e traz o ultimo evento
         evento = EventosChamado.objects.filter(chamado=obj.pk).first()
@@ -114,8 +114,8 @@ class ChamadoListSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ['id', 'protocolo', 'statusChamado', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
-        read_only_fields = ('id', 'protocolo', 'usuario', 'statusChamado')
+        fields = ['id', 'dataCadastro', 'protocolo', 'statusChamado', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
+        read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'statusChamado')
 
 
     def get_ultimo_evento(self, obj): #Filtra e traz o ultimo evento
