@@ -88,7 +88,7 @@ class Apartamento(models.Model):
         verbose_name_plural = 'Apartamentos'
 
     def __str__(self):
-        return "Apto: " + self.apartamento + " - Bloco - " + self.bloco.bloco + " - " + self.bloco.empreendimento.nomeEmpreendimento
+        return "Apto: " + self.apartamento + " - Bloco " + self.bloco.bloco + " - " + self.bloco.empreendimento.nomeEmpreendimento
 
 
 class CategoriaDeProblema(models.Model):
