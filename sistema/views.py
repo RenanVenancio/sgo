@@ -8,12 +8,17 @@ from django.views import generic
 from rest_framework import generics, permissions
 from .forms import *
 from django.views.generic import View
-
+import json
 '''Tela do Dashboard'''
 class DashboardView(generic.ListView):
 
     context = {}
     def get(self, request):
+
+        categorias = CategoriaDeProblema.objects.all()
+        labels = [obj.nomeCategoria for obj in categorias]
+        print(labels)
+        self.context['rotulos'] = json.dumps(labels)
 
         chamado = Chamado.objects.count()
         self.context['chamados'] = chamado
