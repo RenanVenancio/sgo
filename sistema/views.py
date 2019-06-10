@@ -2,6 +2,7 @@
 from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import F, Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -15,8 +16,9 @@ class DashboardView(generic.ListView):
     context = {}
     def get(self, request):
 
-        categorias = CategoriaDeProblema.objects.all()
-        labels = [obj.nomeCategoria for obj in categorias]
+        categorias = Chamado.objects.all().values(catProblema=F('categoriaProblema__nomeCategoria')).annotate(ocorrencias=Count('catProblema')).order_by('ocorrencias')
+
+        labels = [obj['catProblema'] for obj in categorias]
         print(labels)
         self.context['rotulos'] = json.dumps(labels)
 
