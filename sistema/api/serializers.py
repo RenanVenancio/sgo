@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from sistema.models import *
 from datetime import datetime
+from datetime import date
 
 
 
@@ -8,11 +9,33 @@ from datetime import datetime
 class ApartamentoSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
     bloco = serializers.StringRelatedField(many=False, read_only=True)
+    tempoPercorridoGarntia = serializers.SerializerMethodField()
+
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ('id', 'apartamento', 'proprietario', 'bloco', 'inicioGarantia')
+        fields = ('id', 'apartamento', 'proprietario', 'bloco', 'inicioGarantia', 'tempoPercorridoGarntia')
         read_only_fields = ('id', 'inicioGarantia')
+
+    def get_tempoPercorridoGarntia(self, obj): #Filtra e traz o ultimo evento
+        iniGatantia = obj.inicioGarantia
+        iniGatantia = str(iniGatantia.strftime("%d-%m-%Y"))
+        hoje = str(date.today().strftime("%d-%m-%Y"))
+
+        date_format = "%d-%m-%Y"
+        a = datetime.strptime(iniGatantia, date_format)
+        b = datetime.strptime(hoje, date_format)
+        anos = b.year - a.year
+        meses = b.month - a.month
+        meses = abs(meses)
+        dias = b - a
+
+        if (anos > 0) and (meses > 0):
+            return str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
+        elif(anos == 0):
+            return str(dias.days) + ' Dia(s)'
+        elif(anos > 0) and (meses == 0):
+            return str(anos) + ' Ano(s)'
 
 
 class BlocoSerializer(serializers.ModelSerializer):
@@ -66,15 +89,22 @@ class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa
     def get_tempoPercorridoGarntia(self, obj): #Filtra e traz o ultimo evento
         iniGatantia = obj.inicioGarantia
         iniGatantia = str(iniGatantia.strftime("%d-%m-%Y"))
-        hoje = datetime.date
-        hoje = str(hoje)
+        hoje = str(date.today().strftime("%d-%m-%Y"))
 
-
-        date_format = "%d/%m/%Y"
-        a = datetime.strptime(iniGatantia , date_format)
+        date_format = "%d-%m-%Y"
+        a = datetime.strptime(iniGatantia, date_format)
         b = datetime.strptime(hoje, date_format)
-        delta = b - a
-        return str(delta.days) + ' Dias'
+        anos = b.year - a.year
+        meses = b.month - a.month
+        meses = abs(meses)
+        dias = b - a
+
+        if (anos > 0) and (meses > 0):
+            return str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
+        elif(anos == 0):
+            return str(dias.days) + ' Dia(s)'
+        elif(anos > 0) and (meses == 0):
+            return str(anos) + ' Ano(s)'
 
 
 class CategoriaDeProblemaSerializer(serializers.ModelSerializer):

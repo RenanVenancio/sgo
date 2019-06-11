@@ -2,6 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django import forms
 from .models import *
+from django.core.exceptions import ValidationError
 
 class UsuarioForm(UserCreationForm):
     class Meta:
@@ -45,6 +46,14 @@ class ApartamentoForm(forms.ModelForm):
         model = Apartamento
         fields = ['bloco', 'apartamento', 'proprietario', 'inicioGarantia']
 
+    def clean_inicioGarantia(self):
+        cleaned_data = super(ApartamentoForm, self).clean()
+        inicioGarantia = cleaned_data.get("inicioGarantia")
+        proprietario = cleaned_data.get("proprietario")
+
+        if(inicioGarantia == None) and (not (proprietario == None)):
+            raise ValidationError("Selecione a data de início da garantia do apartamento.")
+        return inicioGarantia
 
 class CategoriaDeProblemaForm(forms.ModelForm):
     class Meta:
