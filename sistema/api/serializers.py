@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from sistema.models import *
+from datetime import datetime
 
 
 
@@ -55,11 +56,25 @@ class NestedBlocoSerialize(serializers.ModelSerializer):
 class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa os apartamentos pelo id do proprietario
     """Serializer to map the Model instance into JSON format."""
     bloco = NestedBlocoSerialize(many=False, read_only=True)
+    tempoPercorridoGarntia = serializers.SerializerMethodField()
+
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ['id', 'apartamento', 'proprietario', 'inicioGarantia' , 'bloco']
+        fields = ['id', 'apartamento', 'proprietario', 'inicioGarantia', 'tempoPercorridoGarntia', 'bloco']
 
+    def get_tempoPercorridoGarntia(self, obj): #Filtra e traz o ultimo evento
+        iniGatantia = obj.inicioGarantia
+        iniGatantia = str(iniGatantia.strftime("%d-%m-%Y"))
+        hoje = datetime.date
+        hoje = str(hoje)
+
+
+        date_format = "%d/%m/%Y"
+        a = datetime.strptime(iniGatantia , date_format)
+        b = datetime.strptime(hoje, date_format)
+        delta = b - a
+        return str(delta.days) + ' Dias'
 
 
 class CategoriaDeProblemaSerializer(serializers.ModelSerializer):
