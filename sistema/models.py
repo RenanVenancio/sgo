@@ -74,7 +74,7 @@ class Apartamento(models.Model):
     bloco = models.ForeignKey('sistema.Bloco', on_delete=models.PROTECT, verbose_name='Bloco')
     apartamento = models.CharField('Apartamento', max_length=6)
     proprietario = models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, blank=True, null=True) #Define o proprietário do apto
-
+    inicioGarantia = models.DateField('Inicio da Garantia', blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('sistema:editarapartamento', kwargs={'pk': self.pk})
@@ -121,6 +121,9 @@ class Chamado(models.Model):
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=True, null=True)
     descricao = models.TextField('Descreva o problema')
     img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
+    novosEventos= models.BooleanField(verbose_name='Novos eventos disponíveis', default=False)
+    feedbackUsuario = models.PositiveSmallIntegerField('Feedback dado pelo Usuário', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0, blank=True, null=True)
+
 
     def get_absolute_url(self):
         return reverse('sistema:editarchamado', kwargs={'pk': self.pk})
@@ -155,11 +158,11 @@ class EventosChamado(models.Model):
 
     def __str__(self):
         dataFormatada = datetime.strptime(str(self.dataCadastro), "%Y-%m-%d")
-        return dataFormatada.strftime('%d/%m/%y') + ' - ' + self.descricaoEvento
+        return dataFormatada.strftime('%d/%m/%y') + '#$%' + self.descricaoEvento
 
-    #def save(self, *args, **kwargs):
-        #Poderia ser incluso pra mandar um email assim que iserir algo aqui
-    #    pass
+    def save(self, *args, **kwargs):
+        Chamado.objects.filter(id=self.chamado.pk).update(novosEventos=True)
+        super(EventosChamado, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-pk']

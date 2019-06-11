@@ -1,4 +1,5 @@
 ﻿{% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -36,6 +37,8 @@
 
     <!-- Custom Css -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <link href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.css' %}" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{% static 'css/themes/all-themes.css' %}" rel="stylesheet" />
@@ -386,6 +389,8 @@
 
     <script src="{% static 'js/pages/ui/range-sliders.js' %}"></script>
 
+    <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+
 
     <script src="{% static 'plugins/ion-rangeslider/js/ion.rangeSlider.min.js' %}"></script>
 
@@ -393,6 +398,22 @@
 
    <!-- Combos com buscas -->
     <script type="text/javascript">
+
+     $.fn.datepicker.dates['en'] = {
+        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+        months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        today: "Today",
+        autoclose: true,
+        disableTouchKeyboard: true,
+        forceParse: true,
+        format: "dd/mm/yyyy",
+        titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+        weekStart: 0
+     };
+
         $(document).ready(function(){
             $('select').selectpicker();
         });

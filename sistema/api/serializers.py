@@ -10,8 +10,8 @@ class ApartamentoSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ('id', 'apartamento', 'proprietario', 'bloco')
-        read_only_fields = ('id',)
+        fields = ('id', 'apartamento', 'proprietario', 'bloco', 'inicioGarantia')
+        read_only_fields = ('id', 'inicioGarantia')
 
 
 class BlocoSerializer(serializers.ModelSerializer):
@@ -58,7 +58,7 @@ class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Apartamento
-        fields = ['id', 'apartamento', 'proprietario', 'bloco']
+        fields = ['id', 'apartamento', 'proprietario', 'inicioGarantia' , 'bloco']
 
 
 
@@ -96,7 +96,7 @@ class ChamadoCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ['id', 'dataCadastro', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
+        fields = ['id', 'dataCadastro', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img', 'novosEventos', 'feedbackUsuario']
         read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'ultimo_evento', 'statusChamado')
 
     def get_ultimo_evento(self, obj): #Filtra e traz o ultimo evento
@@ -114,7 +114,7 @@ class ChamadoListSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ['id', 'dataCadastro', 'protocolo', 'statusChamado', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img']
+        fields = ['id', 'dataCadastro', 'protocolo', 'statusChamado', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img', 'novosEventos', 'feedbackUsuario']
         read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'statusChamado')
 
 
