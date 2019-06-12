@@ -2,7 +2,7 @@
 from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.db.models import F, Count
+from django.db.models import F, Count, Sum
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -10,17 +10,47 @@ from rest_framework import generics, permissions
 from .forms import *
 from django.views.generic import View
 import json
+from decimal import Decimal
 '''Tela do Dashboard'''
 class DashboardView(generic.ListView):
 
     context = {}
     def get(self, request):
+        #Coletando os dados das categorias nos chamados para inserir no gráfico ABC
+        categorias = Chamado.objects.all().values(catProblema=F('categoriaProblema__nomeCategoria')).annotate(ocorrencias=Count('catProblema')).order_by('-ocorrencias')
+        categoriasSoma = categorias.aggregate(Sum('ocorrencias'))
+        categoriasSoma = categoriasSoma['ocorrencias__sum']
 
-        categorias = Chamado.objects.all().values(catProblema=F('categoriaProblema__nomeCategoria')).annotate(ocorrencias=Count('catProblema')).order_by('ocorrencias')
+        nomesCatProblemas = []          #Nomes das categorias dos problemas
+        qtdOcorrenciaCatProblemas = []  #Quantidade de vezes que o problema ocorre
+        percent = []      #Porcentagem
+        percentAcc = []   #Porcentagem acumulada
 
-        labels = [obj['catProblema'] for obj in categorias]
-        print(labels)
-        self.context['rotulos'] = json.dumps(labels)
+
+        for ind, i in enumerate(categorias):
+            nomesCatProblemas.append(i['catProblema'])
+            qtdOcorrenciaCatProblemas.append(i['ocorrencias'])
+            percent.append((   ((i['ocorrencias'] / categoriasSoma) * 100))  )
+            if(ind == 0):
+                percentAcc.append(percent[ind])
+            else:
+                percentAcc.append(  ((percent[ind] + percentAcc[ind - 1]))   )
+
+
+
+        #Passando os dados para o contexto
+        self.context['rotulosGrafico'] = json.dumps(nomesCatProblemas)
+        self.context['dadosGrafico'] = json.dumps(qtdOcorrenciaCatProblemas)
+        self.context['dadosPercent'] = json.dumps(percent)
+        self.context['dadosPercentAcc'] = json.dumps(percentAcc)
+
+
+
+        feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).order_by('feedbackUsuario')
+
+
+
+
 
         chamado = Chamado.objects.count()
         self.context['chamados'] = chamado
