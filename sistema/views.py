@@ -10,6 +10,8 @@ from rest_framework import generics, permissions
 from .forms import *
 from django.views.generic import View
 import json
+from datetime import datetime
+from datetime import date
 from decimal import Decimal
 '''Tela do Dashboard'''
 class DashboardView(generic.ListView):
@@ -369,6 +371,32 @@ class ChamadoUpdateView(generic.UpdateView):
         context.update(**context)
 
         return super(generic.UpdateView, self).get_context_data(**kwargs)
+
+    def garantia(self):
+        print(self.object.protocolo)
+
+        iniGatantia = self.object.apartamento.inicioGarantia
+        iniGatantia = str(iniGatantia.strftime("%d-%m-%Y"))
+        hoje = self.object.dataCadastro
+        hoje = str(hoje.strftime("%d-%m-%Y"))
+
+        date_format = "%d-%m-%Y"
+        a = datetime.strptime(iniGatantia, date_format)
+        b = datetime.strptime(hoje, date_format)
+        anos = b.year - a.year
+        meses = b.month - a.month
+        meses = abs(meses)
+        dias = b - a
+
+        if (anos > 0) and (meses > 0):
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
+        elif(anos == 0) and (dias.days > 0):
+            return 'Decorrido(s) ' + str(dias.days) + ' Dia(s)'
+        elif(anos > 0) and (meses == 0):
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s)'
+        elif(dias.days < 0):
+            return 'Inicia em ' + str(iniGatantia)
+
 
     def eventos(self): #Retorna os eventos do chamado para a view
         return EventosChamado.objects.filter(chamado=self.object.pk)
