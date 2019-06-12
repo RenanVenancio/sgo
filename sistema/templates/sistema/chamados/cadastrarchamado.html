@@ -137,7 +137,7 @@
                                             <select id="apartamento_id" class="form-control selectpicker" data-live-search="true" data-width="100%" name="apartamento">
                                                 <option selected value="">---------</option>
                                             </select>
-                                            <p>Garantia</p>
+                                            <p id="garantiaApto"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,6 +205,11 @@
             }
        });
 
+        $("#apartamento_id").change(function() {
+            var dado = $(this).find(':selected').attr('garantia');
+            $("#garantiaApto").text('Garantia: ' + dado);
+        });
+
         $( document ).ready(function() {
 
             $("#id_prioridade").ionRangeSlider({
@@ -217,49 +222,6 @@
                 prefix: "Prioridade: ",
 
             });
-
-
-
-
-
-
-
-
-
-
-            $.ajax({
-            type: "get",
-            url: "/Empresas/SelecionarEmpresas",
-            data: { empresa: $("#empresa").val() },
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: function (obj) {
-                if (obj != null) {
-                    var data = obj.data;
-                    var selectbox = $('#empresa');
-                    selectbox.find('option').remove();
-                    $.each(data, function (i, d) {
-                        $('<option>').val(d.IdEmpresa).text(d.Nome).appendTo(selectbox);
-                    });
-                }
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         });
 

@@ -31,11 +31,14 @@ class ApartamentoSerializer(serializers.ModelSerializer):
         dias = b - a
 
         if (anos > 0) and (meses > 0):
-            return str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
-        elif(anos == 0):
-            return str(dias.days) + ' Dia(s)'
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
+        elif(anos == 0) and (dias.days > 0):
+            return 'Decorrido(s) ' + str(dias.days) + ' Dia(s)'
         elif(anos > 0) and (meses == 0):
-            return str(anos) + ' Ano(s)'
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s)'
+        elif(dias.days < 0):
+            return 'Inicia em ' + str(iniGatantia)
+
 
 
 class BlocoSerializer(serializers.ModelSerializer):
@@ -100,11 +103,13 @@ class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa
         dias = b - a
 
         if (anos > 0) and (meses > 0):
-            return str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
-        elif(anos == 0):
-            return str(dias.days) + ' Dia(s)'
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s) e ' + str(meses) + ' Mês(ses)'
+        elif(anos == 0) and (dias.days > 0):
+            return 'Decorrido(s) ' + str(dias.days) + ' Dia(s)'
         elif(anos > 0) and (meses == 0):
-            return str(anos) + ' Ano(s)'
+            return 'Decorrido(s) ' + str(anos) + ' Ano(s)'
+        elif(dias.days < 0):
+            return 'Inicia em ' + str(iniGatantia)
 
 
 class CategoriaDeProblemaSerializer(serializers.ModelSerializer):

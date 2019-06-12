@@ -18,8 +18,10 @@ $('#id_usuario').change(function (){
 
             var selectbox = $('#apartamento_id');
             selectbox.find('option').remove();
+            $('<option>').val("").attr("selected", "selected").text('Selecione um apartamento').appendTo(selectbox);
+
             $.each(json, function (i, d) {
-                $('<option>').val(d.id).text(d.bloco.empreendimento.nomeEmpreendimento + " - BLOCO: " + d.bloco.bloco + " - APTO: " + d.apartamento).appendTo(selectbox);
+                $('<option>').val(d.id).attr("garantia",d.tempoPercorridoGarntia).text(d.bloco.empreendimento.nomeEmpreendimento + " - BLOCO: " + d.bloco.bloco + " - APTO: " + d.apartamento).appendTo(selectbox);
             });
             $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
 
