@@ -153,7 +153,7 @@
                                         <div class="">
                                             {{form.apartamento|add_class:"form-control selectpicker"|attr:"id=apartamento_id data-live-search=true data-width=100%"}}
                                             {{ form.apartamento.errors }}
-                                            <p id="garantiaApto"></p>
+                                            <p id="garantiaApto"> Garantia: {{ view.garantia }} </p>
 
                                         </div>
                                     </div>
@@ -305,7 +305,19 @@
             }
        });
 
+       $("#apartamento_id").change(function() {
+            var dado = $(this).find(':selected').attr('garantia');
+            $("#garantiaApto").text('Garantia: ' + dado);
+        });
+
         $( document ).ready(function() {
+            let statusAreaComum = $('.check-area').is(':checked'); //Verificando se possui area comum
+            if(statusAreaComum == true){
+                $(".menu-area").fadeIn();
+            }else{
+                $(".menu-area").fadeOut();
+            }
+
             var selectbox = $('#apartamento_id');
             selectbox.find('option').css('display', 'none');
             $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
