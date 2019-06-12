@@ -118,7 +118,7 @@ class Chamado(models.Model):
     usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
     envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum')
     areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
-    apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=True, null=True)
+    apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=False, null=False)
     descricao = models.TextField('Descreva o problema')
     img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
     novosEventos= models.BooleanField(verbose_name='Novos eventos disponíveis', default=False)
