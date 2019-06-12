@@ -67,6 +67,15 @@ class ChamadoForm(forms.ModelForm):
         fields = '__all__'
         #exclude = ['protocolo']
 
+    def clean_envolveAreaComum(self):
+        cleaned_data = super(ChamadoForm, self).clean()
+        envolveAreaComum = cleaned_data.get("envolveAreaComum")
+        areaComum = cleaned_data.get("areaComum")
+
+        if(envolveAreaComum == True) and (areaComum == None):
+            raise ValidationError("Selecione uma área comum.")
+        return envolveAreaComum
+
 
 class EventoChamadoForm(forms.ModelForm):
     class Meta:

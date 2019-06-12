@@ -39,7 +39,6 @@ class DashboardView(generic.ListView):
                 percentAcc.append(  ((percent[ind] + percentAcc[ind - 1]))   )
 
 
-
         #Passando os dados para o contexto
         self.context['rotulosGrafico'] = json.dumps(nomesCatProblemas)
         self.context['dadosGrafico'] = json.dumps(qtdOcorrenciaCatProblemas)

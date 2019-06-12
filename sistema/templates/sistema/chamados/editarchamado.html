@@ -29,20 +29,12 @@
                     <div class="header">
                         <h2>
                             EDITAR CHAMADO <b>{{ form.protocolo.value }} </b>
-                        </h2>
 
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                            <div id="feedback-usuario" class="form-group">
+                                <h5>Feedback do Proprietário</h5>
+                                <div class="rating" data-rate-value="{{ form.feedbackUsuario.value }}" style="font-size: 35px; color: #F44336;"></div>
+                            </div>
+                        </h2>
                     </div>
                     <div class="body">
 
@@ -128,7 +120,7 @@
                                                 <div class="">
                                                     {{form.areaComum|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                                     {{ form.areaComum.errors }}
-                                                </div>
+                                                    {{ form.envolveAreaComum.errors }}                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -293,11 +285,11 @@
 <script type="text/javascript">
       var cadastrar = true;
 
-      $( ".check-area" ).change(function() {
+      $( ".check-area" ).change(function() {                //Funções do botão para mostrar as areas comuns
             let status = $('.check-area').is(':checked');
             if(status == !true){
                 $(".menu-area").fadeOut()
-                $("#area_id").val('');
+                $("#id_areaComum").val('');
                 $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
 
             }else{
@@ -311,6 +303,15 @@
         });
 
         $( document ).ready(function() {
+
+            let feedback = ("{{ form.feedbackUsuario.value }}");    //Verificando se existe feedbacks
+            if(feedback > 0){
+                $("#feedback-usuario").fadeIn();
+            }else{
+                $("#feedback-usuario").fadeOut();
+
+            }
+
             let statusAreaComum = $('.check-area').is(':checked'); //Verificando se possui area comum
             if(statusAreaComum == true){
                 $(".menu-area").fadeIn();
@@ -333,6 +334,21 @@
                 prefix: "Prioridade: ",
 
             });
+
+
+
+
+            var options = {
+                max_value: 5,
+                step_size: 1,
+                initial_value: 0,
+                selected_symbol_type: 'utf8_star', // Must be a key from symbols
+                cursor: 'default',
+                readonly: true,
+                change_once: false, // Determines if the rating can only be set once
+            }
+
+            $(".rating").rate(options);
         });
 
 </script>

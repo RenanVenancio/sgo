@@ -60,14 +60,34 @@
                 </div>
             </div>
 
-        <canvas class="line-chart"></canvas>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>CATEGORIAS DE PROBLEMAS</h2>
+                        </div>
+                        <div class="body">
+                            <canvas class="grafico-categorias-problemas"></canvas>
+                        </div>
+                    </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>FEDDBACKS DOS USUÁRIOS</h2>
+                        </div>
+                        <div class="body">
+                            <canvas class="grafico-feedbacks-usuarios"></canvas>
+                        </div>
+                    </div>
+                </div>
 
 </div>
 
         <script src="{% static 'plugins/chartjs/Chart2.8.0.js' %}"></script>
     <!-- #END# Exportable Table -->
     <script>
-    var ctx = document.getElementsByClassName("line-chart");
+    var ctx = document.getElementsByClassName("grafico-categorias-problemas");
 
     var rotulos = JSON.parse('{{ rotulosGrafico|safe }}');
     var dadosPercent = JSON.parse('{{ dadosPercent }}');
@@ -125,6 +145,42 @@
             }]
             }
         }
+    });
+
+
+
+    var ctx = document.getElementsByClassName("grafico-feedbacks-usuarios");
+    var myDoughnutChart = new Chart(ctx, {
+        type: "doughnut",
+        data:{
+            labels: rotulos,
+            datasets: [{
+
+                label: '(%)Individual',
+
+                data: dadosPercent,
+                borderWidth: 6,
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
+                backgroundColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+
+                ],
+
+
+            }],
+        },
+
+
     });
 
 </script>
