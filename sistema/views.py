@@ -3,6 +3,7 @@ from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import F, Count, Sum
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
@@ -43,8 +44,9 @@ class DashboardView(generic.ListView):
         self.context['dadosGrafico'] = json.dumps(qtdOcorrenciaCatProblemas)
         self.context['dadosPercent'] = json.dumps(percent)
         self.context['dadosPercentAcc'] = json.dumps(percentAcc)
+        #Fim dos dados do grafico ABC
 
-
+        #Coletando os dados dos feedbacks nos chamados para inserir no gráfico
         feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).filter(feedbackUsuario__gte=1).order_by('feedbackUsuario')
         feedbacksSoma = feedbacks.aggregate(Sum('contagem'))
         feedbacksSoma = feedbacksSoma['contagem__sum']
@@ -54,8 +56,9 @@ class DashboardView(generic.ListView):
         for i in feedbacks:
             i['percentual'] = (i['contagem'] / feedbacksSoma) * 100
             percentFeedbacks.append(i['percentual'])
-        #Passando a porcentagem para o grafico
+        #Passando a porcentagem dos feedbacks para o grafico
         self.context['percentFeedbacks'] = json.dumps(percentFeedbacks)
+        #Fim grafico feedbacks
 
 
         chamado = Chamado.objects.count()
@@ -67,7 +70,6 @@ class DashboardView(generic.ListView):
         chamadosFinalizados = Chamado.objects.filter(statusChamado='Finalizado').count()
         self.context['chamadosFinalizados'] = chamadosFinalizados
 
-
         usuarios =  Usuarios.objects.all().count()
         self.context['usuarios'] = usuarios
 
@@ -76,32 +78,37 @@ class DashboardView(generic.ListView):
 '''Fim da tela do Dashboard'''
 
 
-class EmpresaRedirect(View):
-    def get(self, request):
-        empresa = Empresa.objects.filter(id=1)
-        if empresa:
-            return redirect('sistema:editarempresa', pk=1)
-        else:
-            return redirect('sistema:cadastrarempresa')
-
-
-
 class EmpresaCreateView(generic.CreateView):
-
+    reverse_lazy('sistema:listarusuarios')
     model = Empresa
     form_class = EmpresaForm
     template_name = 'sistema/empresa/cadastrarempresa.html'
-    success_url = reverse_lazy('sistema:cadastrarempresa')
+    success_url = reverse_lazy('sistema:dashboard')
+
+    def get(self, request, *args, **kwargs):
+        empresa = Empresa.objects.all() #Consultando empresas cadastradas
+        if empresa:
+            return redirect('sistema:editarempresa', pk=empresa[0].pk) #Caso exista redirecione para edição
+        else:
+            return self.post(request, *args, **kwargs)
 
 
+'''Gerenciamento da empresa'''
 class EmpresaEditView(generic.UpdateView):
 
     model = Empresa
     form_class = EmpresaForm
     template_name = 'sistema/empresa/editarempresa.html'
-    success_url = reverse_lazy('sistema:editarempresa', pk=1)
+    success_url = reverse_lazy('sistema:cadastrarempresa')
 
 
+class EmpresaDeleteView(generic.DeleteView):
+
+    model = Empresa
+    success_url = reverse_lazy('sistema:dashboard')
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+'''Fim gerenciamento da empresa'''
 
 """Gerenciamento de usuários"""
 class UsuariosCreateView(generic.CreateView):

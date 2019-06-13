@@ -3,7 +3,13 @@ from sistema.models import *
 from datetime import datetime
 from datetime import date
 
-
+class EmpresaSerializer(serializers.ModelSerializer):
+    """Serializer to map the Model instance into JSON format."""
+    #bloco_set = BlocoSerializer(many=True, read_only=True)
+    class Meta:
+        """Meta class to map serializer's fields with the model fields."""
+        model = Empresa
+        fields = ('cnpj', 'nome', 'endereco', 'bairro', 'cidade', 'estado', 'telefone1', 'telefone2', 'email', 'sobre')
 
 
 class ApartamentoSerializer(serializers.ModelSerializer):
@@ -142,16 +148,23 @@ class EventoChamadoSerializer(serializers.ModelSerializer):
 
 class ChamadoCreateUpdateSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
+    numChamadosAbertosHoje = serializers.SerializerMethodField()
     ultimo_evento = serializers.SerializerMethodField()
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Chamado
-        fields = ['id', 'dataCadastro', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img', 'novosEventos', 'feedbackUsuario']
-        read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'ultimo_evento', 'statusChamado')
+        fields = ['id', 'dataCadastro', 'statusChamado', 'protocolo', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img', 'novosEventos', 'feedbackUsuario', 'numChamadosAbertosHoje']
+        read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'ultimo_evento', 'statusChamado', 'numChamadosAbertosHoje')
 
     def get_ultimo_evento(self, obj): #Filtra e traz o ultimo evento
         evento = EventosChamado.objects.filter(chamado=obj.pk).first()
         return str(evento)
+
+    def get_numChamadosAbertosHoje(self, obj): #Filtra e traz o ultimo evento
+        hoje = str(date.today().strftime("%Y-%m-%d"))
+        nrChamados = int(Chamado.objects.filter(usuario=obj.usuario, dataCadastro=hoje).count())
+
+        return nrChamados
 
 
 class ChamadoListSerializer(serializers.ModelSerializer):

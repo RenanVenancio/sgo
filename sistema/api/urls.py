@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.DefaultRouter()
 
-
+router.register(r'empresa', viewset.EmpresaListViewAPI, base_name='Empresa')
 router.register(r'listarempreendimentos', viewset.EmpreendimentoListViewAPI, base_name='Empreendimento')
 router.register(r'listarblocos', viewset.BlocoListViewAPI, base_name='Bloco')
 router.register(r'listarapartamentos', viewset.ApartamentoListViewAPI, base_name='Apartamento')

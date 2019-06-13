@@ -9,6 +9,19 @@ from sistema.models import *
 from rest_framework import filters
 
 
+class EmpresaListViewAPI(ReadOnlyModelViewSet):
+    '''
+        Traz os dados da empresa
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = EmpresaSerializer
+
+    def get_queryset(self):
+        empresa = Empresa.objects.all() #Consultando empresas cadastradas
+        return empresa
+
+
 class EmpreendimentoListViewAPI(ReadOnlyModelViewSet):
     '''
     list:
@@ -141,23 +154,18 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
         Traz a listagem de chamados abertos pelo usuario logado, mas os campos Apartamento, area comum, categoria
         de problemas vem apenas com os ids.
 
-
     create:
         Essa url abre um novo chamado.
-
 
     retrieve:
         Recupera um chamado já existente pelo id passado na Url.
 
-
     update:
         Use essa url para atualizar um chamado.
-
 
     partial_update:
         Essa url também faz uma atualização em um chamado, mas e atualização pode ser feita em apenas um ou mais
         campos caso necessário, ao invés de atualizar o registro inteiro.
-
 
     delete:
         Utilize essa url para deletar um chamado passando o id do mesmo na Url
@@ -174,7 +182,13 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
 
     def perform_create(self, serializer):
         usuario = Usuarios.objects.get(pk=self.request.user.pk)
-        serializer.save(usuario=usuario)
+
+        hoje = str(date.today().strftime("%Y-%m-%d"))
+        nrChamados = int(Chamado.objects.filter(usuario=usuario, dataCadastro=hoje).count())
+        if(nrChamados >= 5):
+            raise serializers.ValidationError("Você excedeu o numero limite de chamados que podem ser abertos por dia")
+        else:
+            serializer.save(usuario=usuario)
 
 
 class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados

@@ -2,7 +2,7 @@
 
 {% load widget_tweaks %}
 
-{% block title %}Cadastrar usuário | {{ block.super }}{% endblock %}
+{% block title %}Editar empresa | {{ block.super }}{% endblock %}
 
 {% block content %}
 
@@ -145,9 +145,14 @@
                             <br>
 
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i
-                                    class="material-icons">save</i><span>SALVAR</span></button>
+                                    class="material-icons">save</i><span>SALVAR</span>
+                            </button>
 
 
+                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarempresa' empresa.pk %}" onclick="return confirm('Você tem certeza?');">
+                                <i class="material-icons">delete</i>
+                                <span>DELETAR</span>
+                            </a>
                         </form>
                     </div>
                 </div>

@@ -44,7 +44,7 @@ class Empresa(models.Model):
     telefone2 = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True)
     sobre = models.TextField('Sobre a Empresa')
-    dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
+    dataCadastro = models.DateTimeField('Data de cadastro', auto_now_add=True)
 
 
 class Empreendimento(models.Model):
