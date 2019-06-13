@@ -60,7 +60,7 @@ MIDDLEWARE = [
 #
 CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ['*']
-#CORS_ORIGIN_WHITELIST = ['http:localhost:8100', 'http:localhost:4200','http:168.90.204.90:4747']
+CORS_ORIGIN_WHITELIST = ['http:localhost:8100', 'http:localhost:4200','http:168.90.204.90:4747']
 
 ROOT_URLCONF = 'engenharia.urls'
 
