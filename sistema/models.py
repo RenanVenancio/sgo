@@ -12,11 +12,39 @@ from rest_framework.authtoken.models import Token
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
+ENUM_ESTADOS = (
+	('AC', 'Acre'), ('AL', 'Alagoas'), ('AP', 'Amapá'),
+	('AM', 'Amazonas'), ('BA', 'Bahia'), ('CE', 'Ceará'),
+	('DF', 'Distrito Federal'), ('ES', 'Espírito Santo'),
+	('GO', 'Goiás'), ('MA', 'Maranhão'), ('MT', 'Mato Grosso'),
+	('MS', 'Mato Grosso do Sul'), ('MG', 'Minas Gerais'),
+	('PA', 'Pará'), ('PB', 'Paraíba'), ('PR', 'Paraná'),
+	('PE', 'Pernambuco'), ('PI', 'Piauí'), ('RJ', 'Rio de Janeiro'),
+	('RN', 'Rio Grande do Norte'), ('RS', 'Rio Grande do Sul'),
+	('RO', 'Rondônia'), ('RR', 'Roraima'), ('SC', 'Santa Catarina'),
+	('SP', 'São Paulo'), ('SE', 'Sergipe'), ('TO', 'Tocantins')
+)
+
+
 ENUM_STATUS = (
     ('Em analise', 'Em analise'),
     ('Em andamento', 'Em andamento'),
     ('Finalizado', 'Finalizado'),
 )
+
+
+class Empresa(models.Model):
+    cnpj = models.CharField('Cnpj', max_length=20, unique=True, blank=True)
+    nome = models.CharField('Nome fantasia', max_length=100, blank=False, null=False)
+    endereco = models.CharField('Endereço', max_length=150)
+    bairro = models.CharField('Bairro', max_length=50)
+    cidade = models.CharField('Cidade', max_length=50)
+    estado = models.CharField('Estado', choices=ENUM_ESTADOS, max_length=2, default='PB')
+    telefone1 = models.CharField(max_length=15, blank=True, null=True)
+    telefone2 = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True)
+    sobre = models.TextField('Sobre a Empresa')
+    dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
 
 
 class Empreendimento(models.Model):
@@ -116,7 +144,7 @@ class Chamado(models.Model):
     categoriaProblema = models.ForeignKey('sistema.CategoriaDeProblema', on_delete=models.PROTECT,
                                           verbose_name='Categoria do problema')
     usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
-    envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum')
+    envolveAreaComum= models.BooleanField(verbose_name='Problema em área comum', default=False)
     areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=False, null=False)
     descricao = models.TextField('Descreva o problema')

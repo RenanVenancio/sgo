@@ -3,6 +3,11 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Password
 from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
+class EmpresaForm(forms.ModelForm):
+    class Meta:
+        model = Empresa
+        fields = '__all__'
+
 
 class UsuarioForm(UserCreationForm):
     class Meta:

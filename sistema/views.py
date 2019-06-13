@@ -3,7 +3,7 @@ from django.contrib.admin import StackedInline
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import F, Count, Sum
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics, permissions
@@ -11,8 +11,7 @@ from .forms import *
 from django.views.generic import View
 import json
 from datetime import datetime
-from datetime import date
-from decimal import Decimal
+
 '''Tela do Dashboard'''
 class DashboardView(generic.ListView):
 
@@ -46,11 +45,17 @@ class DashboardView(generic.ListView):
         self.context['dadosPercentAcc'] = json.dumps(percentAcc)
 
 
+        feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).filter(feedbackUsuario__gte=1).order_by('feedbackUsuario')
+        feedbacksSoma = feedbacks.aggregate(Sum('contagem'))
+        feedbacksSoma = feedbacksSoma['contagem__sum']
 
-        feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).order_by('feedbackUsuario')
+        percentFeedbacks = []      #Porcentagem dos feedbacks
 
-
-
+        for i in feedbacks:
+            i['percentual'] = (i['contagem'] / feedbacksSoma) * 100
+            percentFeedbacks.append(i['percentual'])
+        #Passando a porcentagem para o grafico
+        self.context['percentFeedbacks'] = json.dumps(percentFeedbacks)
 
 
         chamado = Chamado.objects.count()
@@ -69,6 +74,34 @@ class DashboardView(generic.ListView):
         template_name = 'sistema/dashboard/dashboard.html'
         return render(request, template_name, self.context)
 '''Fim da tela do Dashboard'''
+
+
+class EmpresaRedirect(View):
+    def get(self, request):
+        empresa = Empresa.objects.filter(id=1)
+        if empresa:
+            return redirect('sistema:editarempresa', pk=1)
+        else:
+            return redirect('sistema:cadastrarempresa')
+
+
+
+class EmpresaCreateView(generic.CreateView):
+
+    model = Empresa
+    form_class = EmpresaForm
+    template_name = 'sistema/empresa/cadastrarempresa.html'
+    success_url = reverse_lazy('sistema:cadastrarempresa')
+
+
+class EmpresaEditView(generic.UpdateView):
+
+    model = Empresa
+    form_class = EmpresaForm
+    template_name = 'sistema/empresa/editarempresa.html'
+    success_url = reverse_lazy('sistema:editarempresa', pk=1)
+
+
 
 """Gerenciamento de usuários"""
 class UsuariosCreateView(generic.CreateView):
@@ -378,6 +411,7 @@ class ChamadoUpdateView(generic.UpdateView):
         iniGatantia = str(iniGatantia.strftime("%d-%m-%Y"))
         hoje = self.object.dataCadastro
         hoje = str(hoje.strftime("%d-%m-%Y"))
+
 
         date_format = "%d-%m-%Y"
         a = datetime.strptime(iniGatantia, date_format)

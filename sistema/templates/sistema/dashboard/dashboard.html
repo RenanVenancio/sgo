@@ -148,17 +148,19 @@
     });
 
 
+    var percentFeedbacks = JSON.parse('{{ percentFeedbacks|safe }}');
+
 
     var ctx = document.getElementsByClassName("grafico-feedbacks-usuarios");
     var myDoughnutChart = new Chart(ctx, {
-        type: "doughnut",
+        type: "bar",
         data:{
-            labels: rotulos,
+            labels: ['(%)Péssimo', '(%)Ruim', '(%)Regular', '(%)Bom', '(%)Excelente'],
             datasets: [{
 
-                label: '(%)Individual',
+                label: 'Porcentagem',
 
-                data: dadosPercent,
+                data: percentFeedbacks,
                 borderWidth: 6,
                 borderColor: [
                     'rgba(255,99,132,1)',

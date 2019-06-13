@@ -27,6 +27,17 @@ urlpatterns = [
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
     path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:dashboard')}, name='logout'),
 
+    path('empresa/', staff_member_required(
+        views.EmpresaRedirect.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='empresa'),
+
+    path('empresa/cadastrarempresa/', staff_member_required(
+        views.EmpresaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='cadastrarempresa'),
+
+    path('empresa/editarempresa/<int:pk>/', staff_member_required(
+        views.EmpresaEditView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='editarempresa'),
 
     path('usuarios/editarusuario/<int:pk>/mudarsenha', staff_member_required(
         views.UsuariosPasswordUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
