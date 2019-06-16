@@ -24,7 +24,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Empresa
-        fields = ('cnpj', 'nome', 'endereco', 'bairro', 'cidade', 'estado', 'telefone1', 'telefone2', 'email', 'sobre')
+        fields = ('id', 'cnpj', 'nome', 'endereco', 'bairro', 'cidade', 'estado', 'telefone1', 'telefone2', 'email', 'sobre')
 
 
 class ApartamentoSerializer(serializers.ModelSerializer):
