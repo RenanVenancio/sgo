@@ -4,7 +4,6 @@ from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
 class EmpresaForm(forms.ModelForm):
-    senhaEmailMensagensAutomaticas = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = Empresa
         fields = '__all__'
