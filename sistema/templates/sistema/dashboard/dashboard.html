@@ -186,13 +186,14 @@
 
 
         var percentFeedbacks = JSON.parse('{{ percentFeedbacks|safe }}');
+        var rotulosFeedbacks = JSON.parse('{{ rotulosFeedbacks|safe }}');
 
 
         var ctx = document.getElementsByClassName("grafico-feedbacks-usuarios");
         var myDoughnutChart = new Chart(ctx, {
             type: "bar",
             data: {
-                labels: ['(%)Péssimo', '(%)Ruim', '(%)Regular', '(%)Bom', '(%)Excelente'],
+                labels: rotulosFeedbacks,
                 datasets: [{
 
                     label: 'Porcentagem',

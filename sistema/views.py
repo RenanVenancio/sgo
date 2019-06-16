@@ -73,17 +73,24 @@ class DashboardView(generic.ListView):
 
 
         #Coletando os dados dos feedbacks nos chamados para inserir no gráfico
-        feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).filter(feedbackUsuario__gte=1).order_by('feedbackUsuario')
+        feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario'))\
+            .filter(feedbackUsuario__gte=1, dataCadastro__range=[periodoInicial, periodoFinal]).order_by('feedbackUsuario')
+
         feedbacksSoma = feedbacks.aggregate(Sum('contagem'))
         feedbacksSoma = feedbacksSoma['contagem__sum']
-
+        feedbacksRotulos = []
         percentFeedbacks = []      #Porcentagem dos feedbacks
+
+
 
         for i in feedbacks:
             i['percentual'] = (i['contagem'] / feedbacksSoma) * 100
+            feedbacksRotulos.append(str(i['feedbackUsuario']) + ' Estrela(s)')
             percentFeedbacks.append(i['percentual'])
         #Passando a porcentagem dos feedbacks para o grafico
         self.context['percentFeedbacks'] = json.dumps(percentFeedbacks)
+        self.context['rotulosFeedbacks'] = json.dumps(feedbacksRotulos)
+
         #Fim grafico feedbacks
 
 
