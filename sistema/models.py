@@ -137,7 +137,7 @@ class CategoriaDeProblema(models.Model):
 
 class Chamado(models.Model):
     protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
-    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
+    prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     statusChamado = models.CharField('Status do chamado', choices=ENUM_STATUS, max_length=20, default='Em analise')
     dataCadastro = models.DateField('Data de cadastro', auto_now_add=True)
     dataInteracao = models.DateTimeField('Data de interação', auto_now=True)
@@ -148,7 +148,7 @@ class Chamado(models.Model):
     areaComum=models.ForeignKey('sistema.AreaComum', on_delete=models.PROTECT, verbose_name='Selecione uma Área comum', blank=True, null=True)
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=False, null=False)
     descricao = models.TextField('Descreva o problema')
-    img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True)
+    img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True, null=True)
     novosEventos= models.BooleanField(verbose_name='Novos eventos disponíveis', default=False)
     feedbackUsuario = models.PositiveSmallIntegerField('Feedback dado pelo Usuário', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0, blank=True, null=True)
 
@@ -203,6 +203,11 @@ class Usuarios(User):           #Sempre usar essa classe dentro do sistema
     cpf = models.CharField(max_length=20, blank=False, unique=True, null=False)
     telefone1 = models.CharField(max_length=15, blank=True, null=True)
     telefone2 = models.CharField(max_length=15, blank=True, null=True)
+    limiteChamadosDia = models.PositiveSmallIntegerField('Número limite de chamados por dia', validators=[MinValueValidator(1), MaxValueValidator(50)], default=5, null=False, blank=False)
+    User._meta.get_field('first_name').blank = False
+    User._meta.get_field('email').blank = False
+    User._meta.get_field('email')._unique = True
 
     def __str__(self):
         return 'CPF: ' + self.cpf + ' - NOME: ' + self.get_full_name()
+

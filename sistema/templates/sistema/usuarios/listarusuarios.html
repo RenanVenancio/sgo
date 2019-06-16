@@ -38,6 +38,7 @@
                             <thead>
                                 <tr>
                                     <th>Nome</th>
+                                    <th>CPF</th>
                                     <th>E-mail</th>
                                     <th>Login</th>
                                     <th>Membro da equipe</th>
@@ -56,6 +57,7 @@
                             {% for usuario in usuarios %}
                             <tr>
                                 <td>{{ usuario.first_name }}</td>
+                                <td>{{ usuario.cpf }}</td>
                                 <td><a href="/usuarios/editarusuario/{{ usuario.id }}">{{ usuario.email }}</a></td>
                                 <td><a href="/usuarios/editarusuario/{{ usuario.id }}">{{ usuario.username }}</a></td>
 

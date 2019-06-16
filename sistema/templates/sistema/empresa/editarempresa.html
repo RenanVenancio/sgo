@@ -149,10 +149,11 @@
                             </button>
 
 
-                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarempresa' empresa.pk %}" onclick="return confirm('Você tem certeza?');">
+                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletarempresa' empresa.pk %}") >
                                 <i class="material-icons">delete</i>
                                 <span>DELETAR</span>
                             </a>
+
                         </form>
                     </div>
                 </div>

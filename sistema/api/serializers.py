@@ -3,6 +3,21 @@ from sistema.models import *
 from datetime import datetime
 from datetime import date
 
+class UsuarioSerializer(serializers.ModelSerializer):
+    numChamadosAbertosHoje = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Usuarios
+        fields = ('id', 'first_name', 'last_name', 'email', 'cpf', 'telefone1', 'telefone2', 'username', 'numChamadosAbertosHoje', 'limiteChamadosDia')
+        read_only_fields = ('id', 'cpf', 'first_name', 'last_name', 'limiteChamadosDia')
+
+
+    def get_numChamadosAbertosHoje(self, obj): #Filtra e traz o ultimo evento
+        hoje = str(date.today().strftime("%Y-%m-%d"))
+        nrChamados = int(Chamado.objects.filter(usuario=obj, dataCadastro=hoje).count())
+
+        return nrChamados
+
 class EmpresaSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
     #bloco_set = BlocoSerializer(many=True, read_only=True)
@@ -68,13 +83,10 @@ class EmpreendimentoSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
-
 class NestedEmpreendimentoSerialize(serializers.ModelSerializer):
     class Meta:
         model = Empreendimento
         fields = ['id', 'nomeEmpreendimento']
-
 
 
 class NestedBlocoSerialize(serializers.ModelSerializer):
@@ -82,7 +94,6 @@ class NestedBlocoSerialize(serializers.ModelSerializer):
     class Meta:
         model = Bloco
         fields = ['id', 'bloco', 'empreendimento']
-
 
 
 class ApartamentoProprietarioSerializer(serializers.ModelSerializer): #Serializa os apartamentos pelo id do proprietario
@@ -127,8 +138,6 @@ class CategoriaDeProblemaSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
-
 class AreaComumSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
     class Meta:
@@ -136,7 +145,6 @@ class AreaComumSerializer(serializers.ModelSerializer):
         model = AreaComum
         fields = ('id', 'nomeArea')
         read_only_fields = ('id',)
-
 
 
 class EventoChamadoSerializer(serializers.ModelSerializer):
@@ -179,7 +187,6 @@ class ChamadoListSerializer(serializers.ModelSerializer):
         model = Chamado
         fields = ['id', 'dataCadastro', 'protocolo', 'statusChamado', 'ultimo_evento', 'categoriaProblema', 'usuario', 'envolveAreaComum', 'areaComum', 'apartamento', 'descricao', 'img', 'novosEventos', 'feedbackUsuario']
         read_only_fields = ('id', 'dataCadastro', 'protocolo', 'usuario', 'statusChamado')
-
 
     def get_ultimo_evento(self, obj): #Filtra e traz o ultimo evento
         evento = EventosChamado.objects.filter(chamado=obj.pk).first()

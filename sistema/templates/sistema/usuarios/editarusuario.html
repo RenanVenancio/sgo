@@ -43,7 +43,7 @@
 
                                         <div class="row clearfix">
                                             <div class="col-sm-6">
-                                                <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
+                                                <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }} *</label>
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         {{ form.first_name|add_class:"form-control"}}
@@ -66,7 +66,7 @@
 
                                         <div class="row clearfix">
                                             <div class="col-sm-12">
-                                                <label for="{{ form.cpf.auto_id }}">{{ form.cpf.label }}</label>
+                                                <label for="{{ form.cpf.auto_id }}">{{ form.cpf.label }} *</label>
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         {{ form.cpf|add_class:"form-control"}}
@@ -78,7 +78,7 @@
 
                                         <div class="row clearfix">
                                             <div class="col-sm-12">
-                                                <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+                                                <label for="{{ form.email.auto_id }}">{{ form.email.label }} *</label>
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         {{ form.email|add_class:"form-control"}}
@@ -113,7 +113,7 @@
 
                                         <div class="row clearfix">
                                             <div class="col-sm-12">
-                                                <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
+                                                <label for="{{ form.username.auto_id }}">{{ form.username.label }} *</label>
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         {{ form.username|add_class:"form-control"}}
@@ -123,6 +123,18 @@
                                             </div>
                                         </div>
 
+
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <label for="{{ form.limiteChamadosDia.auto_id }}">{{ form.limiteChamadosDia.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.limiteChamadosDia|add_class:"form-control"}}
+                                                    </div>
+                                                    {{ form.limiteChamadosDia.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <hr>
                                         <h6 class="font-bold col-pink">Se a caixa abaixo estiver ligada, o usuário terá
@@ -147,10 +159,8 @@
 
                                         <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i
                                                 class="material-icons">save</i><span>SALVAR</span></button>
-                                        <a class="btn btn-danger m-t-15 waves-effect"
-                                           style="background-color: red; border-color: red;"
-                                           href="{% url 'sistema:deletarusuario' usuarios.pk %}"
-                                           onclick="return confirm('Você tem certeza?');">
+
+                                        <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletarusuario' usuarios.pk %}") >
                                             <i class="material-icons">delete</i>
                                             <span>DELETAR</span>
                                         </a>

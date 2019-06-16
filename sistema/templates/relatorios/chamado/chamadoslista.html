@@ -1,0 +1,93 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Chamados | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        CHAMADOS
+                    </h2>
+
+
+                <div class="body">
+                    <div class="section">
+                        <div class="row">
+                            {% if status_get != "Todos" %}
+                                <p class="col-sm-6">Status: <span class="badge">{{ status_get }}</span></p>
+                            {% endif %}
+                            {% if proprietario_get != "Todos" %}
+                                <p class="col-sm-6">Proprietário: <span class="new badge">{{ proprietario_get }}</span></p>
+                            {% endif %}
+                            {% if categoria_get != "Todos" %}
+                                <p class="col-sm-6">Categoria: <span class="badge">{{ categoria_get }}</span></p>
+                            {% endif %}   
+                            {% if empreendimento_get != "Todos" %}
+                                <p class="col-sm-6">Empreendimento: <span class="badge">{{ empreendimento_get }}</span></p>
+                            {% endif %}
+                            {% if area_get != "Todos" %}
+                                <p class="col-sm-6">Área comum: <span class="badge">{{ area_get }}</span></p>
+                            {% endif %}
+                            {% if dataInicial_get != "Todos" %}
+                                <p class="col-sm-6">Período: <span class="badge">{{ dataInicial_get }} até {{ dataFinal_get }}</span></p>
+                            {% endif %}
+                            <p class="col-sm-6">Prioridade: <span class="badge">{{ prioridade_get }}</span></p>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                          <thead>
+                            <tr>
+                              <th>Protocolo</th>
+                              <th>Data de cadastro</th>
+                              <th>Prioridade</th>
+                              <th>Status</th>
+                              <th>Empreendimento</th>
+                              <th>Solicitante</th>
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr>
+                              <th>Protocolo</th>
+                              <th>Data de cadastro</th>
+                              <th>Prioridade</th>
+                              <th>Status</th>
+                              <th>Empreendimento</th>
+                              <th>Solicitante</th>
+                            </tr>
+                          </tfoot>
+                          <tbody>
+                            {% for chamado in chamados %}
+                                <tr>
+                                    <td><a href="{{ chamado.get_absolute_url }}">{{ chamado.protocolo }}</a></td>
+                                    <td>{{ chamado.dataCadastro }}</td>
+                                    <td>{{ chamado.prioridade }}</td>
+                                    <td>{{ chamado.statusChamado }}</td>
+                                    <td>{{ chamado.apartamento.bloco.empreendimento }}</td>
+                                    <td>{{ chamado.usuario.first_name }} {{ chamado.usuario.last_name }}</td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- #END# Exportable Table -->
+
+
+
+
+{% endblock %}

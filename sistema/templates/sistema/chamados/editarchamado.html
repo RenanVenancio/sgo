@@ -28,7 +28,7 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            EDITAR CHAMADO <b>{{ form.protocolo.value }} </b>
+                            EDITAR CHAMADO <b>{{ view.protocolo }}</b>
 
                             <div id="feedback-usuario" class="form-group">
                                 <h5>Feedback do Proprietário</h5>
@@ -181,10 +181,19 @@
                                 </div>
                             </div>
 
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <p><b>Aberto em:</b> {{ view.dataCadastro }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>SALVAR</span></button>
-                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarchamado' chamado.pk %}" onclick="return confirm('Você tem certeza?');">
+                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletarchamado' chamado.pk %}")>
                                 <i class="material-icons">delete</i>
                                 <span>DELETAR</span>
                             </a>
@@ -223,10 +232,11 @@
                               <th> {{ evento.descricaoEvento }} </th>
                               <th>
 
-                                  <a href="{% url 'sistema:deletareventochamado' evento.pk %}" type="button" class="btn bg-red waves-effect" onclick="return confirm('Você tem certeza?');">
+                                <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletareventochamado' evento.pk %}") >
                                     <i class="material-icons">delete</i>
-
+                                    <span>DELETAR</span>
                                 </a>
+
                               </th>
                             </tr>
                         {% endfor %}
@@ -328,16 +338,13 @@
             $("#id_prioridade").ionRangeSlider({
                 skin: "round",
                 grid: false,
-                grid_num: 5,
-                min: 1,
+                grid_num: 6,
+                min: 0,
                 max: 5,
                 max_postfix: " Máxima",
                 prefix: "Prioridade: ",
 
             });
-
-
-
 
             var options = {
                 max_value: 5,

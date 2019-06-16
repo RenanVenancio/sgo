@@ -5,22 +5,47 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import F, Count, Sum
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.test import override_settings
 from django.urls import reverse_lazy
 from django.views import generic
 from rest_framework import generics, permissions
 from .forms import *
 from django.views.generic import View
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
+from datetime import date
+from django.core.mail import get_connection
 
-'''Tela do Dashboard'''
+
 class DashboardView(generic.ListView):
 
     context = {}
     def get(self, request):
+        #Pegando datas passadas via GET
+        periodoInicial = self.request.GET.get('periodoInicial')
+        periodoFinal = self.request.GET.get('periodoFinal')
+
+
+        #Se não for passada nenhuma data, pegue a a atual - 30 dias
+        if periodoInicial and periodoFinal:
+            pass
+        else:
+            dataEntrada = date.today()
+            dataEntrada = dataEntrada - timedelta(30)
+            periodoInicial = str(dataEntrada.strftime("%Y-%m-%d"))
+            periodoFinal = str(date.today().strftime("%Y-%m-%d"))
+
+        #Passando as datas pro contexto
+        self.context['periodoInicial'] = periodoInicial
+        self.context['periodoFinal'] = periodoFinal
+
+
         #Coletando os dados das categorias nos chamados para inserir no gráfico ABC
-        categorias = Chamado.objects.all().values(catProblema=F('categoriaProblema__nomeCategoria')).annotate(ocorrencias=Count('catProblema')).order_by('-ocorrencias')
-        categoriasSoma = categorias.aggregate(Sum('ocorrencias'))
+        categorias = Chamado.objects.all().values(catProblema=F('categoriaProblema__nomeCategoria'))\
+            .annotate(ocorrencias=Count('catProblema'))\
+            .order_by('-ocorrencias').filter(dataCadastro__range=[periodoInicial, periodoFinal])
+
+        categoriasSoma = categorias.filter(dataCadastro__range=[periodoInicial, periodoFinal]).aggregate(Sum('ocorrencias'))
         categoriasSoma = categoriasSoma['ocorrencias__sum']
 
         nomesCatProblemas = []          #Nomes das categorias dos problemas
@@ -46,6 +71,7 @@ class DashboardView(generic.ListView):
         self.context['dadosPercentAcc'] = json.dumps(percentAcc)
         #Fim dos dados do grafico ABC
 
+
         #Coletando os dados dos feedbacks nos chamados para inserir no gráfico
         feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario')).filter(feedbackUsuario__gte=1).order_by('feedbackUsuario')
         feedbacksSoma = feedbacks.aggregate(Sum('contagem'))
@@ -61,16 +87,16 @@ class DashboardView(generic.ListView):
         #Fim grafico feedbacks
 
 
-        chamado = Chamado.objects.count()
+        chamado = Chamado.objects.filter(dataCadastro__range=[periodoInicial, periodoFinal]).count()
         self.context['chamados'] = chamado
 
-        chamadosAnalise = Chamado.objects.filter(statusChamado='Em analise').count()
+        chamadosAnalise = Chamado.objects.filter(statusChamado='Em analise', dataCadastro__range=[periodoInicial, periodoFinal]).count()
         self.context['chamadosAnalise'] = chamadosAnalise
 
-        chamadosFinalizados = Chamado.objects.filter(statusChamado='Finalizado').count()
+        chamadosFinalizados = Chamado.objects.filter(statusChamado='Finalizado', dataCadastro__range=[periodoInicial, periodoFinal]).count()
         self.context['chamadosFinalizados'] = chamadosFinalizados
 
-        usuarios =  Usuarios.objects.all().count()
+        usuarios =  Usuarios.objects.filter(date_joined__range=[periodoInicial, periodoFinal]).count()
         self.context['usuarios'] = usuarios
 
         template_name = 'sistema/dashboard/dashboard.html'
@@ -99,7 +125,7 @@ class EmpresaEditView(generic.UpdateView):
     model = Empresa
     form_class = EmpresaForm
     template_name = 'sistema/empresa/editarempresa.html'
-    success_url = reverse_lazy('sistema:cadastrarempresa')
+    success_url = reverse_lazy('sistema:dashboard')
 
 
 class EmpresaDeleteView(generic.DeleteView):
@@ -387,10 +413,7 @@ class ChamadoCreateView(generic.CreateView):
     form_class = ChamadoForm
     template_name = 'sistema/chamados/cadastrarchamado.html'
     success_url = reverse_lazy('sistema:listarchamados')
-    def get_context_data(self, **kwargs):
-        context = super(generic.CreateView, self).get_context_data(**kwargs)
-        context['apartamentos'] = Apartamento.objects.all()
-        return context
+
 
 
 class ChamadoUpdateView(generic.UpdateView):
@@ -410,6 +433,12 @@ class ChamadoUpdateView(generic.UpdateView):
         context.update(**context)
 
         return super(generic.UpdateView, self).get_context_data(**kwargs)
+
+    def dataCadastro(self):
+        return self.object.dataCadastro
+
+    def protocolo(self):
+        return self.object.protocolo
 
     def garantia(self):
         print(self.object.protocolo)
@@ -482,10 +511,77 @@ class EventoChamadoCreateView(View):
         return redirect('sistema:editarchamado', pk=idChamado)
 
 
+class RelatorioChamadoFiltro(View):
+    context = {}
+    def get(self, request):
+
+        query_usuarios =  Usuarios.objects.all()
+        self.context['usuarios'] = query_usuarios
+
+        query_empreendimentos =  Empreendimento.objects.all()
+        self.context['empreendimentos'] = query_empreendimentos
+
+        query_categoriasDeProblemas =  CategoriaDeProblema.objects.all()
+        self.context['categorias'] = query_categoriasDeProblemas
+
+        query_areasComuns =  AreaComum.objects.all()
+        self.context['areasComuns'] = query_areasComuns
+
+        statusChamado = self.request.GET.get('status-chamado')
+        dataInicial = self.request.GET.get('data-inicial')
+        dataFinal = self.request.GET.get('data-final')
+        empreendimento = self.request.GET.get('empreendimento')
+        proprietario = self.request.GET.get('proprietario')
+        categoria = self.request.GET.get('categoria')
+        areasComuns = self.request.GET.get('area-comum')
+        prioridade = self.request.GET.get('prioridade')
+
+
+        self.context['prioridade_get'] = prioridade.split(";")[0] + " a " +  prioridade.split(";")[1] if prioridade else "None"
+        self.context['status_get'] = statusChamado if statusChamado else "Todos"
+        self.context['dataInicial_get'] = dataInicial if dataInicial else "Todos"
+        self.context['dataFinal_get'] = dataFinal if dataFinal else "Todos"
+        self.context['area_get'] = query_areasComuns.get(pk=areasComuns) if areasComuns else "Todos"
+        self.context['proprietario_get'] = query_usuarios.get(pk=proprietario) if proprietario else "Todos"
+        self.context['categoria_get'] = query_categoriasDeProblemas.get(pk=categoria) if categoria else "Todos"
+        self.context['empreendimento_get'] = query_empreendimentos.get(pk=categoria) if categoria else "Todos"
+
+        if statusChamado or proprietario or dataFinal or dataFinal or empreendimento or categoria or areasComuns or prioridade:
+
+            filters = {}
+            if statusChamado:
+                filters['statusChamado'] = statusChamado
+
+            if dataInicial and dataFinal:
+                filters['dataCadastro__range'] = [dataInicial, dataFinal]
+
+            if empreendimento:
+                filters['apartamento__bloco__empreendimento'] = empreendimento
+
+            if proprietario:
+                filters['usuario'] = proprietario
+
+            if categoria:
+                filters['categoriaProblema'] = categoria
+
+            if areasComuns:
+                filters['areaComum'] = areasComuns
+
+            if prioridade:
+                filters['prioridade__range'] = prioridade.split(";")
+
+
+            chamadoFiltrado = Chamado.objects.filter(**filters)
+
+            self.context['chamados'] = chamadoFiltrado
+            return render(request, 'relatorios/chamado/chamadoslista.html', self.context)
+
+
+        template_name = 'relatorios/chamado/filtragens.html'
+        return render(request, template_name, self.context)
+
 
 """Fim gerenciamento de chamados"""
-
-
 from sistema.api.serializers import ApartamentoProprietarioSerializer
 class ApartamentoProprietarioListJson(generics.ListAPIView):
     ''''

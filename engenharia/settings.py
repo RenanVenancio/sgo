@@ -14,6 +14,7 @@ import os
 from decouple import config
 from dj_database_url import parse as dburl
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -177,4 +178,8 @@ REST_FRAMEWORK = {
 }
 
 
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'naorespondasgoengenharia@gmail.com'
+EMAIL_HOST_PASSWORD = 'sgo101220'
+EMAIL_USE_TLS = True

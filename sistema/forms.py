@@ -4,6 +4,7 @@ from django import forms
 from .models import *
 from django.core.exceptions import ValidationError
 class EmpresaForm(forms.ModelForm):
+    senhaEmailMensagensAutomaticas = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = Empresa
         fields = '__all__'
@@ -70,16 +71,7 @@ class ChamadoForm(forms.ModelForm):
     class Meta:
         model = Chamado
         fields = '__all__'
-        #exclude = ['protocolo']
-
-    def clean_envolveAreaComum(self):
-        cleaned_data = super(ChamadoForm, self).clean()
-        envolveAreaComum = cleaned_data.get("envolveAreaComum")
-        areaComum = cleaned_data.get("areaComum")
-
-        if(envolveAreaComum == True) and (areaComum == None):
-            raise ValidationError("Selecione uma área comum.")
-        return envolveAreaComum
+        exclude = ['protocolo']
 
 
 class EventoChamadoForm(forms.ModelForm):

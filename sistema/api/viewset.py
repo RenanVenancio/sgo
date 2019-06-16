@@ -1,12 +1,22 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from .serializers import *
 from rest_framework import permissions
-from rest_framework import generics
 from sistema.models import *
 from rest_framework import filters
+from rest_framework import generics, mixins, views
+
+
+class UsuarioViewApi(mixins.ListModelMixin, mixins.UpdateModelMixin, GenericViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = UsuarioSerializer
+
+    def get_queryset(self):
+        user = Usuarios.objects.filter(pk=self.request.user.pk)
+        return user
 
 
 class EmpresaListViewAPI(ReadOnlyModelViewSet):
@@ -185,7 +195,7 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
 
         hoje = str(date.today().strftime("%Y-%m-%d"))
         nrChamados = int(Chamado.objects.filter(usuario=usuario, dataCadastro=hoje).count())
-        if(nrChamados >= 5):
+        if(nrChamados >= usuario.limiteChamadosDia):
             raise serializers.ValidationError("Você excedeu o numero limite de chamados que podem ser abertos por dia")
         else:
             serializer.save(usuario=usuario)
@@ -201,7 +211,6 @@ class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
     read:
         Forneça um id de um chamado para visualizar
         OBS: Traz os campos como apartamento, cat de problema, área comum como string.
-
     '''
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
@@ -214,15 +223,3 @@ class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
     filter_backends = (filters.SearchFilter,)
     search_fields = ('protocolo', 'descricao', 'statusChamado')
 
-
-'''
-class ChamadoDetailsViewAPI(ModelViewSet):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = (TokenAuthentication,)
-
-    serializer_class = ChamadoCreateUpdateSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        return Chamado.objects.filter(usuario=user.pk)
-'''
