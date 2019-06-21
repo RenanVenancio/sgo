@@ -72,11 +72,11 @@ class DashboardView(generic.ListView):
         #Fim dos dados do grafico ABC
 
 
-        '''CONTRUINDO O DE CHAMADOS'''
+        '''GRAFICO DE EMPREENDIMENTOS'''
         #Coletando os dados das categorias nos chamados para inserir no gráfico ABC
         chamados = Chamado.objects.all().values(emprendimento=F('apartamento__bloco__empreendimento__nomeEmpreendimento'))\
             .annotate(ocorrencias=Count('emprendimento'))\
-            .order_by('emprendimento').filter(dataCadastro__range=[periodoInicial, periodoFinal])
+            .order_by('-ocorrencias').filter(dataCadastro__range=[periodoInicial, periodoFinal])
 
         contagemEmpreendimentos = categorias.filter(dataCadastro__range=[periodoInicial, periodoFinal]).aggregate(Sum('ocorrencias'))
         contagemEmpreendimentos = contagemEmpreendimentos['ocorrencias__sum']
@@ -104,7 +104,7 @@ class DashboardView(generic.ListView):
         self.context['dadosPercentAccEmpreendimento'] = json.dumps(percentAccEmpreendimento)
         #Fim dos dados do grafico ABC
 
-        '''CHAMA'''
+        '''FIM GRAFICO EMPREENDIMENTOS'''
 
 
         #Coletando os dados dos feedbacks nos chamados para inserir no gráfico
