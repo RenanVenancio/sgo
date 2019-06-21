@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser, JSONParser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from .serializers import *
@@ -180,9 +181,9 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
     delete:
         Utilize essa url para deletar um chamado passando o id do mesmo na Url
     '''
-
+    parser_classes = (MultiPartParser, FormParser, JSONParser,)
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (TokenAuthentication,)
+    #authentication_classes = (TokenAuthentication,)
     serializer_class = ChamadoCreateUpdateSerializer
 
     def get_queryset(self):
