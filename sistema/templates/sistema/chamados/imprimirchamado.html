@@ -1,0 +1,91 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Impressão de chamado</title>
+    <!-- Favicon-->
+     <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css" media="print">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" media="print">
+
+    <!-- Bootstrap Core Css -->
+    <link href="{% static 'plugins/bootstrap/css/bootstrap.css' %}" rel="stylesheet" media="print">
+
+
+    <!-- Custom Css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" media="print">
+
+</head>
+
+<body>
+
+<div class="col-sm-12">
+
+    <div class="row">
+        <div class="col-sm-8"><h3>{{ empresa.nome|default_if_none:"&nbsp;" }}</h3></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">{{ empresa.endereco|default_if_none:"&nbsp;" }} -
+            {{ empresa.bairro|default_if_none:"&nbsp;" }} {{ empresa.cidade|default_if_none:"&nbsp;" }}-{{ empresa.estado|default_if_none:"&nbsp;" }} <br>
+            Email {{ empresa.email|default_if_none:"&nbsp;" }} <br>
+            Telefones: {{ empresa.telefone1|default_if_none:"&nbsp;" }} / {{ empresa.telefone2|default_if_none:"&nbsp;" }}
+        </div>
+
+    </div>
+
+</div>
+<hr>
+<h4>CHAMADO {{ chamado.protocolo }}</h4>
+<small>ABERTO EM: {{ chamado.dataCadastro }}</small>
+<hr>
+
+<table style="height: 53px;" width="700">
+
+    <tbody>
+        <tr>
+            <td style="width: 200px;">Status: <b>{{ chamado.statusChamado }}</b></td>
+            <td style="width: 200px;">Prioridade: <b>{{ chamado.prioridade }}</b></td>
+            <td style="width: 200px;">Categoria: <b>{{ chamado.categoriaProblema }}</b></td>
+        </tr>
+
+        <tr>
+            <td style="width: 200px;">Área comum: <b>{{ chamado.areaComum|default_if_none:"&nbsp;" }}</b></td>
+        </tr>
+
+        </tr>
+            <td style="width: 200px;" colspan="3">Proprietário: <b>{{ chamado.usuario }}</b></td>
+        </tr>
+
+        </tr>
+            <td style="width: 200px;" colspan="3">Tel: <b>{{ chamado.usuario.telefone1|default_if_none:"&nbsp;" }} - {{ chamado.usuario.telefone2|default_if_none:"&nbsp;" }}</b></td>
+        </tr>
+
+        </tr>
+            <td style="width: 200px;" colspan="3">Apartamento: <b>{{ chamado.apartamento|default_if_none:"&nbsp;" }}</b></td>
+        </tr>
+
+        </tr>
+            <td style="width: 200px;" colspan="3"><br>Descrição do problema: <br><b>{{ chamado.descricao|default_if_none:"&nbsp;" }}</b></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+</body>
+</html>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script>
+    $( document ).ready(function() {
+        window.print();
+    });
+</script>

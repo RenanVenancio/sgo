@@ -72,6 +72,41 @@ class DashboardView(generic.ListView):
         #Fim dos dados do grafico ABC
 
 
+        '''CONTRUINDO O DE CHAMADOS'''
+        #Coletando os dados das categorias nos chamados para inserir no gráfico ABC
+        chamados = Chamado.objects.all().values(emprendimento=F('apartamento__bloco__empreendimento__nomeEmpreendimento'))\
+            .annotate(ocorrencias=Count('emprendimento'))\
+            .order_by('emprendimento').filter(dataCadastro__range=[periodoInicial, periodoFinal])
+
+        contagemEmpreendimentos = categorias.filter(dataCadastro__range=[periodoInicial, periodoFinal]).aggregate(Sum('ocorrencias'))
+        contagemEmpreendimentos = contagemEmpreendimentos['ocorrencias__sum']
+
+        nomesEmpreendimentos = []          #Nomes das categorias dos problemas
+        qtdOcorrenciaEmpreendimento = []  #Quantidade de vezes que o problema ocorre
+        percentEmpreendimento = []      #Porcentagem
+        percentAccEmpreendimento = []   #Porcentagem acumulada
+
+
+        for ind, i in enumerate(chamados):
+            nomesEmpreendimentos.append(i['emprendimento'])
+            qtdOcorrenciaEmpreendimento.append(i['ocorrencias'])
+            percentEmpreendimento.append((   ((i['ocorrencias'] / contagemEmpreendimentos) * 100))  )
+            if(ind == 0):
+                percentAccEmpreendimento.append(percentEmpreendimento[ind])
+            else:
+                percentAccEmpreendimento.append(  ((percentEmpreendimento[ind] + percentAccEmpreendimento[ind - 1]))   )
+
+
+        #Passando os dados para o contexto
+        self.context['rotulosGraficoEmpreendimento'] = json.dumps(nomesEmpreendimentos)
+        self.context['dadosGraficoEmpreendimento'] = json.dumps(qtdOcorrenciaEmpreendimento)
+        self.context['dadosPercentEmpreendimento'] = json.dumps(percentEmpreendimento)
+        self.context['dadosPercentAccEmpreendimento'] = json.dumps(percentAccEmpreendimento)
+        #Fim dos dados do grafico ABC
+
+        '''CHAMA'''
+
+
         #Coletando os dados dos feedbacks nos chamados para inserir no gráfico
         feedbacks = Chamado.objects.all().values('feedbackUsuario').annotate(contagem=Count('feedbackUsuario'))\
             .filter(feedbackUsuario__gte=1, dataCadastro__range=[periodoInicial, periodoFinal]).order_by('feedbackUsuario')
@@ -103,7 +138,7 @@ class DashboardView(generic.ListView):
         chamadosFinalizados = Chamado.objects.filter(statusChamado='Finalizado', dataCadastro__range=[periodoInicial, periodoFinal]).count()
         self.context['chamadosFinalizados'] = chamadosFinalizados
 
-        usuarios =  Usuarios.objects.filter(date_joined__range=[periodoInicial, periodoFinal]).count()
+        usuarios =  Usuarios.objects.filter(date_joined__range=[periodoInicial, periodoFinal + ' 23:59:59']).count()
         self.context['usuarios'] = usuarios
 
         template_name = 'sistema/dashboard/dashboard.html'
@@ -409,7 +444,7 @@ class AreaComumDeleteView(generic.DeleteView):
 
 class ChamadoListView(generic.ListView):
 
-    queryset = Chamado.objects.all().order_by('-protocolo')
+    queryset = Chamado.objects.all().order_by('protocolo')
     context_object_name = 'chamados'
     template_name = 'sistema/chamados/listarchamados.html'
 
@@ -421,14 +456,17 @@ class ChamadoCreateView(generic.CreateView):
     template_name = 'sistema/chamados/cadastrarchamado.html'
     success_url = reverse_lazy('sistema:listarchamados')
 
+from django.contrib.messages.views import SuccessMessageMixin
 
-
-class ChamadoUpdateView(generic.UpdateView):
+class ChamadoUpdateView(SuccessMessageMixin, generic.UpdateView):
 
     model = Chamado
     form_class = ChamadoForm
     template_name = 'sistema/chamados/editarchamado.html'
-    success_url = reverse_lazy('sistema:listarchamados')
+    success_message = "Chamado alterado com sucesso!"
+    #success_url = reverse_lazy('sistema:listarchamados')
+    idChamado = 3
+
 
     def get_context_data(self, **kwargs):
         context = {}
@@ -516,6 +554,23 @@ class EventoChamadoCreateView(View):
             novoEvento.save()
 
         return redirect('sistema:editarchamado', pk=idChamado)
+
+
+
+class ChamadoPrintView(generic.UpdateView):
+    context = {}
+
+    def get(self, request, **kwargs):
+
+        idChamado = kwargs['pk']
+
+        empresa = Empresa.objects.all()
+        self.context['empresa'] = empresa[0]
+        chamado = Chamado.objects.get(id=idChamado)
+        self.context['chamado'] = chamado
+
+        return render(request, 'sistema/chamados/imprimirchamado.html', self.context)
+
 
 
 class RelatorioChamadoFiltro(View):

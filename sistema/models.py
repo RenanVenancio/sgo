@@ -135,6 +135,12 @@ class CategoriaDeProblema(models.Model):
         verbose_name_plural = 'Categorias'
 
 
+import sys
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
 class Chamado(models.Model):
     protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
     prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
@@ -162,8 +168,10 @@ class Chamado(models.Model):
     def save(self, *args, **kwargs):
         if(not self.protocolo):
             self.protocolo = datetime.today().strftime('%d%m%Y%H%M%S') + str(randint(1000, 2000))
+            self.redimensionarImagem(self.img)
             super(Chamado, self).save(*args, **kwargs)
         else:
+            self.redimensionarImagem(self.img)
             super(Chamado, self).save(*args, **kwargs)
 
         if(not EventosChamado.objects.filter(chamado=self.pk)):
@@ -171,6 +179,35 @@ class Chamado(models.Model):
             evento.descricaoEvento = 'Chamado iniciado'
             evento.chamado = Chamado.objects.get(pk=self.pk)
             evento.save()
+
+
+
+    def redimensionarImagem(self, img):
+        if self.img:
+            try:
+                im = Image.open(self.img)
+
+                output = BytesIO()
+                larguraIdeal = 700.00
+
+                # redimensionando imagem
+                larguraPercent = (larguraIdeal / float(im.size[0]))
+                altura = int((float(im.size[1]) * float(larguraPercent)))
+                im = im.resize((int(larguraIdeal), int(altura)), Image.ANTIALIAS)
+
+                # after modifications, save it to the output
+                im.save(output, format='JPEG', quality=50)
+                output.seek(0)
+
+                # change the imagefield value to be the newley modifed image value
+                self.img = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.img.name.split('.')[0],
+                                                  'image/jpeg',
+                                                  sys.getsizeof(output), None)
+
+            except:
+                pass
+
+
 
     class Meta:
         ordering = ['-pk']

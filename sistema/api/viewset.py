@@ -201,6 +201,7 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
             serializer.save(usuario=usuario)
 
 
+
 class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
     '''
     list:

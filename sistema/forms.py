@@ -73,6 +73,7 @@ class ChamadoForm(forms.ModelForm):
         exclude = ['protocolo']
 
 
+
 class EventoChamadoForm(forms.ModelForm):
     class Meta:
         model = EventosChamado
