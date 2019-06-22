@@ -181,9 +181,9 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
     delete:
         Utilize essa url para deletar um chamado passando o id do mesmo na Url
     '''
-    #parser_classes = (MultiPartParser, FormParser, JSONParser,)
+    parser_classes = (MultiPartParser, FormParser)
     permission_classes = (permissions.IsAuthenticated,)
-    #authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     serializer_class = ChamadoCreateUpdateSerializer
 
     def get_queryset(self):
