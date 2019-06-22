@@ -18,6 +18,7 @@ router.register(r'listarapartamentos', viewset.ApartamentoListViewAPI, base_name
 router.register(r'listageralapartamentos', viewset.ApartamentoListaGeral, base_name='Apartamento')
 router.register(r'listarcategoriasdeproblema', viewset.CategoriaDeProblemaListViewAPI, base_name='CategoriaDeProblema')
 router.register(r'listarareascomuns', viewset.AreaComumListViewAPI, base_name='AreaComum')
+router.register(r'imagem', viewset.ImagemUploadViewAPI, base_name='ImagemUpload')
 router.register(r'chamado', viewset.ChamadoCreateViewAPI, base_name='Chamado')
 router.register(r'listarchamados', viewset.ChamadoListViewAPI, base_name='Chamado')
 

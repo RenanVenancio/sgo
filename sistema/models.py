@@ -141,6 +141,37 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
+class ImagemUpload(models.Model):
+    img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=False, null=False)
+    usuario=models.ForeignKey('sistema.Usuarios', on_delete=models.PROTECT, null=False)
+    def save(self, *args, **kwargs):
+
+        if self.img:
+            try:
+                im = Image.open(self.img)
+
+                output = BytesIO()
+                larguraIdeal = 700.00
+
+                # redimensionando imagem
+                larguraPercent = (larguraIdeal / float(im.size[0]))
+                altura = int((float(im.size[1]) * float(larguraPercent)))
+                im = im.resize((int(larguraIdeal), int(altura)), Image.ANTIALIAS)
+
+                # after modifications, save it to the output
+                im.save(output, format='JPEG', quality=50)
+                output.seek(0)
+
+                # change the imagefield value to be the newley modifed image value
+                self.img = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.img.name.split('.')[0],
+                                                  'image/jpeg',
+                                                  sys.getsizeof(output), None)
+
+            except:
+                pass
+        super(ImagemUpload, self).save(*args, **kwargs)
+
+
 class Chamado(models.Model):
     protocolo = models.CharField('Protocolo', max_length=30, unique=True, blank=True)
     prioridade = models.PositiveSmallIntegerField('Prioridade', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)

@@ -148,10 +148,17 @@ class AreaComumSerializer(serializers.ModelSerializer):
 
 
 class EventoChamadoSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = EventosChamado
         fields = ['descricaoEvento']
+
+
+class ImagemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ImagemUpload
+        fields = ['img']
+
 
 
 class ChamadoCreateUpdateSerializer(serializers.ModelSerializer):

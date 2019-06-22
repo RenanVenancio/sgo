@@ -158,6 +158,45 @@ class AreaComumListViewAPI(ReadOnlyModelViewSet):
     queryset = AreaComum.objects.all()
     serializer_class = AreaComumSerializer
 
+
+class ImagemUploadViewAPI(ModelViewSet):
+    '''
+    list:
+        Traz a listagem de imagens no servidor
+
+    create:
+        Sobe uma nova imagem
+
+    retrieve:
+        Recupera uma imagem já existente pelo id passado na Url.
+
+    update:
+        Atualiza imagem existente
+
+    partial_update:
+        Atualização parcial da imagem
+
+    delete:
+        Deletar uma imagem
+    '''
+
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = ImagemSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return ImagemUpload.objects.filter(usuario=user.pk)
+
+    def perform_create(self, serializer):
+        usuario = Usuarios.objects.get(pk=self.request.user.pk)
+        serializer.save(usuario=usuario)
+
+
+
+
+
 #Gerencia dos chamados
 class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
     '''
@@ -181,7 +220,7 @@ class ChamadoCreateViewAPI(ModelViewSet):    #Criar chamados
     delete:
         Utilize essa url para deletar um chamado passando o id do mesmo na Url
     '''
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     serializer_class = ChamadoCreateUpdateSerializer
