@@ -8,7 +8,8 @@ from rest_framework import permissions
 from sistema.models import *
 from rest_framework import filters
 from rest_framework import generics, mixins, views
-
+from rest_framework.response import Response
+from rest_framework import status
 
 class UsuarioViewApi(mixins.ListModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     permission_classes = (permissions.IsAuthenticated,)
@@ -180,7 +181,7 @@ class ImagemUploadViewAPI(ModelViewSet):
         Deletar uma imagem
     '''
 
-    parser_classes = (MultiPartParser, FormParser)
+    parser_class = (FileUploadParser,)
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
     serializer_class = ImagemSerializer
@@ -192,6 +193,16 @@ class ImagemUploadViewAPI(ModelViewSet):
     def perform_create(self, serializer):
         usuario = Usuarios.objects.get(pk=self.request.user.pk)
         serializer.save(usuario=usuario)
+
+    def post(self, request, *args, **kwargs):
+
+        file_serializer = ImagemSerializer(data=request.data)
+
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
