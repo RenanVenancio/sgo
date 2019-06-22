@@ -157,7 +157,7 @@ class ImagemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ImagemUpload
-        fields = ['img']
+        fields = ['id', 'img']
 
 
 
