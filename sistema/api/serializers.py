@@ -163,6 +163,7 @@ class ImagemSerializer(serializers.ModelSerializer):
 
 class ChamadoCreateUpdateSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
+    img  = serializers.CharField(allow_blank=True, max_length=100, required=False)
     numChamadosAbertosHoje = serializers.SerializerMethodField()
     ultimo_evento = serializers.SerializerMethodField()
     class Meta:

@@ -14,6 +14,7 @@ from django.views.generic import View
 import json
 from datetime import datetime, timedelta
 from datetime import date
+from .models import *
 from django.core.mail import get_connection
 
 
@@ -465,8 +466,25 @@ class ChamadoUpdateView(SuccessMessageMixin, generic.UpdateView):
     template_name = 'sistema/chamados/editarchamado.html'
     success_message = "Chamado alterado com sucesso!"
     #success_url = reverse_lazy('sistema:listarchamados')
-    idChamado = 3
 
+    def post(self, request, *args, **kwargs):
+
+        if request.POST.get('descEvento'):
+            novoEvento = EventosChamado()
+            novoEvento.descricaoEvento = request.POST.get('descEvento')
+            idChamado = request.POST.get('chamado')
+            chamado = Chamado.objects.get(pk=idChamado)
+
+
+            novoEvento.chamado = chamado
+            novoEvento.save()
+
+
+
+
+
+
+        return super(generic.UpdateView, self).post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = {}
@@ -539,21 +557,6 @@ class EventoChamadoDeleteView(generic.DeleteView):
         self.success_url = reverse_lazy('sistema:editarchamado', kwargs={'pk': pkChamado})
 
         return self.post(request, *args, **kwargs)
-
-
-class EventoChamadoCreateView(View):
-
-    def post(self, request):
-
-        if request.method == "POST":
-            novoEvento = EventosChamado()
-            novoEvento.descricaoEvento = request.POST.get('descricaoEvento')
-            idChamado = request.POST.get('chamado')
-            novoEvento.chamado = Chamado.objects.get(id=request.POST.get('chamado'))
-
-            novoEvento.save()
-
-        return redirect('sistema:editarchamado', pk=idChamado)
 
 
 

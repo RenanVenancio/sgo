@@ -218,88 +218,82 @@
                             </a>
 
 
+                            <!--MODAL DOS EVENTOS-->
+                            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="exampleModalLongTitle">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Eventos do chamado</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="danger">
+                                                      <th> Data </th>
+                                                      <th> Evento </th>
+                                                      <th> Ações </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {% for evento in view.eventos %}
+                                                    <tr>
+                                                      <th> {{ evento.dataCadastro }} </th>
+                                                      <th> {{ evento.descricaoEvento }} </th>
+                                                      <th>
+
+                                                        <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletareventochamado' evento.pk %}") >
+                                                            <i class="material-icons">delete</i>
+                                                            <span>DELETAR</span>
+                                                        </a>
+
+                                                      </th>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                </tbody>
+
+                                            </table>
+
+                                            <br><hr>
+
+                                                <input name="chamado" value="{{ form.initial.id }}" style="display:none">
+                                                <div class="row clearfix">
+                                                    <div class="col-sm-10">
+                                                        <div class="form-group">
+                                                            <label for="descricaoEvento_id">Adicionar evento</label>
+                                                            <div class="form-line">
+                                                                <input name="descEvento" class="form-control" id="descricaoEvento_id" type="text" placeholder="Descreva o evento">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <div class="form-control">
+                                                                <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">add</i><span>ADICIONAR</span></button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">FECHAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
-    <!--MODAL DOS EVENTOS-->
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="exampleModalLongTitle">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="largeModalLabel">Eventos do chamado</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr class="danger">
-                              <th> Data </th>
-                              <th> Evento </th>
-                              <th> Ações </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        {% for evento in view.eventos %}
-                            <tr>
-                              <th> {{ evento.dataCadastro }} </th>
-                              <th> {{ evento.descricaoEvento }} </th>
-                              <th>
-
-                                <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletareventochamado' evento.pk %}") >
-                                    <i class="material-icons">delete</i>
-                                    <span>DELETAR</span>
-                                </a>
-
-                              </th>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                    <br><hr>
-
-                    <form id="formEventos" action="{% url 'sistema:cadastrareventochamado' %}" method="POST">
-                        {% csrf_token %}
-                        <input name="chamado" value="{{ form.initial.id }}" style="display:none">
-                        <div class="row clearfix">
-                            <div class="col-sm-10">
-                                <div class="form-group">
-                                    <label for="descricaoEvento_id">Adicionar evento</label>
-                                    <div class="form-line">
-                                        <input class="form-control" id="descricaoEvento_id "type="text" name="descricaoEvento" required placeholder="Descreva o evento">
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <div class="form-control">
-                                        <a onclick=cadastrarEvento() class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">add</i><span>ADICIONAR</span></a>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">FECHAR</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 </div>
@@ -313,17 +307,6 @@
 <script type="text/javascript">
       var cadastrar = true;
 
-      function cadastrarEvento(){
-          if($('#descricaoEvento_id ').val == null){
-            swal("Campo nulo", "Insira uma descrição no evento.", "warning");
-          }else{
-            document.getElementById("formEventos").submit();
-            document.getElementById("formChamado").submit();
-
-          }
-
-
-      }
 
 
       $( "#id_statusChamado" ).change(function() {                //Funções do botão para mostrar as areas comuns

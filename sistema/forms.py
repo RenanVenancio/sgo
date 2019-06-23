@@ -70,7 +70,7 @@ class ChamadoForm(forms.ModelForm):
     class Meta:
         model = Chamado
         fields = '__all__'
-        exclude = ['protocolo']
+        exclude = ['protocolo', 'novosEventos']
 
 
 

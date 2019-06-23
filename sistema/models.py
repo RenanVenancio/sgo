@@ -186,7 +186,7 @@ class Chamado(models.Model):
     apartamento = models.ForeignKey('sistema.Apartamento', on_delete=models.PROTECT, blank=False, null=False)
     descricao = models.TextField('Descreva o problema')
     img = models.ImageField('Envie uma foto', upload_to='sistema/chamados', blank=True, null=True)
-    novosEventos= models.BooleanField(verbose_name='Novos eventos disponíveis', default=False)
+    novosEventos= models.BooleanField('Novos eventos disponíveis', default=False, blank=True)
     feedbackUsuario = models.PositiveSmallIntegerField('Feedback dado pelo Usuário', validators=[MinValueValidator(0), MaxValueValidator(5)], default=0, blank=True, null=True)
 
 
@@ -257,7 +257,10 @@ class EventosChamado(models.Model):
         return dataFormatada.strftime('%d/%m/%y') + '#$%' + self.descricaoEvento
 
     def save(self, *args, **kwargs):
-        Chamado.objects.filter(id=self.chamado.pk).update(novosEventos=True)
+
+        if EventosChamado.objects.filter(chamado=self.chamado.id).count() > 0:
+            Chamado.objects.filter(id=self.chamado.id).update(novosEventos=True)
+
         super(EventosChamado, self).save(*args, **kwargs)
 
     class Meta:
