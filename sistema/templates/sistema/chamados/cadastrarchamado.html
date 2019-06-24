@@ -30,18 +30,6 @@
                         <h2>
                             ABRIR CHAMADO
                         </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
 
@@ -111,6 +99,8 @@
                                                 <div class="">
                                                     {{form.areaComum|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                                     {{ form.areaComum.errors }}
+                                                    {{ form.envolveAreaComum.errors }}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -134,8 +124,12 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do proprietario</label>
                                         <div class="">
-                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
-                                            {{ form.apartamento.errors }}
+                                            <select id="apartamento_id" class="form-control selectpicker" data-live-search="true" data-width="100%" name="apartamento">
+                                                <option selected value="">---------</option>
+                                            </select>
+
+                                            <p id="garantiaApto"></p>{{ form.apartamento.errors }}
+
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +189,7 @@
             let status = $('.check-area').is(':checked');
             if(status == !true){
                 $(".menu-area").fadeOut()
-                $("#area_id").val('');
+                $("#id_areaComum").val('');
                 $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
 
             }else{
@@ -203,61 +197,30 @@
             }
        });
 
+        $("#apartamento_id").change(function() {
+            var dado = $(this).find(':selected').attr('garantia');
+            $("#garantiaApto").text('Garantia: ' + dado);
+        });
+
         $( document ).ready(function() {
+            let statusAreaComum = $('.check-area').is(':checked'); //Verificando se possui area comum
+            if(statusAreaComum == true){
+                $(".menu-area").fadeIn();
+            }else{
+                $(".menu-area").fadeOut();
+            }
+
 
             $("#id_prioridade").ionRangeSlider({
                 skin: "round",
                 grid: false,
-                grid_num: 5,
-                min: 1,
+                grid_num: 6,
+                min: 0,
                 max: 5,
                 max_postfix: " Máxima",
                 prefix: "Prioridade: ",
 
             });
-
-
-
-
-
-
-
-
-
-
-            $.ajax({
-            type: "get",
-            url: "/Empresas/SelecionarEmpresas",
-            data: { empresa: $("#empresa").val() },
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: function (obj) {
-                if (obj != null) {
-                    var data = obj.data;
-                    var selectbox = $('#empresa');
-                    selectbox.find('option').remove();
-                    $.each(data, function (i, d) {
-                        $('<option>').val(d.IdEmpresa).text(d.Nome).appendTo(selectbox);
-                    });
-                }
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         });
 

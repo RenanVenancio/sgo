@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from decouple import config
+from dj_database_url import parse as dburl
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,9 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'yds$!!gs_5f(s+nl+#upyumn=v7^sg2u0a#$hp#mhz@#g(n5)q'
-
-
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 # Application definition
 
 INSTALLED_APPS = [
@@ -32,26 +34,39 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #DRF
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     #apps
     'sistema',
     #libs
     'widget_tweaks',
-    #DRF
-    'rest_framework',
-    'rest_framework.authtoken',
+    'django_filters',
+    'rest_framework_swagger', #Documentação da API
+    
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+#
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_WHITELIST = []
+
 ROOT_URLCONF = 'engenharia.urls'
+
 
 TEMPLATES = [
     {
@@ -114,30 +129,10 @@ USE_TZ = True
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
-    }
-}
-'''
 
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'engenhar_sistemadegestao',
-        'USER': 'root',
-        #'PASSWORD': 'rv101220',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'default-character-set': 'utf8',
-        #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    }
-}
-
-
+DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 ADMINS = (
     ('Victor Fernandes', 'victorfernandes.matias@gmail.com'),
@@ -148,11 +143,11 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'home/engenharia/public_html/mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'chamados/imagens')
 
 
 STATIC_URL = '/staticfiles/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/home/engenharia/public_html/staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
@@ -160,9 +155,8 @@ STATICFILES_DIRS = (
 LOGIN_REDIRECT_URL = '/index/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['.engenharia.clube.tur.br', '127.0.0.1']
+
 
 
 try:
@@ -178,5 +172,21 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+
 }
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'naorespondasgoengenharia@gmail.com'
+EMAIL_HOST_PASSWORD = 'sgo101220'
+EMAIL_USE_TLS = True

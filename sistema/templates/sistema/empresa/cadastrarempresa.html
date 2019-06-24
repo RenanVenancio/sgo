@@ -1,0 +1,154 @@
+{% extends 'sistema/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}Cadastrar Empresa | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+        <!-- Vertical Layout -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            CADASTRO DA EMPRESA
+                        </h2>
+                    </div>
+                    <div class="body">
+
+                        <form method="POST">
+                        {% csrf_token %}
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                        <label for="{{ form.nome.auto_id }}">{{ form.nome.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.nome|add_class:"form-control"}}
+                                            {{ form.nome.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                        <label for="{{ form.cnpj.auto_id }}">{{ form.cnpj.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.cnpj|add_class:"form-control"}}
+                                            {{ form.cnpj.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <label for="{{ form.endereco.auto_id }}">{{ form.endereco.label }}</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        {{ form.endereco|add_class:"form-control"}}
+                                        </div>
+                                        {{ form.endereco.errors }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                           <div class="row clearfix">
+                                <div class="col-sm-4">
+                                        <label for="{{ form.bairro.auto_id }}">{{ form.bairro.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.bairro|add_class:"form-control"}}
+                                            {{ form.bairro.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                        <label for="{{ form.cidade.auto_id }}">{{ form.cidade.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.cidade|add_class:"form-control"}}
+                                            {{ form.cidade.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                        <label for="{{ form.estado.auto_id }}">{{ form.estado.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.estado|add_class:"form-control"}}
+                                            {{ form.estado.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                           </div>
+
+                            <div class="row clearfix">
+                                <div class="col-sm-6">
+                                        <label for="{{ form.telefone1.auto_id }}">{{ form.telefone1.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.telefone1|add_class:"form-control"}}
+                                            {{ form.telefone1.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                        <label for="{{ form.telefone2.auto_id }}">{{ form.telefone2.label }}</label>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                            {{ form.telefone2|add_class:"form-control"}}
+                                            {{ form.telefone2.errors }}
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        {{ form.email|add_class:"form-control"}}
+                                        </div>
+                                        {{ form.email.errors }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <label for="{{ form.sobre.auto_id }}">{{ form.sobre.label }}</label>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        {{ form.sobre|add_class:"form-control"}}
+                                        </div>
+                                        {{ form.sobre.errors }}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>CADASTRAR</span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

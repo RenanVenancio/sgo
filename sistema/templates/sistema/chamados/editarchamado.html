@@ -7,6 +7,7 @@
 
 {% block content %}
 
+
 <div class="container-fluid">
 
         <div class="block-header">
@@ -22,30 +23,41 @@
             </ol>
         </div>
 
+        {% if messages %}
+
+            {% for message in messages %}
+                <div class="alert bg-green alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{ message }} <a href="{% url 'sistema:listarchamados' %}" class="alert-link">  Clique aqui para voltar para a lista</a>
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+        <a class="btn btn-primary m-t-15 waves-effect" onclick=imprimir({{ chamado.pk }})>
+            <i class="material-icons">print</i><span>IMPRIMIR</span>
+
+        </a>
+
+
         <!-- Vertical Layout -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
                         <h2>
-                            EDITAR CHAMADO
+                            EDITAR CHAMADO <b>{{ view.protocolo }}</b>
+
+                            <div id="feedback-usuario" class="form-group">
+                                <h5>Feedback do Proprietário</h5>
+                                <div class="rating" data-rate-value="{{ form.feedbackUsuario.value }}" style="font-size: 35px; color: #F44336;"></div>
+                            </div>
                         </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
 
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form id="formChamado" action="" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="row clearfix">
@@ -73,6 +85,26 @@
                                 </div>
                             </div>
 
+                            <hr>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <!--Modal Button-->
+                                            <button id="btnEventos" type="button" class="btn btn-default waves-effect m-r-20 col-sm-12"
+                                                    data-toggle="modal" data-target="#largeModal">
+                                                <i class="material-icons">add</i>Eventos do chamado
+                                            </button>
+                                            <div class="alert bg-red">
+                                                <b>Ultimo Evento: </b>{{ view.ultimoEvento.dataCadastro }} - {{ view.ultimoEvento.descricaoEvento }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br>
                             <hr>
 
                             <div class="row clearfix">
@@ -108,7 +140,7 @@
                                                 <div class="">
                                                     {{form.areaComum|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
                                                     {{ form.areaComum.errors }}
-                                                </div>
+                                                    {{ form.envolveAreaComum.errors }}                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -131,8 +163,10 @@
                                     <div class="form-group">
                                         <label for="apartamento_id">Selecione o apartamento do proprietario</label>
                                         <div class="">
-                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"data-live-search=true data-width=100%"}}
+                                            {{form.apartamento|add_class:"form-control selectpicker"|attr:"id=apartamento_id data-live-search=true data-width=100%"}}
                                             {{ form.apartamento.errors }}
+                                            <p id="garantiaApto"> Garantia: {{ view.garantia }} </p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -166,13 +200,93 @@
                                 </div>
                             </div>
 
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <p><b>Aberto em:</b> {{ view.dataCadastro }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>SALVAR</span></button>
-                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarchamado' chamado.pk %}" onclick="return confirm('Você tem certeza?');">
+                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletarchamado' chamado.pk %}")>
                                 <i class="material-icons">delete</i>
                                 <span>DELETAR</span>
                             </a>
+
+
+                            <!--MODAL DOS EVENTOS-->
+                            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="exampleModalLongTitle">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="largeModalLabel">Eventos do chamado</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="danger">
+                                                      <th> Data </th>
+                                                      <th> Evento </th>
+                                                      <th> Ações </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {% for evento in view.eventos %}
+                                                    <tr>
+                                                      <th> {{ evento.dataCadastro }} </th>
+                                                      <th> {{ evento.descricaoEvento }} </th>
+                                                      <th>
+
+                                                        <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletareventochamado' evento.pk %}") >
+                                                            <i class="material-icons">delete</i>
+                                                            <span>DELETAR</span>
+                                                        </a>
+
+                                                      </th>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                </tbody>
+
+                                            </table>
+
+                                            <br><hr>
+
+                                                <input name="chamado" value="{{ form.initial.id }}" style="display:none">
+                                                <div class="row clearfix">
+                                                    <div class="col-sm-10">
+                                                        <div class="form-group">
+                                                            <label for="descricaoEvento_id">Adicionar evento</label>
+                                                            <div class="form-line">
+                                                                <input name="descEvento" class="form-control" id="descricaoEvento_id" type="text" placeholder="Descreva o evento">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <div class="form-control">
+                                                                <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">add</i><span>ADICIONAR</span></button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">FECHAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
 
                         </form>
@@ -180,6 +294,8 @@
                 </div>
             </div>
         </div>
+
+
 </div>
 
 
@@ -191,11 +307,29 @@
 <script type="text/javascript">
       var cadastrar = true;
 
-      $( ".check-area" ).change(function() {
+
+
+      $( "#id_statusChamado" ).change(function() {                //Funções do botão para mostrar as areas comuns
+            let status = $('#id_statusChamado');
+            if(status.val() != 'Em andamento'){
+                $('#btnEventos').prop("disabled", true);
+            }else{
+                $('#btnEventos').prop("disabled", false);
+            }
+       });
+
+
+
+
+      function imprimir(id){
+        window.open('/chamados/imprimir/' + id,'page','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=700,height=600');
+      }
+
+      $( ".check-area" ).change(function() {                //Funções do botão para mostrar as areas comuns
             let status = $('.check-area').is(':checked');
             if(status == !true){
                 $(".menu-area").fadeOut()
-                $("#area_id").val('');
+                $("#id_areaComum").val('');
                 $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
 
             }else{
@@ -203,18 +337,62 @@
             }
        });
 
+       $("#apartamento_id").change(function() {
+            var dado = $(this).find(':selected').attr('garantia');
+            $("#garantiaApto").text('Garantia: ' + dado);
+        });
+
         $( document ).ready(function() {
+            
+            let btnEventos = $('#btnEventos') ;
+            let statusChamado = $('#id_statusChamado');
+
+            if(statusChamado.val() != "Em andamento"){
+                btnEventos.prop("disabled", true);
+            }
+
+            let feedback = ("{{ form.feedbackUsuario.value }}");    //Verificando se existe feedbacks
+            if(feedback > 0){
+                $("#feedback-usuario").fadeIn();
+            }else{
+                $("#feedback-usuario").fadeOut();
+
+            }
+
+            let statusAreaComum = $('.check-area').is(':checked'); //Verificando se possui area comum
+            if(statusAreaComum == true){
+                $(".menu-area").fadeIn();
+            }else{
+                $(".menu-area").fadeOut();
+            }
+
+            var selectbox = $('#apartamento_id');
+            selectbox.find('option').css('display', 'none');
+            $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
+
 
             $("#id_prioridade").ionRangeSlider({
                 skin: "round",
                 grid: false,
-                grid_num: 5,
-                min: 1,
+                grid_num: 6,
+                min: 0,
                 max: 5,
                 max_postfix: " Máxima",
                 prefix: "Prioridade: ",
 
             });
+
+            var options = {
+                max_value: 5,
+                step_size: 1,
+                initial_value: 0,
+                selected_symbol_type: 'utf8_star', // Must be a key from symbols
+                cursor: 'default',
+                readonly: true,
+                change_once: false, // Determines if the rating can only be set once
+            }
+
+            $(".rating").rate(options);
         });
 
 </script>

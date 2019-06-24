@@ -5,162 +5,196 @@
 {% block title %}Editar usuário | {{ block.super }}{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
 
-        <div class="block-header">
-            <ol class="breadcrumb">
-                <li>
-                    <a href="{% url 'sistema:listarusuarios' %}">
-                        <i class="material-icons">people</i> Usuários
-                    </a>
-                </li>
-                <li class="active">
-                    <i class="material-icons">edit</i> Editar Usuário
-                </li>
-            </ol>
-        </div>
-
-        <!-- Vertical Layout -->
+    <div class="block-header">
+        <ol class="breadcrumb">
+            <li>
+                <a href="{% url 'sistema:listarusuarios' %}">
+                    <i class="material-icons">people</i> Usuários
+                </a>
+            </li>
+            <li class="active">
+                <i class="material-icons">edit</i> Editar Usuário
+            </li>
+        </ol>
+    </div>
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            EDITAR USUÁRIO
-                        </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                EDITAR USUÁRIO
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                                <li role="presentation" class="active"><a href="#dados" data-toggle="tab" aria-expanded="true">PERFIL</a></li>
+                                <li role="presentation" class=""><a href="#apartamentos" data-toggle="tab" aria-expanded="false">APARTAMENTOS</a></li>
 
-                        <form method="POST">
-                        {% csrf_token %}
+                            </ul>
 
-                            <div class="row clearfix">
-                                <div class="col-sm-6">
-                                        <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                            {{ form.first_name|add_class:"form-control"}}
-                                            {{ form.first_name.errors }}
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="dados">
+                                    <form method="POST">
+                                        {% csrf_token %}
+
+                                        <div class="row clearfix">
+                                            <div class="col-sm-6">
+                                                <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.first_name|add_class:"form-control"}}
+                                                        {{ form.first_name.errors }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.last_name|add_class:"form-control"}}
+                                                        {{ form.last_name.errors }}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                </div>
 
-                                <div class="col-sm-6">
-                                        <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                            {{ form.last_name|add_class:"form-control"}}
-                                            {{ form.last_name.errors }}
+
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <label for="{{ form.cpf.auto_id }}">{{ form.cpf.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.cpf|add_class:"form-control"}}
+                                                    </div>
+                                                    {{ form.cpf.errors }}
+                                                </div>
                                             </div>
                                         </div>
-                                </div>
-                            </div>
 
-
-                        <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <label for="{{ form.cpf.auto_id }}">{{ form.cpf.label }}</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                    {{ form.cpf|add_class:"form-control"}}
-                                    </div>
-                                    {{ form.cpf.errors }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                    {{ form.email|add_class:"form-control"}}
-                                    </div>
-                                    {{ form.email.errors }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row clearfix">
-                            <div class="col-sm-6">
-                                    <label for="{{ form.telefone1.auto_id }}">{{ form.telefone1.label }}</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                        {{ form.telefone1|add_class:"form-control"}}
-                                        {{ form.telefone1.errors }}
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <label for="{{ form.email.auto_id }}">{{ form.email.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.email|add_class:"form-control"}}
+                                                    </div>
+                                                    {{ form.email.errors }}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                    <label for="{{ form.telefone2.auto_id }}">{{ form.telefone2.label }}</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                        {{ form.telefone2|add_class:"form-control"}}
-                                        {{ form.telefone2.errors }}
+                                        <div class="row clearfix">
+                                            <div class="col-sm-6">
+                                                <label for="{{ form.telefone1.auto_id }}">{{ form.telefone1.label }}</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.telefone1|add_class:"form-control"}}
+                                                        {{ form.telefone1.errors }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label for="{{ form.telefone2.auto_id }}">{{ form.telefone2.label }}</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.telefone2|add_class:"form-control"}}
+                                                        {{ form.telefone2.errors }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+
+
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <label for="{{ form.username.auto_id }}">{{ form.username.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.username|add_class:"form-control"}}
+                                                    </div>
+                                                    {{ form.username.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <label for="{{ form.limiteChamadosDia.auto_id }}">{{ form.limiteChamadosDia.label }} *</label>
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        {{ form.limiteChamadosDia|add_class:"form-control"}}
+                                                    </div>
+                                                    {{ form.limiteChamadosDia.errors }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <h6 class="font-bold col-pink">Se a caixa abaixo estiver ligada, o usuário terá
+                                            acesso ao adminstrativo.</h6>
+                                        <div class="demo-switch-title">Usuário membro da equipe</div>
+                                        <div class="switch">
+                                            <label>{{ form.is_staff|add_class:"form-check-label"}}<span
+                                                    class="lever switch-col-red"></span></label>
+                                        </div>
+                                        <hr>
+
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12"><br>
+                                                Para mudar a senha <a
+                                                        href="/usuarios/editarusuario/{{ usuarios.id }}/mudarsenha">clique
+                                                    aqui</a>
+                                            </div>
+                                        </div>
+
+                                        <br>
+
+                                        <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i
+                                                class="material-icons">save</i><span>SALVAR</span></button>
+
+                                        <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" onclick=msgDelete("{% url 'sistema:deletarusuario' usuarios.pk %}") >
+                                            <i class="material-icons">delete</i>
+                                            <span>DELETAR</span>
+                                        </a>
+
+                                    </form>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="apartamentos">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td><b>EMPREENDIMENTO</b></td>
+                                                <td><b>BLOCO</b></td>
+                                                <td><b>APARTAMENTO</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for apartamento in view.apartamentos %}
+                                                <tr>
+                                                    <td><a href="{{ apartamento.bloco.empreendimento.get_absolute_url }}">{{ apartamento.bloco.empreendimento }}</a></td>
+                                                    <td><a href="{{ apartamento.bloco.get_absolute_url }}">{{ apartamento.bloco.bloco }}</a></td>
+                                                    <td><a href="{{ apartamento.get_absolute_url }}">{{ apartamento.apartamento }}</a></td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
                             </div>
                         </div>
-
-
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                {{ form.username|add_class:"form-control"}}
-                                </div>
-                                {{ form.username.errors }}
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                            <hr>
-                            <h6 class="font-bold col-pink">Se a caixa abaixo estiver ligada, o usuário terá acesso ao adminstrativo.</h6>
-                            <div class="demo-switch-title">Usuário membro da equipe</div>
-                            <div class="switch">
-                                <label>{{ form.is_staff|add_class:"form-check-label"}}<span class="lever switch-col-red"></span></label>
-                            </div>
-                            <hr>
-
-
-                            <div class="form-row">
-                                <div class="form-group col-md-12"><br>
-                                    Para mudar a senha <a href="/usuarios/editarusuario/{{ usuarios.id }}/mudarsenha">clique aqui</a>
-                                </div>
-                            </div>
-
-                            <br>
-
-                            <button type="submit" class="btn btn-primary m-t-15 waves-effect"><i class="material-icons">save</i><span>SALVAR</span></button>
-                            <a class="btn btn-danger m-t-15 waves-effect" style="background-color: red; border-color: red;" href="{% url 'sistema:deletarusuario' usuarios.pk %}" onclick="return confirm('Você tem certeza?');">
-                                <i class="material-icons">delete</i>
-                                <span>DELETAR</span>
-                            </a>
-
-                        </form>
                     </div>
                 </div>
-            </div>
         </div>
+
 </div>
-
-
 {% endblock %}

@@ -1,27 +1,43 @@
 # coding=utf-8
 
 
-from django.urls import path
+from django.urls import path, include
 from . import views
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required  #Staff
 from django.urls import reverse_lazy
-from rest_framework.authtoken.views import obtain_auth_token 
-
+from sistema.api import viewset
 
 app_name = 'sistema'
 
-urlpatterns = [
-    # Temporáriamente comentado, ainda plajejando qual será a tela pricipal do sistema
-    #TODO: Fazer a tela de dashboard com as estatiticas
-    path('', staff_member_required(views.DashboardView.as_view(), login_url=reverse_lazy('sistema:login')), name='dashboard'),
-    #path('', login_required(views.ChamadoListView.as_view(), login_url=reverse_lazy('sistema:login')), name='index'),
 
+
+
+
+
+urlpatterns = [
+    path('', include('sistema.api.urls')),
+
+    path('', staff_member_required(views.DashboardView.as_view(), login_url=reverse_lazy('sistema:login')), name='dashboard'),
+
+    #Login e logout
     path('login/', auth_views.login, {'template_name': 'sistema/login.html'}, name='login'),
     path('logout/', auth_views.logout, {'next_page': reverse_lazy('sistema:dashboard')}, name='logout'),
 
+
+    path('empresa/cadastrarempresa/', staff_member_required(
+        views.EmpresaCreateView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='cadastrarempresa'),
+
+    path('empresa/editarempresa/<int:pk>/', staff_member_required(
+        views.EmpresaEditView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='editarempresa'),
+
+    path('empresa/deletarempresa/<int:pk>/', staff_member_required(
+        views.EmpresaDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='deletarempresa'),
 
     path('usuarios/editarusuario/<int:pk>/mudarsenha', staff_member_required(
         views.UsuariosPasswordUpdateView.as_view(), login_url=reverse_lazy('sistema:login')
@@ -42,8 +58,6 @@ urlpatterns = [
     path('usuarios/deletarusuario/<int:pk>/', staff_member_required(
         views.UsuariosDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarusuario'),
-
-
 
 
 
@@ -101,6 +115,9 @@ urlpatterns = [
     path('empreendimentos/blocos/deletarapartamento/<int:pk>/', staff_member_required(
         views.ApartamentoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarapartamento'),
+    path('json/apartamentos/proprietario/<int:pk>', staff_member_required(
+         views.ApartamentoProprietarioListJson.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='apartamentoproprietario'),
 
 
     path('problemas/listarcategorias/', staff_member_required(
@@ -130,60 +147,20 @@ urlpatterns = [
         views.ChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
     ), name='deletarchamado'),
 
+    path('chamados/imprimir/<int:pk>/', staff_member_required(
+        views.ChamadoPrintView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='imprimirchamado'),
+
+
+    path('chamados/deletarevento/<int:pk>/', staff_member_required(
+        views.EventoChamadoDeleteView.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='deletareventochamado'),
+
+
+    path('filtro/chamado/', staff_member_required(
+        views.RelatorioChamadoFiltro.as_view(), login_url=reverse_lazy('sistema:login')
+    ), name='filtrochamado'),
 
 
 
-    # APIs de gerenecimento
-    path('api/empreendimentos/',
-        views.EmpreendimentoCreateViewAPI.as_view(),
-        name='apiempreendimento'),
-    path('api/empreendimentos/<int:pk>/',
-        views.EmpreendimentoDetailsViewAPI.as_view(),
-        name='apidetailempreendimento'),
-
-
-    path('api/blocos/',
-        views.BlocoSerializerCreateViewAPI.as_view(),
-        name='apiblocos'),
-    path('api/blocos/<int:pk>/',
-        views.BlocoSerializerDetailsViewAPI.as_view(),
-        name='apidetailbloco'),
-
-
-    path('api/apartamentos/',
-        views.ApartamentoSerializerCreateViewAPI.as_view(),
-        name='apiapartamentos'),
-    path('api/apartamentos/<int:pk>/',
-        views.ApartamentoSerializerDetailsViewAPI.as_view(),
-        name='apidetailapartamentos'),
-
-    path('api/apartamentos/proprietario/<int:id>/', #essa url retorna os apartamentos vinclados ao proprietario passado na url
-        views.ApartamentoProprietarioSerializerDetailsViewAPI.as_view(),
-        name='apidetailapartamentosproprietario'),
-
-
-
-    path('api/categoriasdeproblemas/',
-        views.CategoriaDeProblemaCreateViewAPI.as_view(),
-        name='apicategoriasdeproblemas'),
-    path('api/categoriasdeproblemas/<int:pk>/',
-        views.CategoriaDeProblemaDetailsViewAPI.as_view(),
-        name='apidetailcategoriasdeproblemas'),
-    path('api/chamadosany/',
-        views.ChamadoCreateViewAPIAny.as_view(),
-        name='apichamadosany'),
-    path('api/chamados/',
-        views.ChamadoCreateViewAPI.as_view(),
-        name='apichamados'),
-    path('api/chamados/<int:pk>/',
-        views.ChamadoDetailsViewAPI.as_view(),
-        name='apidetailchamados'),
-
-    path('api/chamados/', #Renan Testes
-         views.ChamadoDetailsViewAPI.as_view(),
-         name='apilistarchamados'),
-
-
-    # Autenticação via Token
-    path('get-token/', obtain_auth_token),
 ]

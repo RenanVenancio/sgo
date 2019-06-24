@@ -1,3 +1,38 @@
+$('#id_usuario').change(function (){
+
+     var idUsuario = $(this).val(); //Pegando valor selecionado na checkbox
+
+     if(idUsuario == ""){ // Verificando se o valor foi vazio
+        idUsuario = 0;
+     }
+
+    var dados = $(this).serialize();
+
+    $.ajax({
+        type: "get",
+        url: "/json/apartamentos/proprietario/" + idUsuario,
+        data: dados,
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        success: function (json) {
+
+            var selectbox = $('#apartamento_id');
+            selectbox.find('option').remove();
+            $('<option>').val("").attr("selected", "selected").text('Selecione um apartamento').appendTo(selectbox);
+
+            $.each(json, function (i, d) {
+                $('<option>').val(d.id).attr("garantia",d.tempoPercorridoGarntia).text(d.bloco.empreendimento.nomeEmpreendimento + " - BLOCO: " + d.bloco.bloco + " - APTO: " + d.apartamento).appendTo(selectbox);
+            });
+            $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
+
+
+        }
+    });
+
+});
+
+
+
 // Filtro para popular selects de cadastro de chamadas
 function selectFilter($s1, $s2, $s3) {
 

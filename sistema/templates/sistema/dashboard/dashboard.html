@@ -1,69 +1,304 @@
 {% extends 'sistema/base.html' %}
 
 {% block title %}Dashboard | {{ block.super }}{% endblock %}
+{% load static %}
 
 {% block content %}
 
 <div class="container-fluid">
 
     <div class="container-fluid">
-            <div class="block-header">
-                <h2>CHAMADOS</h2>
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h6>PERÍODO</h6> <small>Selecione um perído para carregar o dashboard</small>
+                        <form method="GET">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <input type="date" name="periodoInicial" value="{{ periodoInicial }}" class="form-control"
+                                        placeholder="Data inicial">
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <span class="">até</span>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input type="date" name="periodoFinal" value="{{ periodoFinal }}" class="form-control"
+                                        placeholder="Data final">
+                                </div>
+
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <button type="submit" class="btn btn-primary waves-effect"><i
+                                            class="material-icons">calendar_today</i><span></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </h2>
+                </div>
+
             </div>
+        </div>
 
-            <!-- Widgets -->
-            <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">playlist_add_check</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">TOTAL</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{ chamados }}</div>
-                        </div>
+        <!-- Widgets -->
+        <div class="row clearfix">
+                <div class="block-header">
+                        <h2>CHAMADOS</h2>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">help</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">EM ANALISE</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20">{{ chamadosAnalise }}</div>
-                        </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-pink hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">playlist_add_check</i>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">forum</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">FINALIZADOS</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20">{{ chamadosFinalizados }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">USUÁRIOS</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20">{{ usuarios }}</div>
-                        </div>
+                    <div class="content">
+                        <div class="text">TOTAL</div>
+                        <div class="number count-to" data-from="0" data-to="125" data-speed="15"
+                            data-fresh-interval="20">{{ chamados }}</div>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-cyan hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">help</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">EM ANALISE</div>
+                        <div class="number count-to" data-from="0" data-to="257" data-speed="1000"
+                            data-fresh-interval="20">{{ chamadosAnalise }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">forum</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">FINALIZADOS</div>
+                        <div class="number count-to" data-from="0" data-to="243" data-speed="1000"
+                            data-fresh-interval="20">{{ chamadosFinalizados }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-orange hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">person_add</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">USUÁRIOS</div>
+                        <div class="number count-to" data-from="0" data-to="1225" data-speed="1000"
+                            data-fresh-interval="20">{{ usuarios }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>CATEGORIAS DE PROBLEMAS MAIS RECORRENTES</h2>
+                </div>
+                <div class="body">
+                    <canvas class="grafico-categorias-problemas"></canvas>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>EMPREENDIMENTOS MAIS PROBLEMÁTICOS</h2>
+                </div>
+                <div class="body">
+                    <canvas class="grafico-empreendimentos"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>FEEDBACKS DOS USUÁRIOS</h2>
+                </div>
+                <div class="body">
+                    <canvas class="grafico-feedbacks-usuarios"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{% static 'plugins/chartjs/Chart2.8.0.js' %}"></script>
     <!-- #END# Exportable Table -->
+    <script>
+        var ctxCatProblemas = document.getElementsByClassName("grafico-categorias-problemas");
+
+        var rotulos = JSON.parse('{{ rotulosGrafico|safe }}');
+        var dadosPercent = JSON.parse('{{ dadosPercent }}');
+        var dadosPercentAcc = JSON.parse('{{ dadosPercentAcc }}');
+
+        var chartGraph = new Chart(ctxCatProblemas, {
+            type: "bar",
+            data: {
+                labels: rotulos,
+                datasets: [{
+
+                    label: '(%)Individual',
+
+                    data: dadosPercent,
+                    borderWidth: 6,
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ],
+                    backgroundColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+
+                    ],
+
+
+                }, {
+                    label: '(%)Acumulada',
+                    data: dadosPercentAcc,
+
+                    // Changes this dataset to become a line
+                    type: 'line'
+                }]
+            },
+
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            maxRotation: 90,
+                            minRotation: 80
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+
+        var ctxEmpreendimentos = document.getElementsByClassName("grafico-empreendimentos");
+
+        var rotulosEmp = JSON.parse('{{ rotulosGraficoEmpreendimento|safe }}');
+        var dadosPercentEmp = JSON.parse('{{ dadosPercentEmpreendimento|safe }}');
+        var dadosPercentAccEmp = JSON.parse('{{ dadosPercentAccEmpreendimento|safe }}');
+
+        var chartGraph = new Chart(ctxEmpreendimentos, {
+            type: "bar",
+            data: {
+                labels: rotulosEmp,
+                datasets: [{
+
+                    label: '(%)Individual',
+
+                    data: dadosPercentEmp,
+                    borderWidth: 6,
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ],
+                    backgroundColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+
+                    ],
+
+
+                }, {
+                    label: '(%)Acumulada',
+                    data: dadosPercentAccEmp,
+
+                    // Changes this dataset to become a line
+                    type: 'line'
+                }]
+            },
+
+            options: {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            maxRotation: 90,
+                            minRotation: 80
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
 
 
 
 
-{% endblock %}
+        var percentFeedbacks = JSON.parse('{{ percentFeedbacks|safe }}');
+        var rotulosFeedbacks = JSON.parse('{{ rotulosFeedbacks|safe }}');
+
+
+        var ctxFeedbacks = document.getElementsByClassName("grafico-feedbacks-usuarios");
+        var myDoughnutChart = new Chart(ctxFeedbacks, {
+            type: "bar",
+            data: {
+                labels: rotulosFeedbacks,
+                datasets: [{
+
+                    label: 'Porcentagem',
+
+                    data: percentFeedbacks,
+                    borderWidth: 6,
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ],
+                    backgroundColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+
+                    ],
+
+
+                }],
+            },
+
+
+        });
+
+    </script>
+
+
+    {% endblock %}

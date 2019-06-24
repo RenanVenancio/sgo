@@ -1,0 +1,220 @@
+{% extends 'sistema/base.html' %}
+
+{% block title %}Chamados | {{ block.super }}{% endblock %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="card">
+        <div class="header">
+            <h2>
+                FILTRAR CHAMADOS
+            </h2>
+        </div>
+        <div class="body">
+
+            <form id="form-filtros" method="GET">
+
+                {% csrf_token %}
+
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="status_id">Status do Chamado</label>
+                            <select name="status-chamado" class="form-control selectpicker" id="status_id" class="form-control selectpicker" data-live-search="true">
+                                <option value="" selected>Todos</option>
+                                <option value="Em analise">Em analise</option>
+                                <option value="Em andamento">Em andamento</option>
+                                <option value="Finalizado">Finalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="usuarios_id">Proprietario</label>
+
+                            <select id="usuarios_id" name="proprietario" class="form-control selectpicker" data-live-search="true"
+                                    data-width="100%">
+                                <option value="" selected>Todos</option>
+                                {% for usuario in usuarios %}
+                                <option value="{{ usuario.id }}">CPF: {{ usuario.cpf }} - {{ usuario.first_name }}
+                                    {{ usuario.last_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="categoria_id">Categoria de problema</label>
+
+                            <select id="categoria_id" name="categoria" class="form-control selectpicker" data-live-search="true"
+                                    data-width="100%">
+                                <option value="" selected>Todos</option>
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nomeCategoria }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="empreendimento_id">Empreemdimento</label>
+
+                            <select id="empreendimento_id" name="empreendimento" class="form-control selectpicker" data-live-search="true"
+                                    data-width="100%">
+                                <option value="" selected>Todos</option>
+                                {% for empreendimento in empreendimentos %}
+                                <option value="{{ empreendimento.id }}">{{ empreendimento.nomeEmpreendimento }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="area-comum_id">Area comum</label>
+
+                            <select id="area-comum_id" name="area-comum" class="form-control selectpicker" data-live-search="true"
+                                    data-width="100%">
+                                <option value="" selected>Todos</option>
+                                {% for areaComun in areasComuns %}
+                                <option value="{{ areaComun.id }}">{{ areaComun.nomeArea }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="data-inicial_id">Data Inicial</label>
+                            <div class="form-line">
+                                <input class="form-control" type="date" id="data-inicial_id" name="data-inicial">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="data-final_id">Data Final</label>
+                            <div class="form-line">
+                                <input class="form-control" type="date" id="data-final_id" name="data-final">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                </div>
+                                <label for="id_prioridade"> Prioridade </label>
+                                <input id="id_prioridade" type="text" name="prioridade" value="0" />
+                            </div>
+                        </div>
+                    </div>
+
+                <a class="btn btn-primary m-t-15 waves-effect" onclick=enviarForm()>
+                    <i class="material-icons">filter_list</i>
+                    <span>FILTRAR</span>
+                </a>
+                <a class="btn btn-green m-t-15 waves-effect" onclick=limparFiltros()>
+                    <i class="material-icons">clear_all</i>
+                    <span>LIMPAR FILTROS</span>
+                </a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+  <script type="text/javascript">
+    var cadastrar = true;
+    $( document ).ready(function() {
+        $("#id_prioridade").ionRangeSlider({
+            type: "double",
+            skin: "round",
+            grid: false,
+            grid_num: 6,
+            min: 0,
+            max: 5,
+            max_postfix: " Máxima",
+            prefix: "Prioridade: ",
+
+        });    
+    });    
+
+    function limparFiltros(){
+        $('#status_id').val('')
+        $('#usuarios_id').val('')
+        $('#categoria_id').val('')
+        $('#empreendimento_id').val('')
+        $('#area-comum_id').val('')
+        $('#data-final_id').val('')
+        $('#data-inicial_id').val('')
+        $('#prioridade').val('')
+        $('.selectpicker').selectpicker('refresh');  //Atualiza os selectpickers
+
+    }
+
+    function enviarForm(redirecionar) {
+
+        status = $('#status_id').val()
+        usuario = $('#usuarios_id').val()
+        categoria = $('#categoria_id').val()
+        empreendimento = $('#empreendimento_id').val()
+        areaComum = $('#area-comum_id').val()
+
+        dataFinal = $('#data-final_id').val()
+        dataInicial = $('#data-inicial_id').val()
+        prioridade = $('#prioridade').val()
+
+        if(
+            ((dataFinal == '' && dataInicial == '') || (dataFinal == '' && dataInicial != '') || (dataFinal != '' && dataInicial == ''))
+            && (status == '')
+            && (usuario == '')
+            && (categoria == '')
+            && (empreendimento == '')
+            && (areaComum == '')
+            && (prioridade == 0)
+        ){
+            console.log(dataFinal, dataInicial, status, usuario, categoria)
+            swal("Erro!", "Selecione pelo menos um campo para filtrar!", "error");  
+            
+        }else{
+            document.getElementById("form-filtros").submit();
+        }
+    
+    }
+  </script>
+
+{% endblock %}
+
