@@ -22,7 +22,7 @@ nome-da-maquina-virtual\Scripts\activate
 Acesse a pasta do projeto e instale as dependências com o comando
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### Configurando Banco de dados
@@ -53,9 +53,10 @@ Acesse o site pelo endereço
 
 
 ### API do sistema
+<p>O sistema possui uma api para integração com o aplicativo
+Para acessar a documentação da API</p>
 
-```
-Para acessar a documentação da API
-```
-<a href="http://127.0.0.1:8000/api/docs/">http://127.0.0.1:8000/api/docs/</a>
+
+
+<a href="http://localhost:8000/api/docs/">http://127.0.0.1:8000/api/docs/</a>
 

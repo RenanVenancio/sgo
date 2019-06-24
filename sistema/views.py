@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 from datetime import date
 from .models import *
 from django.core.mail import get_connection
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 class DashboardView(generic.ListView):
@@ -178,6 +179,7 @@ class EmpresaDeleteView(generic.DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 '''Fim gerenciamento da empresa'''
+
 
 """Gerenciamento de usuários"""
 class UsuariosCreateView(generic.CreateView):
@@ -457,7 +459,7 @@ class ChamadoCreateView(generic.CreateView):
     template_name = 'sistema/chamados/cadastrarchamado.html'
     success_url = reverse_lazy('sistema:listarchamados')
 
-from django.contrib.messages.views import SuccessMessageMixin
+
 
 class ChamadoUpdateView(SuccessMessageMixin, generic.UpdateView):
 
@@ -478,10 +480,6 @@ class ChamadoUpdateView(SuccessMessageMixin, generic.UpdateView):
 
             novoEvento.chamado = chamado
             novoEvento.save()
-
-
-
-
 
 
         return super(generic.UpdateView, self).post(request, *args, **kwargs)

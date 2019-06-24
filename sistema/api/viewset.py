@@ -273,5 +273,5 @@ class ChamadoListViewAPI(ReadOnlyModelViewSet):    #Listar chamados
 
     serializer_class = ChamadoListSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('protocolo', 'descricao', 'statusChamado')
+    search_fields = ('protocolo', 'descricao', 'statusChamado', 'categoriaProblema')
 
