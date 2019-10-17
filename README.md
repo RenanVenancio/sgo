@@ -1,9 +1,7 @@
 # Sistema de gestão de ocorrências
-Gestão de ocorrências: Engenharia Civil &amp; Sistemas para Internet <br />
-Sistema que automatiza e controla as etapas de solicitações de assistência técnica para edifícios já construídos, dando suporte aos usuários das unidades habitacionais bem como favorecendo a construtora que o utilizar. O utiliza de tecnologias web onde tem o foco inicial de sua aplicação.
 
-### Documentação gravação e maiores detalhes sobre o sistema
-https://drive.google.com/drive/folders/1sTZow1sOBotXqkleQQYKiKOBw-j6StNC?usp=sharing
+O sistema realiza o gerenciamento e acompanhamento de ocorrências em edifícios já construídos.
+Sistema 100% Web, possui uma API para integração com outros sistemas.
 
 ### Instalando
 
