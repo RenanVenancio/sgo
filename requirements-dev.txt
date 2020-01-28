@@ -3,7 +3,7 @@ chardet==3.0.4
 Django==2.0.4
 django-cors-headers==3.0.2
 django-widget-tweaks==1.4.2
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 model-mommy==1.5.1
 Pillow==5.1.0
 pytz==2018.5
