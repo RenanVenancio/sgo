@@ -135,7 +135,7 @@ default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 ADMINS = (
-    ('Victor Fernandes', 'victorfernandes.matias@gmail.com'),
+    ('Victor Fernandes', 'victorfernandes.matias@gmail.com', 'renan_1419@hotmail.com'),
 )
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
