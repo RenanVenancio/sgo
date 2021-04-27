@@ -5,8 +5,8 @@ Sistema 100% Web, possui uma API para integração com outros sistemas.
 
 # Deploy
 <a href="http://sgoengenharia.herokuapp.com/">http://sgoengenharia.herokuapp.com/</a>
-Usuário: root
-Senha: venancio123
+<p>Usuário: <b>root</b></p>
+<p>Senha: <b>venancio123</b></p>
 
 
 ### Executando projeto na máquina local
