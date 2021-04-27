@@ -3,7 +3,13 @@
 O sistema realiza o gerenciamento e acompanhamento de ocorrências em edifícios já construídos.
 Sistema 100% Web, possui uma API para integração com outros sistemas.
 
-### Instalando
+# Deploy
+<a href="http://sgoengenharia.herokuapp.com/">http://sgoengenharia.herokuapp.com/</a>
+Usuário: root
+Senha: venancio123
+
+
+### Executando projeto na máquina local
 
 Primeiro passo será a criação de uma máquina virtual (os comandos são para serem aplicados em Sistema Operacional Windows, há variações para Linux/OSX)
 
